@@ -4,7 +4,7 @@
 
 namespace Vector2CustomTests
 { 
-TEST(Addition, TwoVectors)
+TEST(Addition, TwoFloats)
 {
 	Vector2Custom<float> v1(1.0f, 2.0f);
 	Vector2Custom<float> v2(3.0f, 4.0f);
