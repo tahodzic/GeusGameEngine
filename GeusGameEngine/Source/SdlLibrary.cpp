@@ -67,7 +67,7 @@ public:
 		
 		SDL_free(exeBasePath);
 
-		path += "OpenSans-Bold.ttf";
+		path += "..\\..\\..\\..\\Resource\\OpenSans-Bold.ttf";
 
 		auto ttf = TTF_OpenFont(path.c_str(), 12);
 
