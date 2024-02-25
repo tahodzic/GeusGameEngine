@@ -6,17 +6,37 @@
 
 namespace ButtonTests
 {
-	TEST(Label, IsCorrect)
+	class ButtonTest : public testing::Test
 	{
-		Vector2Custom<int> dimensions(1.0f, 2.0f);
-		Vector2Custom<int> position(3.0f, 4.0f);
+	protected:
+		ButtonTest() : mDimensions(1.0f, 2.0f), mPosition(3.0f, 4.0f), mLabel("Button1"), mButton(mDimensions, mPosition, mLabel)
+		{}
 
-		std::string label("Button1");
-		std::string expected("Button1");
+		Vector2Custom<int> mDimensions;
 
-		Button button(dimensions, position, label);
+		Vector2Custom<int> mPosition;
 
-		EXPECT_TRUE(label == expected);
+		std::string mLabel;
+
+		Button mButton;
+	};
+
+	TEST_F(ButtonTest, IsInitializationCorrect)
+	{
+		std::string expectedLabel("Button1");
+
+		Vector2Custom<int> expectedDimensions(1.0f, 2.0f);
+
+		Vector2Custom<int> expectedPosition(3.0f, 4.0f);
+
+		EXPECT_EQ(mDimensions.mX, expectedDimensions.mX);
+
+		EXPECT_EQ(mDimensions.mY, expectedDimensions.mY);
+
+		EXPECT_EQ(mPosition.mX, expectedPosition.mX);
+
+		EXPECT_EQ(mPosition.mY, expectedPosition.mY);
+		
+		EXPECT_TRUE(mButton.mLabel == expectedLabel);
 	}
-
 }

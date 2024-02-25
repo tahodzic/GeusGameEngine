@@ -16,9 +16,6 @@ env:
   # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
   BUILD_CONFIGURATION: Release
 
-permissions:
-  contents: read
-
 jobs:
   build-and-test:
     runs-on: windows-latest
@@ -39,7 +36,7 @@ jobs:
       with:
         msbuild-architecture: x64
 
-    - name: Restore NuGet packages (GoogleTest)
+    - name: Restore NuGet packages
       run: nuget restore .\GeusGameEngine\GeusGameEngine.sln
       
     - name: Build 
