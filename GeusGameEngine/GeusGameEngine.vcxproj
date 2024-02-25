@@ -119,11 +119,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <ExternalIncludePath>$(SolutionDir)..\..\Libraries\SDL2-2.30.0\include;$(SolutionDir)..\..\Libraries\SDL_ttf-SDL2;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)packages\sdl2.nuget.2.30.0\build\native\include\x64;$(SolutionDir)packages\sdl2_ttf.nuget.2.22.0\build\native\include\x64;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <ExternalIncludePath>$(SolutionDir)..\..\Libraries\SDL2-2.30.0\include;$(SolutionDir)..\..\Libraries\SDL_ttf-SDL2;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)packages\sdl2.nuget.2.30.0\build\native\include\x64;$(SolutionDir)packages\sdl2_ttf.nuget.2.22.0\build\native\include\x64;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
