@@ -9,12 +9,10 @@ namespace ButtonTests
 	class ButtonTest : public testing::Test
 	{
 	protected:
-		ButtonTest() : mDimensions(1.0f, 2.0f), mPosition(3.0f, 4.0f), mLabel("Button1"), mButton(mDimensions, mPosition, mLabel)
+		ButtonTest() : mDimensions(1, 2), mPosition(3, 4), mLabel("Button1"), mButton(mDimensions, mPosition, mLabel)
 		{}
 
-		Vector2Custom<int> mDimensions;
-
-		Vector2Custom<int> mPosition;
+		Vector2Custom<int> mDimensions;	Vector2Custom<int> mPosition;
 
 		std::string mLabel;
 
@@ -25,9 +23,9 @@ namespace ButtonTests
 	{
 		std::string expectedLabel("Button1");
 
-		Vector2Custom<int> expectedDimensions(1.0f, 2.0f);
+		Vector2Custom<int> expectedDimensions(1, 2);
 
-		Vector2Custom<int> expectedPosition(3.0f, 4.0f);
+		Vector2Custom<int> expectedPosition(3, 4);
 
 		EXPECT_EQ(mDimensions.mX, expectedDimensions.mX);
 
