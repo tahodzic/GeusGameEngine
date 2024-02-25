@@ -4,6 +4,8 @@
 #include "Vector3Custom.h"
 #include "Matrix44.h"
 
+#include <vector>
+
 class IRenderer
 {
 public:
@@ -20,12 +22,11 @@ public:
 		const Vector3Custom<float>& vector1,
 		const Vector3Custom<float>& vector2,
 		const Matrix44<float>& worldToCameraMatrix) = 0;
+	
+	virtual void RenderPolygon(
+		const std::vector<Vector3Custom<float>>& vertices,
+		const std::vector<int>& indices,
+		const Matrix44<float>& worldToCameraMatrix) = 0;
 
     virtual void RenderDrawRect(int width, int height, int x, int y) = 0;
-
-    virtual void RenderTriangle(
-		const Vector3Custom<float>& vector1,
-		const Vector3Custom<float>& vector2,
-		const Vector3Custom<float>& vector3,
-		const Matrix44<float>& worldToCameraMatrix) = 0;
 };

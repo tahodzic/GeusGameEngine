@@ -47,15 +47,13 @@ void MediaLayer::renderLine(
 		worldToCameraMatrix);
 }
 
-void MediaLayer::renderTriangle(
-	const Vector3Custom<float>& vector1, 
-	const Vector3Custom<float>& vector2,
-	const Vector3Custom<float>& vector3,
+void MediaLayer::renderPolygon(
+	const std::vector<Vector3Custom<float>>& vertices,
+	const std::vector<int>& indices,
 	const Matrix44<float>& worldToCameraMatrix)
 {
-	mpGraphicsLibrary->GetRendererHandler()->RenderTriangle(
-		vector1,
-		vector2,
-		vector3,
+	mpGraphicsLibrary->GetRendererHandler()->RenderPolygon(
+		vertices,
+		indices,
 		worldToCameraMatrix);
 }

@@ -110,6 +110,80 @@ void SdlRenderer::clipToViewFrustum(
 	outCameraVector2 = cameraV2;
 }
 
+void SdlRenderer::CalculateTriangle(
+	const Vector3Custom<float>& vector1,
+	const Vector3Custom<float>& vector2,
+	const Vector3Custom<float>& vector3,
+	Vector2Custom<int>& vRaster1,
+	Vector2Custom<int>& vRaster2,
+	Vector2Custom<int>& vRaster3,
+	const Matrix44<float>& worldToCameraMatrix)
+{
+	Vector3Custom<float> cameraPoint1, cameraPoint2, cameraPoint3;
+	clipToViewFrustum(
+		vector1, vector2,
+		cameraPoint1, cameraPoint2,
+		worldToCameraMatrix
+	);
+	clipToViewFrustum(
+		vector2, vector3,
+		cameraPoint2, cameraPoint3,
+		worldToCameraMatrix
+	);
+	clipToViewFrustum(
+		vector3, vector1,
+		cameraPoint3, cameraPoint1,
+		worldToCameraMatrix
+	);
+
+	Vector3Custom<float> clipPoint1, clipPoint2, clipPoint3;
+	kProjectionMatrix.multVecMatrix(cameraPoint1, clipPoint1);
+	kProjectionMatrix.multVecMatrix(cameraPoint2, clipPoint2);
+	kProjectionMatrix.multVecMatrix(cameraPoint3, clipPoint3);
+
+	vRaster1.mX = static_cast<int>(std::floor((clipPoint1.mX * 0.5f + 0.5f) * kWindowWidth/*imageWidth*/));
+	vRaster1.mY = static_cast<int>(std::floor((1.0f - (clipPoint1.mY * 0.5f + 0.5f)) * kWindowHeight/*imageHeight*/));
+
+	vRaster2.mX = static_cast<int>(std::floor((clipPoint2.mX * 0.5f + 0.5f) * kWindowWidth/*imageWidth*/));
+	vRaster2.mY = static_cast<int>(std::floor((1.0f - (clipPoint2.mY * 0.5f + 0.5f)) * kWindowHeight/*imageHeight*/));
+
+	vRaster3.mX = static_cast<int>(std::floor((clipPoint3.mX * 0.5f + 0.5f) * kWindowWidth/*imageWidth*/));
+	vRaster3.mY = static_cast<int>(std::floor((1.0f - (clipPoint3.mY * 0.5f + 0.5f)) * kWindowHeight/*imageHeight*/));
+}
+
+void SdlRenderer:: RenderPolygon(
+	const std::vector<Vector3Custom<float>>& vertices,
+	const std::vector<int>& indices,
+	const Matrix44<float>& worldToCameraMatrix)
+{
+	std::vector<SDL_Vertex> verticesToRender;
+
+	SDL_Color col{ 255, 255, 255, 255};
+
+	for (int i = 0; i < indices.size() / 3; i++)
+	{
+		const Vector3Custom<float>& v0World = vertices[indices[i * 3]];
+		const Vector3Custom<float>& v1World = vertices[indices[i * 3 + 1]];
+		const Vector3Custom<float>& v2World = vertices[indices[i * 3 + 2]];
+		
+		Vector2Custom<int> vRaster1, vRaster2, vRaster3;
+
+		CalculateTriangle(v0World, v1World, v2World, vRaster1, vRaster2, vRaster3, worldToCameraMatrix);
+		verticesToRender.push_back(SDL_Vertex{ {static_cast<float>(vRaster1.mX), static_cast<float>(vRaster1.mY)}, col, { 0, 0 } });
+		verticesToRender.push_back(SDL_Vertex{ {static_cast<float>(vRaster2.mX), static_cast<float>(vRaster2.mY)}, col, { 0, 0 } });
+		verticesToRender.push_back(SDL_Vertex{ {static_cast<float>(vRaster3.mX), static_cast<float>(vRaster3.mY)}, col, { 0, 0 } });
+	}
+
+	auto vertsSize = verticesToRender.size();
+	constexpr int intMax = (std::numeric_limits<int>::max)();
+	if (vertsSize > static_cast<size_t>(intMax))
+	{
+		throw std::overflow_error("size_t value is too big to fit into an int.");
+	}
+
+	SDL_RenderGeometry(mpRenderer.get(), NULL, verticesToRender.data(), static_cast<int>(verticesToRender.size()), NULL, 0);
+}
+
 void SdlRenderer::RenderDrawLine(
 	const Vector3Custom<float>& vector1,
 	const Vector3Custom<float>& vector2,
@@ -154,67 +228,6 @@ void SdlRenderer::RenderDrawRect(int width, int height, int x, int y)
 	SDL_Rect rect{x, y, width, height};
 
 	SDL_RenderDrawRect(mpRenderer.get(), &rect);
-}
-
-void SdlRenderer::RenderTriangle(
-	const Vector3Custom<float>& vector1,
-	const Vector3Custom<float>& vector2,
-	const Vector3Custom<float>& vector3,
-	const Matrix44<float>& worldToCameraMatrix)
-{
-	Vector3Custom<float> cameraPoint1;
-	Vector3Custom<float> cameraPoint2;
-	Vector3Custom<float> cameraPoint3;
-	clipToViewFrustum(
-		vector1,
-		vector2,
-		cameraPoint1,
-		cameraPoint2,
-		worldToCameraMatrix
-	);
-	clipToViewFrustum(
-		vector2,
-		vector3,
-		cameraPoint2,
-		cameraPoint3,
-		worldToCameraMatrix
-	);
-	clipToViewFrustum(
-		vector3,
-		vector1,
-		cameraPoint3,
-		cameraPoint1,
-		worldToCameraMatrix
-	);
-
-	Vector3Custom<float> clipPoint1;
-	Vector3Custom<float> clipPoint2;
-	Vector3Custom<float> clipPoint3;
-	kProjectionMatrix.multVecMatrix(cameraPoint1, clipPoint1);
-	kProjectionMatrix.multVecMatrix(cameraPoint2, clipPoint2);
-	kProjectionMatrix.multVecMatrix(cameraPoint3, clipPoint3);
-
-	Vector2Custom<int> vRaster1, vRaster2, vRaster3;
-	vRaster1.mX = static_cast<int>(std::floor((clipPoint1.mX * 0.5f + 0.5f) * kWindowWidth/*imageWidth*/));
-	vRaster1.mY = static_cast<int>(std::floor((1.0f - (clipPoint1.mY * 0.5f + 0.5f)) * kWindowHeight/*imageHeight*/));
-
-	vRaster2.mX = static_cast<int>(std::floor((clipPoint2.mX * 0.5f + 0.5f) * kWindowWidth/*imageWidth*/));
-	vRaster2.mY = static_cast<int>(std::floor((1.0f - (clipPoint2.mY * 0.5f + 0.5f)) * kWindowHeight/*imageHeight*/));
-
-	vRaster3.mX = static_cast<int>(std::floor((clipPoint3.mX * 0.5f + 0.5f) * kWindowWidth/*imageWidth*/));
-	vRaster3.mY = static_cast<int>(std::floor((1.0f - (clipPoint3.mY * 0.5f + 0.5f)) * kWindowHeight/*imageHeight*/));
-
-	//TextRenderer::print("vRaster1", vRaster1.mX, vRaster1.mY);
-	//TextRenderer::print("vRaster1.mX: " + std::to_string(vRaster1.mX), 120, 80);
-	//TextRenderer::print("vRaster1.mY: " + std::to_string(vRaster1.mY), 120, 100);
-
-	//TextRenderer::print("vRaster2", vRaster2.mX, vRaster2.mY);
-	//TextRenderer::print("vRaster2.mX: " + std::to_string(vRaster2.mX), 120, 140);
-	//TextRenderer::print("vRaster2.mY: " + std::to_string(vRaster2.mY), 120, 160);
-
-	SDL_RenderDrawLine(mpRenderer.get(), vRaster1.mX, vRaster1.mY, vRaster2.mX, vRaster2.mY);
-	SDL_RenderDrawLine(mpRenderer.get(), vRaster2.mX, vRaster2.mY, vRaster3.mX, vRaster3.mY);
-	SDL_RenderDrawLine(mpRenderer.get(), vRaster3.mX, vRaster3.mY, vRaster1.mX, vRaster1.mY);
 }
 
 void SdlRenderer::extractAllPlanes()

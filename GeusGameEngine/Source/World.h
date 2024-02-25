@@ -96,8 +96,6 @@ public:
 
     void renderObject(const Cube& cube);
 
-    void renderTriangle(const Vector3Custom<float>& vector1, const Vector3Custom<float>& vector2, const Vector3Custom<float>& vector3);
-
     void renderLine(const Vector3Custom<float>& vector1, const Vector3Custom<float>& vector2);
 
     void renderCoordinateSystem();

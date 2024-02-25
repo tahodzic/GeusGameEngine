@@ -182,6 +182,7 @@ void World::handleKeyEvents()
 
 void World::resetScene()
 {
+	mCamera.reset();
 	mCamera.mCamera.mX = 0.0f;
 	mCamera.mCamera.mY = 0.0f;
 	mCamera.mCamera.mZ = -10.0f;
@@ -237,19 +238,7 @@ void World::renderObjects()
 
 void World::renderObject(const Cube& cube)
 {
-	for (int i = 0; i < cube.mIndices.size() / 3; i++)
-	{
-		const Vector3Custom<float>& v0World = cube.mVertices[cube.mIndices[i * 3]];
-		const Vector3Custom<float>& v1World = cube.mVertices[cube.mIndices[i * 3 + 1]];
-		const Vector3Custom<float>& v2World = cube.mVertices[cube.mIndices[i * 3 + 2]];
-		
-		renderTriangle(v0World, v1World, v2World);
-	}
-}
-
-void World::renderTriangle(const Vector3Custom<float>& vector1, const Vector3Custom<float>& vector2, const Vector3Custom<float>& vector3)
-{
-	MediaLayer::getInstance().renderTriangle(vector1, vector2, vector3, mCamera.mWtcMatrix);
+	MediaLayer::getInstance().renderPolygon(cube.mVertices, cube.mIndices, mCamera.mWtcMatrix);
 }
 
 void World::renderLine(const Vector3Custom<float>& vector1, const Vector3Custom<float>& vector2)

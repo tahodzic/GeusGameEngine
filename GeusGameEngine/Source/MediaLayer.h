@@ -32,13 +32,10 @@ public:
 		const Vector3Custom<float>& vector2,
 		const Matrix44<float>& worldToCameraMatrix);
 
-	void renderTriangle(
-		const Vector3Custom<float>& vector1,
-		const Vector3Custom<float>& vector2,
-		const Vector3Custom<float>& vector3,
+	void renderPolygon(
+		const std::vector<Vector3Custom<float>>& vertices,
+		const std::vector<int>& indices,
 		const Matrix44<float>& worldToCameraMatrix);
-
-	//void renderRectangle();
 
 	//void setRenderDrawColor();
 

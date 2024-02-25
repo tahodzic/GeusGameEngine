@@ -8,6 +8,7 @@
 
 #include <SDL.h>
 #include <memory>
+#include <vector>
 
 class SdlRenderer : public IRenderer
 {
@@ -54,6 +55,14 @@ private:
         const Plane& plane,
         Vector3Custom<float>& intersection);
 
+    void CalculateTriangle(
+        const Vector3Custom<float>& vector1,
+        const Vector3Custom<float>& vector2,
+        const Vector3Custom<float>& vector3,
+        Vector2Custom<int>& vRaster1,
+        Vector2Custom<int>& vRaster2,
+        Vector2Custom<int>& vRaster3,
+        const Matrix44<float>& worldToCameraMatrix);
 
 public:
     SdlRenderer(std::shared_ptr<SDL_Renderer> renderer, const int& windowWidth, const int& windowHeight, const int& canvasWidth, const int& canvasHeight,
@@ -67,18 +76,17 @@ public:
 
     void RenderPresent() override;
 
+    void RenderPolygon(
+        const std::vector<Vector3Custom<float>>& vertices,
+        const std::vector<int>& indices,
+        const Matrix44<float>& worldToCameraMatrix) override;
+
     void RenderDrawLine(
         const Vector3Custom<float>& vector1,
         const Vector3Custom<float>& vector2,
         const Matrix44<float>& worldToCameraMatrix) override;
     
     void RenderDrawRect(int height, int width, int x, int y) override;
-
-    void RenderTriangle(
-        const Vector3Custom<float>& vector1,
-        const Vector3Custom<float>& vector2,
-        const Vector3Custom<float>& vector3,
-        const Matrix44<float>& worldToCameraMatrix) override;
 
     void extractAllPlanes();
 
