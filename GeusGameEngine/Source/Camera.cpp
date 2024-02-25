@@ -2,7 +2,7 @@
 
 #include "Camera.h"
 
-Camera::Camera() : kProjectionMatrixRef(mProjectionMatrix)
+Camera::Camera() : kProjectionMatrixRef(mProjectionMatrix), mCamera({ sDefaultX, sDefaultY, sDefaultZ}), mPitch(0.0f), mRoll(0.0f), mYaw(0.0f)
 {
     mProjectionMatrix[0][0] = (2 * sZNear) / (sRight - sLeft);
     mProjectionMatrix[0][2] = (sRight + sLeft) / (sRight - sLeft);
@@ -36,6 +36,19 @@ Camera::Camera() : kProjectionMatrixRef(mProjectionMatrix)
 	    -sin(mYaw), 0, cos(mYaw), 0, 
 	    0, 0, 0, 1
 	};
+}
+
+void Camera::reset()
+{
+    mCamera.mX = sDefaultX;
+    mCamera.mY = sDefaultY;
+    mCamera.mZ = sDefaultZ;
+    mPitch = 0.0f;
+    mYaw = 0.0f;
+    mRoll = 0.0f;
+    updatePitchMatrix();
+    updateYawMatrix();
+    updateRollMatrix();
 }
 
 void Camera::updateRollMatrix()

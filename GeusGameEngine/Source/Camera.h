@@ -11,10 +11,39 @@ class Camera
 {
 private:
     Matrix44<float> mProjectionMatrix;
+
+    static constexpr float sDefaultX = 0.2f;
+
+    static constexpr float sDefaultY = 0.5f;
+
+    static constexpr float sDefaultZ = 1.3f;
+
+    static constexpr float sAngleOfViewW = 90.0f * (static_cast<float>(kPi) / 180.0f);
+
+    static constexpr float sAngleOfViewH = 120.0f * (static_cast<float>(kPi) / 180.0f);
+
+    static constexpr float sZNear = 1.0f;
+
+    static constexpr float sZFar = 1000.0f;
+
+    static constexpr  float sCanvasW = 16.0f;
+
+    static constexpr  float sCanvasH = 9.0f;
+
+    static constexpr  float sAspectRatio = sCanvasW / sCanvasH;
+
+    const float  sTop = sZNear * tan(sAngleOfViewW / 2.0f);
+
+    const float  sBottom = -sTop;
+
+    const float  sRight = sAspectRatio * sTop;
+
+    const float  sLeft = -sRight;
+
 public:
     Camera();
 
-    Vector3Custom<float> mCamera = { 0.2f, 0.5f,1.3f };
+    Vector3Custom<float> mCamera;
 
     Matrix44<float> mWtcMatrix;
 
@@ -28,33 +57,13 @@ public:
 
     Matrix44<float> mYawMatrix;
 
-    float mRoll = 0;
+    float mRoll;
 
-    float mPitch = 0;
+    float mPitch;
 
-    float mYaw = 0;
+    float mYaw;
 
-    static constexpr float sAngleOfViewW = 90.0f * (static_cast<float>(kPi) / 180.0f);
-
-    static constexpr float sAngleOfViewH = 120.0f * (static_cast<float>(kPi) / 180.0f);
-
-    static constexpr float sZNear = 1.0f; 
-
-    static constexpr float sZFar = 1000.0f; 
-
-    static constexpr  float sCanvasW = 16.0f;
-
-    static constexpr  float sCanvasH = 9.0f;
-
-    static constexpr  float sAspectRatio = sCanvasW / sCanvasH;
-    
-    const float  sTop = sZNear * tan(sAngleOfViewW / 2.0f);
-
-    const float  sBottom = -sTop;
-
-    const float  sRight = sAspectRatio * sTop;
-
-    const float  sLeft = -sRight;
+    void reset();
 
     void updateRollMatrix();
 
