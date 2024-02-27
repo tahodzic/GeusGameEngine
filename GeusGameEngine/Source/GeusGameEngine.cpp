@@ -80,14 +80,14 @@ int main(int argc, char* argv[])
 		//Cube cubeRot7(0.5, 0, 0, 35);
 		//Cube cubeRot8(0.5, 0, 0, 40);
 
-		myWorld.add_object(&cubeRot1);
-		myWorld.add_object(&cubeRot2);
-		myWorld.add_object(&cubeRot3);
-		myWorld.add_object(&cubeRot4);
-		myWorld.add_object(&cubeRot5);
-		myWorld.add_object(&cubeRot6);
-		myWorld.add_object(&cubeRot7);
-		myWorld.add_object(&cubeRot8);
+		myWorld.addObject(&cubeRot1);
+		myWorld.addObject(&cubeRot2);
+		myWorld.addObject(&cubeRot3);
+		myWorld.addObject(&cubeRot4);
+		myWorld.addObject(&cubeRot5);
+		myWorld.addObject(&cubeRot6);
+		myWorld.addObject(&cubeRot7);
+		myWorld.addObject(&cubeRot8);
 		//myWorld.worldMain();
 		
 		for(;;)

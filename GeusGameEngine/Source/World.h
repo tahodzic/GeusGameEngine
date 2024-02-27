@@ -42,7 +42,7 @@ public:
 
     Cube* mObjects[sMaxObjectsInWorld];
 
-    int object_cnt;
+    int mObjectCount;
 
     SDL_Renderer* mRenderer;
     
@@ -84,7 +84,7 @@ public:
 
     void render();
 
-    void add_object(Cube* object);
+    void addObject(Cube* object);
 
     Button mButtonReset;
 

@@ -9,7 +9,7 @@ World::World() :
 	mCoordinateSystemGrid(20.0f), 
 	mButtonReset(Vector2Custom<int>(70,25), Vector2Custom<int>(10, 20), "Reset")
 {
-	object_cnt = 0;
+	mObjectCount = 0;
 }
 
 World::~World()
@@ -30,12 +30,12 @@ void World::render()
 	MediaLayer::getInstance().render();
 }
 
-void World::add_object(Cube* object)
+void World::addObject(Cube* object)
 {
-	if (object_cnt < sMaxObjectsInWorld)
+	if (mObjectCount < sMaxObjectsInWorld)
 	{
-		mObjects[object_cnt] = object;
-		object_cnt++;
+		mObjects[mObjectCount] = object;
+		mObjectCount++;
 	}
 }
 
@@ -183,15 +183,6 @@ void World::handleKeyEvents()
 void World::resetScene()
 {
 	mCamera.reset();
-	mCamera.mCamera.mX = 0.0f;
-	mCamera.mCamera.mY = 0.0f;
-	mCamera.mCamera.mZ = -10.0f;
-	mCamera.mPitch = 0.0f;
-	mCamera.mYaw = 0.0f;
-	mCamera.mRoll = 0.0f;
-	mCamera.updatePitchMatrix();
-	mCamera.updateYawMatrix();
-	mCamera.updateRollMatrix();
 }
 
 void World::calculateWorldToCameraMatrix()
@@ -226,13 +217,16 @@ void World::UiDrawRectangle(Vector2Custom<int> dimensions, Vector2Custom<int> po
 
 void World::renderObjects()
 {
+	static int k = 0;
+
+
 	Cube* myC = mObjects[0];
 
-	for (int j = 0; j < object_cnt; j++)
+	for (int i = 0; i < mObjectCount; i++)
 	{
-		myC = mObjects[j];
+		myC = mObjects[i];
 
-		renderObject(*mObjects[j]);
+		renderObject(*mObjects[i]);
 	}
 }
 
