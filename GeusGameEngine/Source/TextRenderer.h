@@ -11,6 +11,6 @@ public:
 
 	~TextRenderer();
 
-	static void print(std::string_view text, int x, int y);
+	static void print(std::string_view text, int x, int y, bool inWorld);
 };
 

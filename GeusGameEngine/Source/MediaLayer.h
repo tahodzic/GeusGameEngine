@@ -30,12 +30,14 @@ public:
 	void renderLine(
 		const Vector3Custom<float>& vector1,
 		const Vector3Custom<float>& vector2,
-		const Matrix44<float>& worldToCameraMatrix);
+		const Matrix44<float>& worldToCameraMatrix,
+		const bool inWorld);
 
 	void renderPolygon(
 		const std::vector<Vector3Custom<float>>& vertices,
 		const std::vector<int>& indices,
-		const Matrix44<float>& worldToCameraMatrix);
+		const Matrix44<float>& worldToCameraMatrix,
+		const bool inWorld);
 
 	//void setRenderDrawColor();
 

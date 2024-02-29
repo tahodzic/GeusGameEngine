@@ -12,11 +12,13 @@ TextRenderer::~TextRenderer()
 {
 }
 
-void TextRenderer::print(std::string_view text, int x, int y)
+void TextRenderer::print(std::string_view text, int x, int y, bool inWorld)
 {
 	int fontWidth, fontHeight;
 
 	SDL_Color White = { 255, 255, 255 };
+
+	MediaLayer::getInstance().mpGraphicsLibrary->GetFontHandler()->SetRenderViewPort(inWorld);
 
 	MediaLayer::getInstance().mpGraphicsLibrary->GetFontHandler()->SizeUTF8(text.data(), &fontWidth, &fontHeight);
 

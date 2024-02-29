@@ -27,18 +27,9 @@ private:
 
     const int& kCanvasHeight;
 
-    const Matrix44<float>& kProjectionMatrix;
-
-    bool computePixelCoordinates(
-        const Vector3Custom<float>& worldPoint,
-        const Matrix44<float>& worldToCameraMatrix,
-        const Matrix44<float>& projectionMatrix,
-        const int& imageWidth,
-        const int& imageHeight,
-        const int& canvasWidth,
-        const int& canvasHeight,
-        Vector2Custom<int>& rasterPoint);
+    const SDL_Rect kViewPort;
     
+    const Matrix44<float>& kProjectionMatrix;
 
     void clipToViewFrustum(
         const Vector3Custom<float>& vector1,
@@ -64,6 +55,9 @@ private:
         Vector2Custom<int>& vRaster3,
         const Matrix44<float>& worldToCameraMatrix);
 
+
+    void SetRenderViewPort(bool inWorld);
+
 public:
     SdlRenderer(std::shared_ptr<SDL_Renderer> renderer, const int& windowWidth, const int& windowHeight, const int& canvasWidth, const int& canvasHeight,
         const Matrix44<float>& projectionMatrix);
@@ -79,14 +73,16 @@ public:
     void RenderPolygon(
         const std::vector<Vector3Custom<float>>& vertices,
         const std::vector<int>& indices,
-        const Matrix44<float>& worldToCameraMatrix) override;
+        const Matrix44<float>& worldToCameraMatrix,
+        const bool inWorld) override;
 
     void RenderDrawLine(
         const Vector3Custom<float>& vector1,
         const Vector3Custom<float>& vector2,
-        const Matrix44<float>& worldToCameraMatrix) override;
+        const Matrix44<float>& worldToCameraMatrix,
+        const bool inWorld) override;
     
-    void RenderDrawRect(int height, int width, int x, int y) override;
+    void RenderDrawRect(int height, int width, int x, int y, const bool inWorld) override;
 
     void extractAllPlanes();
 

@@ -21,12 +21,14 @@ public:
     virtual void RenderDrawLine(
 		const Vector3Custom<float>& vector1,
 		const Vector3Custom<float>& vector2,
-		const Matrix44<float>& worldToCameraMatrix) = 0;
+		const Matrix44<float>& worldToCameraMatrix,
+		const bool inWorld) = 0;
 	
 	virtual void RenderPolygon(
 		const std::vector<Vector3Custom<float>>& vertices,
 		const std::vector<int>& indices,
-		const Matrix44<float>& worldToCameraMatrix) = 0;
+		const Matrix44<float>& worldToCameraMatrix,
+		const bool inWorld) = 0;
 
-    virtual void RenderDrawRect(int width, int height, int x, int y) = 0;
+    virtual void RenderDrawRect(int width, int height, int x, int y, const bool inWorld) = 0;
 };

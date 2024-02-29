@@ -96,6 +96,7 @@ void SdlLibrary::Initialize(const std::string_view title,
 	mpRendererHandler = SdlLibraryImpl::InitializeSdlRenderer(ren, windowWidth, windowHeight, canvasWidth, canvasHeight, projectionMatrix);
 
 	mpFontHandler = SdlLibraryImpl::InitializeFont(ren);
+
 }
 
 std::shared_ptr<IFont> SdlLibrary::GetFontHandler()

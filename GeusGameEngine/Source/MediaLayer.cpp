@@ -39,21 +39,25 @@ void MediaLayer::render()
 void MediaLayer::renderLine(
 	const Vector3Custom<float>& vector1,
 	const Vector3Custom<float>& vector2,
-	const Matrix44<float>& worldToCameraMatrix)
+	const Matrix44<float>& worldToCameraMatrix,
+	const bool inWorld)
 {
 	mpGraphicsLibrary->GetRendererHandler()->RenderDrawLine(
 		vector1,
 		vector2,
-		worldToCameraMatrix);
+		worldToCameraMatrix,
+		inWorld);
 }
 
 void MediaLayer::renderPolygon(
 	const std::vector<Vector3Custom<float>>& vertices,
 	const std::vector<int>& indices,
-	const Matrix44<float>& worldToCameraMatrix)
+	const Matrix44<float>& worldToCameraMatrix,
+	const bool inWorld)
 {
 	mpGraphicsLibrary->GetRendererHandler()->RenderPolygon(
 		vertices,
 		indices,
-		worldToCameraMatrix);
+		worldToCameraMatrix,
+		inWorld);
 }

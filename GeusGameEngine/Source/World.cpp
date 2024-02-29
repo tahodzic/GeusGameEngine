@@ -55,7 +55,7 @@ bool World::pollKeyEvents()
 	return SDL_PollEvent(&mpSdlEvent) != 0;
 }
 
-void World::handle_action()
+void World::handleAction()
 {
 	mCamera.calculateCameraRotation();
 
@@ -204,21 +204,22 @@ void World::calculateWorldToCameraMatrix()
 
 void World::renderButton()
 {
+	bool inWorld = false;
 	TextRenderer::print(mButtonReset.mLabel,
 		mButtonReset.mDimensions.mX + mButtonReset.mPosition.mX,
-		mButtonReset.mDimensions.mY + mButtonReset.mPosition.mY);
-	UiDrawRectangle(mButtonReset.mDimensions, mButtonReset.mPosition);
+		mButtonReset.mDimensions.mY + mButtonReset.mPosition.mY,
+		inWorld);
+	UiDrawRectangle(mButtonReset.mDimensions, mButtonReset.mPosition, inWorld);
 }
 
-void World::UiDrawRectangle(Vector2Custom<int> dimensions, Vector2Custom<int> position)
+void World::UiDrawRectangle(Vector2Custom<int> dimensions, Vector2Custom<int> position, const bool inWorld)
 {
-	MediaLayer::getInstance().mpGraphicsLibrary->GetRendererHandler()->RenderDrawRect(dimensions.mX, dimensions.mY, position.mX, position.mY);
+	MediaLayer::getInstance().mpGraphicsLibrary->GetRendererHandler()->RenderDrawRect(dimensions.mX, dimensions.mY, position.mX, position.mY, inWorld);
 }
 
 void World::renderObjects()
 {
 	static int k = 0;
-
 
 	Cube* myC = mObjects[0];
 
@@ -232,19 +233,20 @@ void World::renderObjects()
 
 void World::renderObject(const Cube& cube)
 {
-	MediaLayer::getInstance().renderPolygon(cube.mVertices, cube.mIndices, mCamera.mWtcMatrix);
+	MediaLayer::getInstance().renderPolygon(cube.mVertices, cube.mIndices, mCamera.mWtcMatrix, true);
 }
 
-void World::renderLine(const Vector3Custom<float>& vector1, const Vector3Custom<float>& vector2)
+void World::renderLine(const Vector3Custom<float>& vector1, const Vector3Custom<float>& vector2, const bool inWorld)
 {
-	MediaLayer::getInstance().renderLine(vector1, vector2, mCamera.mWtcMatrix);
+	MediaLayer::getInstance().renderLine(vector1, vector2, mCamera.mWtcMatrix, inWorld);
 }
 
 void World::renderCoordinateSystem()
 {
-	renderLine(mCoordinateSystemGrid.mXStart, mCoordinateSystemGrid.mXEnd);
-	renderLine(mCoordinateSystemGrid.mYStart, mCoordinateSystemGrid.mYEnd);
-	renderLine(mCoordinateSystemGrid.mZStart, mCoordinateSystemGrid.mZEnd);
+	const bool inWorld = true;
+	renderLine(mCoordinateSystemGrid.mXStart, mCoordinateSystemGrid.mXEnd, inWorld);
+	renderLine(mCoordinateSystemGrid.mYStart, mCoordinateSystemGrid.mYEnd, inWorld);
+	renderLine(mCoordinateSystemGrid.mZStart, mCoordinateSystemGrid.mZEnd, inWorld);
 }
 
 void World::worldMain()
@@ -253,7 +255,9 @@ void World::worldMain()
 	renderObjects();
 	renderButton();
 
-	TextRenderer::print("X: " + std::to_string(mCamera.mCamera.mX), 100, 420);
-	TextRenderer::print("Y: " + std::to_string(mCamera.mCamera.mY), 100, 440);
-	TextRenderer::print("Z: " + std::to_string(mCamera.mCamera.mZ), 100, 460);
+	const bool inWorld = true;
+
+	TextRenderer::print("X: " + std::to_string(mCamera.mCamera.mX), 100, 420, inWorld);
+	TextRenderer::print("Y: " + std::to_string(mCamera.mCamera.mY), 100, 440, inWorld);
+	TextRenderer::print("Z: " + std::to_string(mCamera.mCamera.mZ), 100, 460, inWorld);
 }

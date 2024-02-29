@@ -32,6 +32,8 @@ public:
 
 	int mFontHeight;
 
+	void SetRenderViewPort(bool inWorld) override;
+	
 	int SizeUTF8(const char* text, int* w, int* h) override;
 
 	void RenderUTF8_Solid(const char* text, uint8_t r, uint8_t g, uint8_t b, uint8_t a) override;

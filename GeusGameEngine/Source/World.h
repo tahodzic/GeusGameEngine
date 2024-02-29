@@ -74,7 +74,7 @@ public:
 
     void init();
 
-    void handle_action();
+    void handleAction();
 
     void handleKeyEvents();
 
@@ -90,13 +90,13 @@ public:
 
     void renderButton();
 
-    void UiDrawRectangle(Vector2Custom<int> dimensions, Vector2Custom<int> position);
+    void UiDrawRectangle(Vector2Custom<int> dimensions, Vector2Custom<int> position, const bool inWorld);
 
     void renderObjects();
 
     void renderObject(const Cube& cube);
 
-    void renderLine(const Vector3Custom<float>& vector1, const Vector3Custom<float>& vector2);
+    void renderLine(const Vector3Custom<float>& vector1, const Vector3Custom<float>& vector2, const bool inWorld);
 
     void renderCoordinateSystem();
 

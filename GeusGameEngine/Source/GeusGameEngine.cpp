@@ -93,7 +93,7 @@ int main(int argc, char* argv[])
 		for(;;)
 		{
 			//myWorld.calculateCameraRotation();
-			myWorld.handle_action();
+			myWorld.handleAction();
 			//myWorld.calculateWorldToCameraMatrix();
 			//myWorld.worldMain();
 			myWorld.render();
