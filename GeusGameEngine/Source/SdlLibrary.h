@@ -6,12 +6,10 @@
 #include <string>
 #include <memory>
 
-class SdlLibraryImpl;
 
 class SdlLibrary : public IGraphicsLibrary
 {
 private:
-	std::unique_ptr<SdlLibraryImpl> mpSdlLibraryImpl;
 
 public:
 	SdlLibrary();
