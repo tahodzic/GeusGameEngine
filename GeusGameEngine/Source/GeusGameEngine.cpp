@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Constants.h"
 #include "World.h"
 
 int main(int argc, char* argv[])
@@ -9,7 +10,7 @@ int main(int argc, char* argv[])
 
 		myWorld.init();
 
-		float offset = (float)(M_PI / 4.0);
+		float offset = (static_cast<float>(Constants::pi) / 4.0);
 		float a = 0.0f;
 		float b = 1.0f * offset;
 		float c = 2.0f * offset;

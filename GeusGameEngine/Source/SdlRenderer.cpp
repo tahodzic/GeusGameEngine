@@ -5,8 +5,8 @@
 
 #include <SDL.h>
 
-#include <sstream>      // std::stringstream
-#include <iomanip>  
+#include <sstream>
+#include <iomanip>
 #include <windows.h>
 
 SdlRenderer::SdlRenderer(
@@ -186,10 +186,6 @@ void SdlRenderer:: RenderPolygon(
 
 		CalculateTriangle(v0World, v1World, v2World, vRaster1, vRaster2, vRaster3, worldToCameraMatrix);
 
-		//vRaster1.mX += 100;
-		//vRaster1.mY += 100;
-		//vRaster2.mX += 100;
-		//vRaster2.mY += 100;
 		verticesToRender.push_back(SDL_Vertex{ {static_cast<float>(vRaster1.mX), static_cast<float>(vRaster1.mY)}, col, { 0, 0 } });
 		verticesToRender.push_back(SDL_Vertex{ {static_cast<float>(vRaster2.mX), static_cast<float>(vRaster2.mY)}, col, { 0, 0 } });
 		verticesToRender.push_back(SDL_Vertex{ {static_cast<float>(vRaster3.mX), static_cast<float>(vRaster3.mY)}, col, { 0, 0 } });
@@ -204,6 +200,9 @@ void SdlRenderer:: RenderPolygon(
 
 	SetRenderViewPort(inWorld);
 	SDL_RenderGeometry(mpRenderer.get(), NULL, verticesToRender.data(), static_cast<int>(verticesToRender.size()), NULL, 0);
+
+	SetRenderViewPort(false);
+	SDL_RenderDrawRect(mpRenderer.get(), &kViewPort);
 }
 
 void SdlRenderer::RenderDrawLine(

@@ -22,6 +22,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Source\Button.h" />
     <ClInclude Include="Source\Camera.h" />
+    <ClInclude Include="Source\Constants.h" />
     <ClInclude Include="Source\CoordinateSystemGrid.h" />
     <ClInclude Include="Source\Cube.h" />
     <ClInclude Include="Source\IFont.h" />

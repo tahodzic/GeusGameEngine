@@ -2,10 +2,10 @@
 
 #include <cmath>
 
+#include "Constants.h"
 #include "Vector3Custom.h"
 #include "Matrix44.h"
 
-constexpr double kPi = 3.14159265358979323846;
 
 class Camera
 {
@@ -18,9 +18,9 @@ private:
 
     static constexpr float sDefaultZ = 1.3f;
 
-    static constexpr float sAngleOfViewW = 90.0f * (static_cast<float>(kPi) / 180.0f);
+    static constexpr float sAngleOfViewW = 90.0f * (static_cast<float>(Constants::pi) / 180.0f);
 
-    static constexpr float sAngleOfViewH = 120.0f * (static_cast<float>(kPi) / 180.0f);
+    static constexpr float sAngleOfViewH = 120.0f * (static_cast<float>(Constants::pi) / 180.0f);
 
     static constexpr float sZNear = 1.0f;
 

@@ -1,7 +1,5 @@
 #pragma once
 
-#define _USE_MATH_DEFINES // for M_PI
-#include <cmath>
 #include <iostream>
 #include <stdexcept>
 

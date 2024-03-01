@@ -2,6 +2,7 @@
 #include "World.h"
 #include "IRenderer.h"
 #include "TextRenderer.h"
+#include "Constants.h"
 
 #include <math.h>
 
@@ -71,7 +72,7 @@ void World::handleKeyEvents()
 {
 	static bool leftMouseButtonDown = false; // TODO: make own input class
 
-	float change = 2*(float)M_PI/8;
+	float change = 2*static_cast<float>(Constants::pi)/8;
 
 	change *= 0.1f;
 
@@ -84,42 +85,42 @@ void World::handleKeyEvents()
 		case SDLK_w:
 			// Handle camera pitch up
 			mCamera.mPitch += change;
-			mCamera.mPitch = fmod(mCamera.mPitch, 2.0f * (float)(float)M_PI);
+			mCamera.mPitch = fmod(mCamera.mPitch, 2.0f * static_cast<float>(Constants::pi));
 			mCamera.updatePitchMatrix();
 			break;
 
 		case SDLK_s:
 			// Handle camera pitch down
 			mCamera.mPitch -= change;
-			mCamera.mPitch = fmod(mCamera.mPitch, 2 * (float)M_PI);
+			mCamera.mPitch = fmod(mCamera.mPitch, 2 * static_cast<float>(Constants::pi));
 			mCamera.updatePitchMatrix();
 			break;
 
 		case SDLK_a:
 			// Handle camera yaw left
 			mCamera.mYaw += change;
-			mCamera.mYaw = fmod(mCamera.mYaw, 2 * (float)M_PI);
+			mCamera.mYaw = fmod(mCamera.mYaw, 2 * static_cast<float>(Constants::pi));
 			mCamera.updateYawMatrix();
 			break;
 
 		case SDLK_d:
 			// Handle camera yaw right
 			mCamera.mYaw -= change;
-			mCamera.mYaw = fmod(mCamera.mYaw, 2 * (float)M_PI);
+			mCamera.mYaw = fmod(mCamera.mYaw, 2 * static_cast<float>(Constants::pi));
 			mCamera.updateYawMatrix();
 			break;
 
 		case SDLK_q:
 			// Handle camera roll left
 			mCamera.mRoll -= change;
-			mCamera.mRoll = fmod(mCamera.mRoll, 2 * (float)M_PI);
+			mCamera.mRoll = fmod(mCamera.mRoll, 2 * static_cast<float>(Constants::pi));
 			mCamera.updateRollMatrix();
 			break;
 
 		case SDLK_e:
 			// Handle camera roll right
 			mCamera.mRoll += change;
-			mCamera.mRoll = fmod(mCamera.mRoll, 2 * (float)M_PI);
+			mCamera.mRoll = fmod(mCamera.mRoll, 2 * static_cast<float>(Constants::pi));
 			mCamera.updateRollMatrix();
 			break;
 
