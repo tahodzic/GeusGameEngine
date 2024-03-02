@@ -30,5 +30,5 @@ public:
 		const Matrix44<float>& worldToCameraMatrix,
 		const bool inWorld) = 0;
 
-    virtual void RenderDrawRect(int width, int height, int x, int y, const bool inWorld) = 0;
+    virtual void RenderDrawRect(const int width, const int height, const int x, const int y, const bool inWorld) = 0;
 };

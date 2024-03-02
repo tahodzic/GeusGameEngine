@@ -258,7 +258,7 @@ void SdlRenderer::RenderDrawLine(
 	SDL_RenderDrawLine(mpRenderer.get(), vRaster1.mX, vRaster1.mY, vRaster2.mX, vRaster2.mY);
 }
 
-void SdlRenderer::RenderDrawRect(int width, int height, int x, int y, const bool inWorld)
+void SdlRenderer::RenderDrawRect(const int width, const int height, const int x, const int y, const bool inWorld)
 {
 
 	SDL_Rect rect{x, y, width, height};

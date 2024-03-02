@@ -19,16 +19,16 @@ World::~World()
 
 void World::init()
 {
-	MediaLayer::getInstance().initialize(sTitle, sWindowPosX, sWindowPosY, sWindowWidth, sWindowHeight, sCanvasWidth, sCanvasHeight, mCamera.kProjectionMatrixRef);
+	MediaLayer::getInstance().Initialize(sTitle, sWindowPosX, sWindowPosY, sWindowWidth, sWindowHeight, sCanvasWidth, sCanvasHeight, mCamera.kProjectionMatrixRef);
 }
 
 void World::render()
 {
-	MediaLayer::getInstance().prepareRenderer();
+	MediaLayer::getInstance().PrepareRenderer();
 	
 	worldMain();
 	
-	MediaLayer::getInstance().render();
+	MediaLayer::getInstance().Render();
 }
 
 void World::addObject(Cube* object)
@@ -215,7 +215,7 @@ void World::renderButton()
 
 void World::UiDrawRectangle(Vector2Custom<int> dimensions, Vector2Custom<int> position, const bool inWorld)
 {
-	MediaLayer::getInstance().mpSdlLibrary->mpRendererHandler->RenderDrawRect(dimensions.mX, dimensions.mY, position.mX, position.mY, inWorld);
+	MediaLayer::getInstance().RenderRect(dimensions.mX, dimensions.mY, position.mX, position.mY, inWorld);
 }
 
 void World::renderObjects()
@@ -234,12 +234,12 @@ void World::renderObjects()
 
 void World::renderObject(const Cube& cube)
 {
-	MediaLayer::getInstance().renderPolygon(cube.mVertices, cube.mIndices, mCamera.mWtcMatrix, true);
+	MediaLayer::getInstance().RenderPolygon(cube.mVertices, cube.mIndices, mCamera.mWtcMatrix, true);
 }
 
 void World::renderLine(const Vector3Custom<float>& vector1, const Vector3Custom<float>& vector2, const bool inWorld)
 {
-	MediaLayer::getInstance().renderLine(vector1, vector2, mCamera.mWtcMatrix, inWorld);
+	MediaLayer::getInstance().RenderLine(vector1, vector2, mCamera.mWtcMatrix, inWorld);
 }
 
 void World::renderCoordinateSystem()

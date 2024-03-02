@@ -82,7 +82,7 @@ public:
         const Matrix44<float>& worldToCameraMatrix,
         const bool inWorld) override;
     
-    void RenderDrawRect(int height, int width, int x, int y, const bool inWorld) override;
+    void RenderDrawRect(const int width, const int height, const int x, const int y, const bool inWorld) override;
 
     void extractAllPlanes();
 
