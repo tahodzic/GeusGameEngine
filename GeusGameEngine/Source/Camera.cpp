@@ -38,7 +38,7 @@ Camera::Camera() : kProjectionMatrixRef(mProjectionMatrix), mCamera({ sDefaultX,
 	};
 }
 
-void Camera::reset()
+void Camera::Reset()
 {
     mCamera.mX = sDefaultX;
     mCamera.mY = sDefaultY;
@@ -80,7 +80,7 @@ void Camera::transformWorldToCamera(const Vector3Custom<float>& worldPoint,  Vec
     mWtcMatrix.multVecMatrix(worldPoint,  cameraPoint);
 }
 
-void Camera::updateWorldToCameraMatrix()
+void Camera::UpdateWorldToCameraMatrix()
 {
     // define camera translation
     Matrix44<float> translationMatrix = {
@@ -109,6 +109,27 @@ void Camera::moveCamera(Vector3Custom<float>& translation)
     mCamera = mCamera + xtr;
     mCamera = mCamera + ytr;
     mCamera = mCamera + ztr;
+}
+
+void Camera::RollCamera(const float change)
+{
+    mRoll += change;
+    mRoll = fmod(mRoll, 2.0f * static_cast<float>(Constants::pi));
+    updateRollMatrix();
+}
+
+void Camera::PitchCamera(const float change)
+{
+    mPitch += change;
+    mPitch = fmod(mPitch, 2.0f * static_cast<float>(Constants::pi));
+    updatePitchMatrix();
+}
+
+void Camera::YawCamera(const float change)
+{
+    mYaw += change;
+    mYaw = fmod(mYaw, 2.0f * static_cast<float>(Constants::pi));
+    updateYawMatrix();
 }
 
 void Camera::calculateCameraRotation()

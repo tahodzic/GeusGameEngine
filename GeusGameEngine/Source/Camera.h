@@ -63,7 +63,7 @@ public:
 
     float mYaw;
 
-    void reset();
+    void Reset();
 
     void updateRollMatrix();
 
@@ -73,9 +73,15 @@ public:
     
     void transformWorldToCamera(const Vector3Custom<float>& worldPoint, Vector3Custom<float>& cameraPoint);
     
-    void updateWorldToCameraMatrix();
+    void UpdateWorldToCameraMatrix();
 
     void moveCamera(Vector3Custom<float>& translation);
+
+    void RollCamera(const float change);
+    
+    void PitchCamera(const float change);
+    
+    void YawCamera(const float change);
 
     void calculateCameraRotation();
 };
