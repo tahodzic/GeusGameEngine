@@ -18,19 +18,19 @@ void TextRenderer::print(std::string_view text, int x, int y, bool inWorld)
 
 	SDL_Color White = { 255, 255, 255 };
 
-	MediaLayer::getInstance().mpGraphicsLibrary->GetFontHandler()->SetRenderViewPort(inWorld);
+	MediaLayer::getInstance().mpSdlLibrary->mpFontHandler->SetRenderViewPort(inWorld);
 
-	MediaLayer::getInstance().mpGraphicsLibrary->GetFontHandler()->SizeUTF8(text.data(), &fontWidth, &fontHeight);
+	MediaLayer::getInstance().mpSdlLibrary->mpFontHandler->SizeUTF8(text.data(), &fontWidth, &fontHeight);
 
-	MediaLayer::getInstance().mpGraphicsLibrary->GetFontHandler()->RenderUTF8_Solid(text.data(), White.r, White.g, White.b, White.a);
+	MediaLayer::getInstance().mpSdlLibrary->mpFontHandler->RenderUTF8_Solid(text.data(), White.r, White.g, White.b, White.a);
 
-	MediaLayer::getInstance().mpGraphicsLibrary->GetFontHandler()->CreateTextureFromSurface();
+	MediaLayer::getInstance().mpSdlLibrary->mpFontHandler->CreateTextureFromSurface();
 
-	MediaLayer::getInstance().mpGraphicsLibrary->GetFontHandler()->SetDestRect(x - fontWidth, y - fontHeight, fontWidth, fontHeight);
+	MediaLayer::getInstance().mpSdlLibrary->mpFontHandler->SetDestRect(x - fontWidth, y - fontHeight, fontWidth, fontHeight);
 
-	MediaLayer::getInstance().mpGraphicsLibrary->GetFontHandler()->RenderCopy();
+	MediaLayer::getInstance().mpSdlLibrary->mpFontHandler->RenderCopy();
 
-	MediaLayer::getInstance().mpGraphicsLibrary->GetFontHandler()->FreeSurface();
+	MediaLayer::getInstance().mpSdlLibrary->mpFontHandler->FreeSurface();
 
-	MediaLayer::getInstance().mpGraphicsLibrary->GetFontHandler()->DestroyTexture();
+	MediaLayer::getInstance().mpSdlLibrary->mpFontHandler->DestroyTexture();
 }

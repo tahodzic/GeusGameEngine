@@ -4,6 +4,7 @@
 
 #include "Vector2Custom.h"
 #include "Vector3Custom.h"
+#include "SdlLibrary.h"
 #include "IRenderer.h"
 
 #include "IGraphicsLibrary.h"
@@ -19,7 +20,7 @@ public:
 
 	static MediaLayer& getInstance();
 
-	std::unique_ptr<IGraphicsLibrary> mpGraphicsLibrary;
+	std::unique_ptr<SdlLibrary> mpSdlLibrary;
 
 	void initialize(const std::string_view title,
 		const int& windowsPosX, const int& windowsPosY,

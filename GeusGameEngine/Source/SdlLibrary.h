@@ -7,12 +7,12 @@
 #include <memory>
 
 
-class SdlLibrary : public IGraphicsLibrary
+class SdlLibrary
 {
 private:
 
 public:
-	SdlLibrary();
+	SdlLibrary(std::shared_ptr<IRenderer> rendererControl, std::shared_ptr<IFont> fontControl);
 	~SdlLibrary();
 
 	std::shared_ptr<IFont> mpFontHandler;
@@ -23,11 +23,12 @@ public:
 		const int& windowsPosX, const int& windowsPosY,
 		const int& windowWidth, const int& windowHeight,
 		const int& canvasWidth, const int& canvasHeight,
-		const Matrix44<float>& projectionMatrix) override;
+		const Matrix44<float>& projectionMatrix);
 
-	std::shared_ptr<IFont> GetFontHandler() override;
-
-	std::shared_ptr<IRenderer> GetRendererHandler() override;
-
+	static std::unique_ptr<SdlLibrary> CreateAndSetup(const std::string_view title,
+		const int& windowsPosX, const int& windowsPosY,
+		const int& windowWidth, const int& windowHeight,
+		const int& canvasWidth, const int& canvasHeight,
+		const Matrix44<float>& projectionMatrix);
 };
 

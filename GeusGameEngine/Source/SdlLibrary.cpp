@@ -73,7 +73,7 @@ static std::shared_ptr<IFont> InitializeFont(std::shared_ptr<SDL_Renderer> rende
 	return std::make_shared<SdlTtf>(font, renderer);
 }
 
-SdlLibrary::SdlLibrary()
+SdlLibrary::SdlLibrary(std::shared_ptr<IRenderer> rendererControl, std::shared_ptr<IFont> fontControl) : mpRendererHandler(rendererControl), mpFontHandler(fontControl)
 {
 }
 
@@ -92,15 +92,19 @@ void SdlLibrary::Initialize(const std::string_view title,
 	mpRendererHandler = InitializeSdlRenderer(ren, windowWidth, windowHeight, canvasWidth, canvasHeight, projectionMatrix);
 
 	mpFontHandler = InitializeFont(ren);
-
 }
 
-std::shared_ptr<IFont> SdlLibrary::GetFontHandler()
+std::unique_ptr<SdlLibrary> SdlLibrary::CreateAndSetup(const std::string_view title,
+	const int& windowsPosX, const int& windowsPosY,
+	const int& windowWidth, const int& windowHeight,
+	const int& canvasWidth, const int& canvasHeight,
+	const Matrix44<float>& projectionMatrix)
 {
-	return mpFontHandler;
-}
+	auto ren = CreateRenderer(title, windowsPosX, windowsPosY, windowWidth, windowHeight);
 
-std::shared_ptr<IRenderer> SdlLibrary::GetRendererHandler()
-{
-	return mpRendererHandler;
+	auto renderControl = InitializeSdlRenderer(ren, windowWidth, windowHeight, canvasWidth, canvasHeight, projectionMatrix);
+
+	auto fontControl = InitializeFont(ren);
+
+	return std::make_unique<SdlLibrary>(renderControl, fontControl);
 }

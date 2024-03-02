@@ -215,7 +215,7 @@ void World::renderButton()
 
 void World::UiDrawRectangle(Vector2Custom<int> dimensions, Vector2Custom<int> position, const bool inWorld)
 {
-	MediaLayer::getInstance().mpGraphicsLibrary->GetRendererHandler()->RenderDrawRect(dimensions.mX, dimensions.mY, position.mX, position.mY, inWorld);
+	MediaLayer::getInstance().mpSdlLibrary->mpRendererHandler->RenderDrawRect(dimensions.mX, dimensions.mY, position.mX, position.mY, inWorld);
 }
 
 void World::renderObjects()
