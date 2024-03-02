@@ -290,7 +290,7 @@ std::shared_ptr<SdlRenderer> SdlRenderer::initialize(std::shared_ptr<SDL_Rendere
 	return sdlRenderer;
 }
 
-void SdlRenderer::SetRenderViewPort(bool inWorld)
+void SdlRenderer::SetRenderViewPort(const bool inWorld)
 {
 	inWorld ?
 		SDL_RenderSetViewport(mpRenderer.get(), &kViewPort) :

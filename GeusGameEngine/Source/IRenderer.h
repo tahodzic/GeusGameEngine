@@ -14,6 +14,8 @@ public:
 
     virtual int SetDrawColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a) = 0;
 
+	virtual void SetRenderViewPort(const bool inWorld) = 0;
+
     virtual void RenderClear() = 0;
 
     virtual void RenderPresent() = 0;

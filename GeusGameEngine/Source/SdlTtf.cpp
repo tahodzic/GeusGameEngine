@@ -22,17 +22,6 @@ SdlTtf::SdlTtf(std::shared_ptr<TTF_Font> font, std::shared_ptr<SDL_Renderer> ren
 
 SdlTtf::~SdlTtf() = default;
 
-
-
-void SdlTtf::SetRenderViewPort(bool inWorld)
-{
-	static const SDL_Rect rect{ 100,100,640,480 };
-	
-	inWorld ?
-		SDL_RenderSetViewport(mpRenderer.get(), &rect) :
-		SDL_RenderSetViewport(mpRenderer.get(), NULL);
-}
-
 int SdlTtf::SizeUTF8(const char* text, int* w, int* h)
 {
 	return TTF_SizeUTF8(mpFont.get(), text, w, h);

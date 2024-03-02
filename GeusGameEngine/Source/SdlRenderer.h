@@ -56,7 +56,6 @@ private:
         const Matrix44<float>& worldToCameraMatrix);
 
 
-    void SetRenderViewPort(bool inWorld);
 
 public:
     SdlRenderer(std::shared_ptr<SDL_Renderer> renderer, const int& windowWidth, const int& windowHeight, const int& canvasWidth, const int& canvasHeight,
@@ -65,6 +64,8 @@ public:
     ~SdlRenderer();
 
     int SetDrawColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a) override;
+
+    void SetRenderViewPort(const bool inWorld) override;
 
     void RenderClear() override;
 

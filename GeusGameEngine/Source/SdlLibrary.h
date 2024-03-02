@@ -1,11 +1,12 @@
 #pragma once
 
-#include "IGraphicsLibrary.h"
 #include "Matrix44.h"
 
 #include <string>
 #include <memory>
 
+#include "IRenderer.h"
+#include "IFont.h"
 
 class SdlLibrary
 {
