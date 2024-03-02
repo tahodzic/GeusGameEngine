@@ -67,7 +67,7 @@ void MediaLayer::RenderRect(const int width, const int height, const int x, cons
 
 void MediaLayer::SetRenderViewPort(const bool inWorld) const
 {
-	mpSdlLibrary->mpFontHandler->SetRenderViewPort(inWorld);
+	mpSdlLibrary->mpRendererHandler->SetRenderViewPort(inWorld);
 }
 
 void MediaLayer::SizeUTF8(std::string_view text, int& w, int& h) const

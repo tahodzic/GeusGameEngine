@@ -11,7 +11,7 @@ private:
 
 public:
 	Cube();
-	Cube(float s, float x, float y, float z);
+	Cube(const float s, const float x, const float y, const float z);
 	~Cube();
 
 	// ########################################

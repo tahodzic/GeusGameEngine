@@ -8,9 +8,9 @@ class Button
 {
 private:
 	
-	Vector2Custom<int> transformToLocal(int worldX, int worldY);
+	Vector2Custom<int> TransformToLocal(int worldX, int worldY);
 
-	bool isInDimensions(Vector2Custom<int> point);
+	bool IsInDimensions(Vector2Custom<int> point);
 
 public:
 	std::string mLabel;
@@ -23,6 +23,6 @@ public:
 
 	~Button();
 
-	bool isClicked(int x, int y);
+	bool IsClicked(int x, int y);
 };
 

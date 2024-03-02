@@ -2,6 +2,8 @@
 #include <sstream>      // std::stringstream
 #include <iomanip>  
 
+#include "Vector3Custom.h"
+
 template<typename T>
 class Matrix44
 {

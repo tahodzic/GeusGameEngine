@@ -8,7 +8,8 @@
 
 World::World() : 
 	mCoordinateSystemGrid(20.0f), 
-	mButtonReset(Vector2Custom<int>(70,25), Vector2Custom<int>(10, 20), "Reset")
+	mButtonReset(Vector2Custom<int>(70,25), Vector2Custom<int>(10, 20), "Reset"),
+	mButtonCreate(Vector2Custom<int>(70, 25), Vector2Custom<int>(10, 60), "Create")
 {
 	mObjectCount = 0;
 }
@@ -17,27 +18,32 @@ World::~World()
 {
 }
 
-void World::init()
+void World::Initialize()
 {
 	MediaLayer::getInstance().Initialize(sTitle, sWindowPosX, sWindowPosY, sWindowWidth, sWindowHeight, sCanvasWidth, sCanvasHeight, mCamera.kProjectionMatrixRef);
 }
 
-void World::render()
+void World::Render()
 {
 	MediaLayer::getInstance().PrepareRenderer();
 	
-	worldMain();
+	WorldMain();
 	
 	MediaLayer::getInstance().Render();
 }
 
-void World::addObject(Cube* object)
+void World::AddObject(const Cube object)
 {
 	if (mObjectCount < sMaxObjectsInWorld)
 	{
-		mObjects[mObjectCount] = object;
+		mObjects.push_back(object);
 		mObjectCount++;
 	}
+}
+
+Cube World::CreateCube(const float s, const float x, const float y, const float z)
+{
+	return Cube(s, x, y, z);
 }
 
 /*
@@ -51,28 +57,28 @@ Perspective Projection:
 */
 
 
-bool World::pollKeyEvents()
+bool World::PollKeyEvents()
 {
 	return SDL_PollEvent(&mpSdlEvent) != 0;
 }
 
-void World::handleAction()
+void World::HandleAction()
 {
 	mCamera.calculateCameraRotation();
 
-	while (pollKeyEvents())
+	while (PollKeyEvents())
 	{
-		handleKeyEvents();
+		HandleKeyEvents();
 	}
 
-	mCamera.updateWorldToCameraMatrix();
+	mCamera.UpdateWorldToCameraMatrix();
 }
 
-void World::handleKeyEvents()
+void World::HandleKeyEvents()
 {
 	static bool leftMouseButtonDown = false; // TODO: make own input class
 
-	float change = 2*static_cast<float>(Constants::pi)/8;
+	float change = 2.0f*static_cast<float>(Constants::pi)/8.0f;
 
 	change *= 0.1f;
 
@@ -83,49 +89,31 @@ void World::handleKeyEvents()
 		switch (mpSdlEvent.key.keysym.sym)
 		{
 		case SDLK_w:
-			// Handle camera pitch up
-			mCamera.mPitch += change;
-			mCamera.mPitch = fmod(mCamera.mPitch, 2.0f * static_cast<float>(Constants::pi));
-			mCamera.updatePitchMatrix();
+			mCamera.PitchCamera(-change);
 			break;
 
 		case SDLK_s:
-			// Handle camera pitch down
-			mCamera.mPitch -= change;
-			mCamera.mPitch = fmod(mCamera.mPitch, 2 * static_cast<float>(Constants::pi));
-			mCamera.updatePitchMatrix();
+			mCamera.PitchCamera(change);
 			break;
 
 		case SDLK_a:
-			// Handle camera yaw left
-			mCamera.mYaw += change;
-			mCamera.mYaw = fmod(mCamera.mYaw, 2 * static_cast<float>(Constants::pi));
-			mCamera.updateYawMatrix();
+			mCamera.YawCamera(-change);
 			break;
 
 		case SDLK_d:
-			// Handle camera yaw right
-			mCamera.mYaw -= change;
-			mCamera.mYaw = fmod(mCamera.mYaw, 2 * static_cast<float>(Constants::pi));
-			mCamera.updateYawMatrix();
+			mCamera.YawCamera(change);
 			break;
 
 		case SDLK_q:
-			// Handle camera roll left
-			mCamera.mRoll -= change;
-			mCamera.mRoll = fmod(mCamera.mRoll, 2 * static_cast<float>(Constants::pi));
-			mCamera.updateRollMatrix();
+			mCamera.RollCamera(-change);
 			break;
 
 		case SDLK_e:
-			// Handle camera roll right
-			mCamera.mRoll += change;
-			mCamera.mRoll = fmod(mCamera.mRoll, 2 * static_cast<float>(Constants::pi));
-			mCamera.updateRollMatrix();
+			mCamera.RollCamera(change);
 			break;
 
 		case SDLK_r:
-			resetScene();
+			ResetScene();
 			break;
 		}
 		break;
@@ -137,12 +125,15 @@ void World::handleKeyEvents()
 			leftMouseButtonDown = true;
 			mMousePrevX = mpSdlEvent.button.x;
 			mMousePrevY = mpSdlEvent.button.y;
-			if (mButtonReset.isClicked(mpSdlEvent.button.x, mpSdlEvent.button.y))
+			if (mButtonReset.IsClicked(mpSdlEvent.button.x, mpSdlEvent.button.y))
 			{
-				std::string output = "Button clicked.\n";
+				ResetScene();
+			}
 
-				OutputDebugStringA(output.c_str());
-				resetScene();
+			if (mButtonCreate.IsClicked(mpSdlEvent.button.x, mpSdlEvent.button.y))
+			{
+				auto c = CreateCube(0.5f, 2.0f, 0.0f, 0.0f);
+				AddObject(c);
 			}
 		}
 		break;
@@ -165,7 +156,7 @@ void World::handleKeyEvents()
 			mMousePrevX = mpSdlEvent.button.x;
 			mMousePrevY = mpSdlEvent.button.y;
 			
-			Vector3Custom<float> translation((static_cast<float>(mMouseDiffX)) / 50, (static_cast<float>(-mMouseDiffY)) / 50, 0);
+			Vector3Custom<float> translation((static_cast<float>(mMouseDiffX)) / 50.0f, (static_cast<float>(-mMouseDiffY)) / 50.0f, 0.0f);
 			mCamera.moveCamera(translation);
 		}
 		break;
@@ -181,14 +172,14 @@ void World::handleKeyEvents()
 	}
 }
 
-void World::resetScene()
+void World::ResetScene()
 {
-	mCamera.reset();
+	mCamera.Reset();
 }
 
-void World::calculateWorldToCameraMatrix()
+void World::CalculateWorldToCameraMatrix()
 {
-	mCamera.updateWorldToCameraMatrix();
+	mCamera.UpdateWorldToCameraMatrix();
 }
 
 //https://stackoverflow.com/a/45630217
@@ -203,14 +194,19 @@ void World::calculateWorldToCameraMatrix()
 //	myLogger.log(log4cpp::Priority::INFO, ss.str());
 //}
 
-void World::renderButton()
+void World::RenderButton()
 {
 	bool inWorld = false;
 	TextRenderer::print(mButtonReset.mLabel,
 		mButtonReset.mDimensions.mX + mButtonReset.mPosition.mX,
 		mButtonReset.mDimensions.mY + mButtonReset.mPosition.mY,
 		inWorld);
+	TextRenderer::print(mButtonCreate.mLabel,
+		mButtonCreate.mDimensions.mX + mButtonCreate.mPosition.mX,
+		mButtonCreate.mDimensions.mY + mButtonCreate.mPosition.mY,
+		inWorld);
 	UiDrawRectangle(mButtonReset.mDimensions, mButtonReset.mPosition, inWorld);
+	UiDrawRectangle(mButtonCreate.mDimensions, mButtonCreate.mPosition, inWorld);
 }
 
 void World::UiDrawRectangle(Vector2Custom<int> dimensions, Vector2Custom<int> position, const bool inWorld)
@@ -218,43 +214,37 @@ void World::UiDrawRectangle(Vector2Custom<int> dimensions, Vector2Custom<int> po
 	MediaLayer::getInstance().RenderRect(dimensions.mX, dimensions.mY, position.mX, position.mY, inWorld);
 }
 
-void World::renderObjects()
+void World::RenderObjects()
 {
-	static int k = 0;
-
-	Cube* myC = mObjects[0];
-
 	for (int i = 0; i < mObjectCount; i++)
 	{
-		myC = mObjects[i];
-
-		renderObject(*mObjects[i]);
+		RenderObject(mObjects[i]);
 	}
 }
 
-void World::renderObject(const Cube& cube)
+void World::RenderObject(const Cube& cube)
 {
 	MediaLayer::getInstance().RenderPolygon(cube.mVertices, cube.mIndices, mCamera.mWtcMatrix, true);
 }
 
-void World::renderLine(const Vector3Custom<float>& vector1, const Vector3Custom<float>& vector2, const bool inWorld)
+void World::RenderLine(const Vector3Custom<float>& vector1, const Vector3Custom<float>& vector2, const bool inWorld)
 {
 	MediaLayer::getInstance().RenderLine(vector1, vector2, mCamera.mWtcMatrix, inWorld);
 }
 
-void World::renderCoordinateSystem()
+void World::RenderCoordinateSystem()
 {
 	const bool inWorld = true;
-	renderLine(mCoordinateSystemGrid.mXStart, mCoordinateSystemGrid.mXEnd, inWorld);
-	renderLine(mCoordinateSystemGrid.mYStart, mCoordinateSystemGrid.mYEnd, inWorld);
-	renderLine(mCoordinateSystemGrid.mZStart, mCoordinateSystemGrid.mZEnd, inWorld);
+	RenderLine(mCoordinateSystemGrid.mXStart, mCoordinateSystemGrid.mXEnd, inWorld);
+	RenderLine(mCoordinateSystemGrid.mYStart, mCoordinateSystemGrid.mYEnd, inWorld);
+	RenderLine(mCoordinateSystemGrid.mZStart, mCoordinateSystemGrid.mZEnd, inWorld);
 }
 
-void World::worldMain()
+void World::WorldMain()
 {
-	renderCoordinateSystem();
-	renderObjects();
-	renderButton();
+	RenderCoordinateSystem();
+	RenderObjects();
+	RenderButton();
 
 	const bool inWorld = true;
 

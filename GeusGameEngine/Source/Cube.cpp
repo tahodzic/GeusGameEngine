@@ -33,7 +33,7 @@ Cube::Cube()
    z           A─────────B	   H=(X-half,Y+half,Z-half)
 */
 
-Cube::Cube(float s, float x, float y, float z)
+Cube::Cube(const float s, const float x, const float y, const float z)
 {
 	float half = s / 2.0f;
 

@@ -14,7 +14,6 @@
 #include "CoordinateSystemGrid.h"
 
 #include <SDL.h>
-#include <SDL_ttf.h>
 
 #include "Matrix44.h"
 #include "Vector3Custom.h"
@@ -40,7 +39,7 @@ public:
 
     static constexpr int sMaxObjectsInWorld = 10;
 
-    Cube* mObjects[sMaxObjectsInWorld];
+    std::vector<Cube> mObjects;
 
     int mObjectCount;
 
@@ -68,39 +67,41 @@ public:
 
     SDL_Event mpSdlEvent;
 
-    TTF_Font* mFont;
+    Button mButtonReset;
+
+    Button mButtonCreate;
 
     static constexpr int sFontSize = 12;
 
-    void init();
+    void Initialize();
 
-    void handleAction();
+    void HandleAction();
 
-    void handleKeyEvents();
+    void HandleKeyEvents();
 
-    void resetScene();
+    void ResetScene();
 
-    bool pollKeyEvents();
+    bool PollKeyEvents();
 
-    void render();
+    void Render();
 
-    void addObject(Cube* object);
+    void AddObject(const Cube object);
 
-    Button mButtonReset;
+    Cube CreateCube(const float s, const float x, const float y, const float z);
 
-    void renderButton();
+    void RenderButton();
 
     void UiDrawRectangle(Vector2Custom<int> dimensions, Vector2Custom<int> position, const bool inWorld);
 
-    void renderObjects();
+    void RenderObjects();
 
-    void renderObject(const Cube& cube);
+    void RenderObject(const Cube& cube);
 
-    void renderLine(const Vector3Custom<float>& vector1, const Vector3Custom<float>& vector2, const bool inWorld);
+    void RenderLine(const Vector3Custom<float>& vector1, const Vector3Custom<float>& vector2, const bool inWorld);
 
-    void renderCoordinateSystem();
+    void RenderCoordinateSystem();
 
-    void calculateWorldToCameraMatrix();
+    void CalculateWorldToCameraMatrix();
 
-    void worldMain();
+    void WorldMain();
 };

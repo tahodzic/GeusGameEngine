@@ -11,12 +11,12 @@ Button::~Button()
 {
 }
 
-Vector2Custom<int> Button::transformToLocal(int worldX, int worldY)
+Vector2Custom<int> Button::TransformToLocal(int worldX, int worldY)
 {
 	return Vector2Custom<int>(worldX - mPosition.mX, worldY - mPosition.mY);
 }
 
-bool Button::isInDimensions(Vector2Custom<int> point)
+bool Button::IsInDimensions(Vector2Custom<int> point)
 {
 	if (point.mX < 0 || point.mY < 0)
 	{
@@ -26,9 +26,9 @@ bool Button::isInDimensions(Vector2Custom<int> point)
 	return point.mX < mDimensions.mX && point.mY < mDimensions.mY;
 }
 
-bool Button::isClicked(int x, int y)
+bool Button::IsClicked(int x, int y)
 {
-	auto loc = transformToLocal(x, y);
+	auto loc = TransformToLocal(x, y);
 	
-	return isInDimensions(loc);
+	return IsInDimensions(loc);
 }

@@ -42,8 +42,6 @@ public:
 
 };
 
-#include "Vector3Custom.h"
-
 
 template<typename T>
 Vector3Custom<T> Vector3Custom<T>::operator+(const Vector3Custom& v) const {

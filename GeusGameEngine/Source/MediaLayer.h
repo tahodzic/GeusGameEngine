@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "Vector2Custom.h"
 #include "Vector3Custom.h"
@@ -54,7 +55,6 @@ public:
 	//void initializeFont();
 
 	//void pollEvent();
-
 
 	void SetRenderViewPort(const bool inWorld) const;
 
