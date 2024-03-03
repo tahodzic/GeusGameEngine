@@ -170,6 +170,7 @@ void SdlRenderer:: RenderPolygon(
 	const std::vector<Vector3Custom<float>>& vertices,
 	const std::vector<int>& indices,
 	const Matrix44<float>& worldToCameraMatrix,
+	const Matrix44<float>& localToWorldMatrix,
 	const bool inWorld)
 {
 	std::vector<SDL_Vertex> verticesToRender;
@@ -178,10 +179,15 @@ void SdlRenderer:: RenderPolygon(
 
 	for (int i = 0; i < indices.size() / 3; i++)
 	{
-		const Vector3Custom<float>& v0World = vertices[indices[i * 3]];
-		const Vector3Custom<float>& v1World = vertices[indices[i * 3 + 1]];
-		const Vector3Custom<float>& v2World = vertices[indices[i * 3 + 2]];
+		const Vector3Custom<float>& v0Local = vertices[indices[i * 3]];
+		const Vector3Custom<float>& v1Local = vertices[indices[i * 3 + 1]];
+		const Vector3Custom<float>& v2Local = vertices[indices[i * 3 + 2]];
 		
+		Vector3Custom<float> v0World, v1World, v2World;
+		localToWorldMatrix.multVecMatrix(v0Local, v0World);
+		localToWorldMatrix.multVecMatrix(v1Local, v1World);
+		localToWorldMatrix.multVecMatrix(v2Local, v2World);
+
 		Vector2Custom<int> vRaster1, vRaster2, vRaster3;
 
 		CalculateTriangle(v0World, v1World, v2World, vRaster1, vRaster2, vRaster3, worldToCameraMatrix);
@@ -267,7 +273,7 @@ void SdlRenderer::RenderDrawRect(const int width, const int height, const int x,
 	SDL_RenderDrawRect(mpRenderer.get(), &rect);
 }
 
-void SdlRenderer::extractAllPlanes()
+void SdlRenderer::ExtractAllPlanes()
 {
 	const Matrix44<float>& mat = kProjectionMatrix;
 
@@ -285,7 +291,7 @@ std::shared_ptr<SdlRenderer> SdlRenderer::initialize(std::shared_ptr<SDL_Rendere
 {
 	auto sdlRenderer = std::make_shared<SdlRenderer>(renderer, windowWidth, windowHeight, canvasWidth, canvasHeight, projectionMatrix);
 
-	sdlRenderer->extractAllPlanes();
+	sdlRenderer->ExtractAllPlanes();
 
 	return sdlRenderer;
 }

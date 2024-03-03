@@ -38,6 +38,7 @@ public:
 		const std::vector<Vector3Custom<float>>& vertices,
 		const std::vector<int>& indices,
 		const Matrix44<float>& worldToCameraMatrix,
+		const Matrix44<float>& localToWorldMatrix,
 		const bool inWorld) const;
 
 	void RenderRect(const int width, const int height, const int x, const int y, const bool inWorld) const;

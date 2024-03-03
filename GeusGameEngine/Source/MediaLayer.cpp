@@ -51,12 +51,14 @@ void MediaLayer::RenderPolygon(
 	const std::vector<Vector3Custom<float>>& vertices,
 	const std::vector<int>& indices,
 	const Matrix44<float>& worldToCameraMatrix,
+	const Matrix44<float>& localToWorldMatrix,
 	const bool inWorld) const
 {
 	mpSdlLibrary->mpRendererHandler->RenderPolygon(
 		vertices,
 		indices,
 		worldToCameraMatrix,
+		localToWorldMatrix,
 		inWorld);
 }
 

@@ -218,13 +218,16 @@ void World::RenderObjects()
 {
 	for (int i = 0; i < mObjectCount; i++)
 	{
+		mObjects[i].CalculateRotations();
+		//mObjects[i].UpdateVertices();
+		mObjects[i].LocalToWorld();
 		RenderObject(mObjects[i]);
 	}
 }
 
 void World::RenderObject(const Cube& cube)
 {
-	MediaLayer::getInstance().RenderPolygon(cube.mVertices, cube.mIndices, mCamera.mWtcMatrix, true);
+	MediaLayer::getInstance().RenderPolygon(cube.mVertices, cube.mIndices, mCamera.mWtcMatrix, cube.mLocalToWorldMatrix, true);
 }
 
 void World::RenderLine(const Vector3Custom<float>& vector1, const Vector3Custom<float>& vector2, const bool inWorld)

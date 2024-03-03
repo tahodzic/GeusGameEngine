@@ -30,6 +30,7 @@ public:
 		const std::vector<Vector3Custom<float>>& vertices,
 		const std::vector<int>& indices,
 		const Matrix44<float>& worldToCameraMatrix,
+		const Matrix44<float>& localToWorldMatrix,
 		const bool inWorld) = 0;
 
     virtual void RenderDrawRect(const int width, const int height, const int x, const int y, const bool inWorld) = 0;

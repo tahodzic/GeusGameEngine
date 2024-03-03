@@ -75,6 +75,7 @@ public:
         const std::vector<Vector3Custom<float>>& vertices,
         const std::vector<int>& indices,
         const Matrix44<float>& worldToCameraMatrix,
+        const Matrix44<float>& localToWorldMatrix,
         const bool inWorld) override;
 
     void RenderDrawLine(
@@ -85,7 +86,7 @@ public:
     
     void RenderDrawRect(const int width, const int height, const int x, const int y, const bool inWorld) override;
 
-    void extractAllPlanes();
+    void ExtractAllPlanes();
 
     static std::shared_ptr<SdlRenderer> initialize(std::shared_ptr<SDL_Renderer> renderer, const int& windowWidth, const int& windowHeight, const int& canvasWidth, const int& canvasHeight,
         const Matrix44<float>& projectionMatrix);
