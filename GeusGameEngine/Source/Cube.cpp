@@ -1,61 +1,21 @@
-﻿#pragma once
-#include "Cube.h"
+﻿#include "Cube.h"
 
 #include "Constants.h"
 
-Cube::Cube()
-{
-
-}
-
-/*
-* Center-origin
-* Right-Handed Coordinate System (z comes towards screen)
-			   y
-
-				│
-				│
-				│
-				│
-				│
-				│
-				└──────────────────────────────
-			   /                               x
-			  /
-			 /        s                        half = s/2
-			/     H─────────G  
-		   /     /|        /│  M=(X,Y,Z)
-		  /     / |       / │  A=(X-half,Y-half,Z+half)
-		 /     E─────────F  │  B=(X+half,Y-half,Z+half)
-		/      │  |      │  │  C=(X+half,Y-half,Z-half)
-	   /       │  |  M   │  │  D=(X-half,Y-half,Z-half)
-	  /        │  D------│--C  E=(X-half,Y+half,Z+half)
-	 /         │ /       │ /   F=(X+half,Y+half,Z+half)
-	/          │/        │/    G=(X+half,Y+half,Z-half)
-   z           A─────────B	   H=(X-half,Y+half,Z-half)
-*/
-
-Cube::Cube(const float s, const float x, const float y, const float z) : mPitch(0.0f), mRoll(0.0f), mYaw(0.0f), mPosition(x,y,z)
+Cube::Cube(std::shared_ptr<IRenderer> renderer, const float s, const float x, const float y, const float z) : mRenderer(renderer),
+mPitch(0.0f), mRoll(0.0f), mYaw(0.0f), mPosition(x, y, z)
 {
 	float half = s / 2.0f;
 
 	// Define 8 unique vertices
-	//mVertices.push_back(Vector3Custom<float>(x - half, y - half, z + half));  // A = 0: 
-	//mVertices.push_back(Vector3Custom<float>(x + half, y - half, z + half));  // B = 1: 
-	//mVertices.push_back(Vector3Custom<float>(x + half, y - half, z - half));  // C = 2: 
-	//mVertices.push_back(Vector3Custom<float>(x - half, y - half, z - half));  // D = 3: 
-	//mVertices.push_back(Vector3Custom<float>(x - half, y + half, z + half));  // E = 4: 
-	//mVertices.push_back(Vector3Custom<float>(x + half, y + half, z + half));  // F = 5: 
-	//mVertices.push_back(Vector3Custom<float>(x + half, y + half, z - half));  // G = 6: 
-	//mVertices.push_back(Vector3Custom<float>(x - half, y + half, z - half));  // H = 7: 
-	mVertices.push_back(Vector3Custom<float>(- half, - half, + half));  // A = 0: 
-	mVertices.push_back(Vector3Custom<float>(+ half, - half, + half));  // B = 1: 
-	mVertices.push_back(Vector3Custom<float>(+ half, - half, - half));  // C = 2: 
-	mVertices.push_back(Vector3Custom<float>(- half, - half, - half));  // D = 3: 
-	mVertices.push_back(Vector3Custom<float>(- half, + half, + half));  // E = 4: 
-	mVertices.push_back(Vector3Custom<float>(+ half, + half, + half));  // F = 5: 
-	mVertices.push_back(Vector3Custom<float>(+ half, + half, - half));  // G = 6: 
-	mVertices.push_back(Vector3Custom<float>(- half, + half, - half));  // H = 7: 
+	mVertices.push_back(Vector3Custom<float>(-half, -half, +half));  // A = 0: 
+	mVertices.push_back(Vector3Custom<float>(+half, -half, +half));  // B = 1: 
+	mVertices.push_back(Vector3Custom<float>(+half, -half, -half));  // C = 2: 
+	mVertices.push_back(Vector3Custom<float>(-half, -half, -half));  // D = 3: 
+	mVertices.push_back(Vector3Custom<float>(-half, +half, +half));  // E = 4: 
+	mVertices.push_back(Vector3Custom<float>(+half, +half, +half));  // F = 5: 
+	mVertices.push_back(Vector3Custom<float>(+half, +half, -half));  // G = 6: 
+	mVertices.push_back(Vector3Custom<float>(-half, +half, -half));  // H = 7: 
 
 	// Define triangles using indices
 	// 6 faces, 12 triangles
@@ -90,7 +50,14 @@ Cube::Cube(const float s, const float x, const float y, const float z) : mPitch(
 
 Cube::~Cube()
 {
+}
 
+void Cube::Render(const Matrix44<float>& worldToCameraMatrix)
+{
+	CalculateRotations();
+	// UpdateVertices();
+	LocalToWorld();
+	mRenderer->RenderPolygon(mVertices, mIndices, worldToCameraMatrix, mLocalToWorldMatrix, true);
 }
 
 void Cube::LocalToWorld()
@@ -109,7 +76,6 @@ void Cube::LocalToWorld()
 	// World-To-Camera-Matrix 
 	mLocalToWorldMatrix = translationMatrix * invRot;
 
-
 	//UpdateVertices();
 }
 
@@ -119,7 +85,7 @@ void Cube::UpdateRollMatrix()
 	mRollMatrix[0][1] = -sin(mRoll);
 	mRollMatrix[1][0] = sin(mRoll);
 	mRollMatrix[1][1] = cos(mRoll);
-};
+}
 
 void Cube::UpdatePitchMatrix()
 {
@@ -127,7 +93,7 @@ void Cube::UpdatePitchMatrix()
 	mPitchMatrix[1][2] = -sin(mPitch);
 	mPitchMatrix[2][1] = sin(mPitch);
 	mPitchMatrix[2][2] = cos(mPitch);
-};
+}
 
 void Cube::UpdateYawMatrix()
 {
@@ -160,8 +126,8 @@ void Cube::Yaw(const float change)
 
 void Cube::CalculateRotations()
 {
-    // Order is Yaw -> Pitch -> Roll,  but C++
-    mCombinedRotations = mRollMatrix * mPitchMatrix * mYawMatrix;
+	// Order is Yaw -> Pitch -> Roll,  but C++
+	mCombinedRotations = mRollMatrix * mPitchMatrix * mYawMatrix;
 }
 
 void Cube::UpdateVertices()

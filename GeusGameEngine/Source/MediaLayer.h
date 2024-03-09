@@ -49,6 +49,8 @@ public:
 
 	void PrepareRenderer() const;
 
+	std::shared_ptr<IRenderer> GetRenderer() const;
+
 	//void renderClear();
 
 	//void createWindow();

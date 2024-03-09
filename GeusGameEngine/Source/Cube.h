@@ -1,18 +1,19 @@
 #pragma once
-#include <vector>
 
+#include "IRenderer.h"
 #include "Vector3Custom.h"
 #include "Matrix44.h"
+
+#include <memory>
 
 class Cube
 {
 private:
-
-
+	std::shared_ptr<IRenderer> mRenderer;
 
 public:
-	Cube();
-	Cube(const float s, const float x, const float y, const float z);
+	Cube(std::shared_ptr<IRenderer> renderer, const float s, const float x, const float y, const float z);
+
 	~Cube();
 
 	Vector3Custom<float> mPosition;
@@ -39,13 +40,17 @@ public:
 
 	float mYaw;
 
+	void Render(const Matrix44<float>& worldToCameraMatrix);
+
+	void LocalToWorld();
+
+	void UpdateVertices();
+
 	void Roll(const float change);
 
 	void Pitch(const float change);
 
 	void Yaw(const float change);
-
-	void LocalToWorld();
 
 	void UpdateRollMatrix();
 
@@ -54,6 +59,4 @@ public:
 	void UpdateYawMatrix();
 
 	void CalculateRotations();
-	
-	void UpdateVertices();
 };

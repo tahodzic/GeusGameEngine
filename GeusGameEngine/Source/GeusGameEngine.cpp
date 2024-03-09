@@ -8,7 +8,6 @@ int main(int argc, char* argv[])
 
 		myWorld.Initialize();
 
-		//auto cube1 = myWorld.CreateCube(0.5f, 02.0f, 0.0f, 0.0f);
 		//auto cube2 = myWorld.CreateCube(0.5f, 05.0f, 0.0f, 0.0f);
 		//auto cube3 = myWorld.CreateCube(0.5f, 10.0f, 0.0f, 0.0f);
 		//auto cube4 = myWorld.CreateCube(0.5f, 15.0f, 0.0f, 0.0f);
@@ -16,8 +15,7 @@ int main(int argc, char* argv[])
 		//auto cube6 = myWorld.CreateCube(0.5f, 30.0f, 0.0f, 0.0f);
 		//auto cube7 = myWorld.CreateCube(0.5f, 35.0f, 0.0f, 0.0f);
 		//auto cube8 = myWorld.CreateCube(0.5f, 40.0f, 0.0f, 0.0f);
-
-		//myWorld.AddObject(cube1);
+		
 		//myWorld.AddObject(cube2);
 		//myWorld.AddObject(cube3);
 		//myWorld.AddObject(cube4);

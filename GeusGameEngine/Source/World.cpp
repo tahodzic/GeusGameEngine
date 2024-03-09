@@ -43,7 +43,8 @@ void World::AddObject(const Cube object)
 
 Cube World::CreateCube(const float s, const float x, const float y, const float z)
 {
-	return Cube(s, x, y, z);
+	auto ren = MediaLayer::getInstance().GetRenderer();
+	return Cube(ren, s, x, y, z);
 }
 
 /*
@@ -218,10 +219,7 @@ void World::RenderObjects()
 {
 	for (int i = 0; i < mObjectCount; i++)
 	{
-		mObjects[i].CalculateRotations();
-		//mObjects[i].UpdateVertices();
-		mObjects[i].LocalToWorld();
-		RenderObject(mObjects[i]);
+		mObjects[i].Render(mCamera.mWtcMatrix);
 	}
 }
 

@@ -29,6 +29,11 @@ void MediaLayer::PrepareRenderer() const
 	mpSdlLibrary->mpRendererHandler->SetDrawColor(255, 255, 255, 255/*SDL_ALPHA_OPAQUE*/);
 }
 
+std::shared_ptr<IRenderer> MediaLayer::GetRenderer() const
+{
+	return mpSdlLibrary->mpRendererHandler;
+}
+
 void MediaLayer::Render() const
 {
 	mpSdlLibrary->mpRendererHandler->RenderPresent();
