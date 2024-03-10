@@ -10,7 +10,6 @@
 class Camera
 {
 private:
-    Matrix44<float> mProjectionMatrix;
 
     static constexpr float sDefaultX = 0.2f;
 
@@ -18,36 +17,12 @@ private:
 
     static constexpr float sDefaultZ = 1.3f;
 
-    static constexpr float sAngleOfViewW = 90.0f * (static_cast<float>(Constants::pi) / 180.0f);
-
-    static constexpr float sAngleOfViewH = 120.0f * (static_cast<float>(Constants::pi) / 180.0f);
-
-    static constexpr float sZNear = 1.0f;
-
-    static constexpr float sZFar = 1000.0f;
-
-    static constexpr  float sCanvasW = 16.0f;
-
-    static constexpr  float sCanvasH = 9.0f;
-
-    static constexpr  float sAspectRatio = sCanvasW / sCanvasH;
-
-    const float  sTop = sZNear * tan(sAngleOfViewW / 2.0f);
-
-    const float  sBottom = -sTop;
-
-    const float  sRight = sAspectRatio * sTop;
-
-    const float  sLeft = -sRight;
-
 public:
     Camera();
 
-    Vector3Custom<float> mCamera;
+    Vector3Custom<float> mPosition;
 
     Matrix44<float> mWtcMatrix;
-
-    const Matrix44<float>& kProjectionMatrixRef;
 
     Matrix44<float> mCombinedRotations;
 
@@ -65,17 +40,17 @@ public:
 
     void Reset();
 
-    void updateRollMatrix();
+    void UpdateRollMatrix();
 
-    void updatePitchMatrix();
+    void UpdatePitchMatrix();
 
-    void updateYawMatrix();
+    void UpdateYawMatrix();
     
-    void transformWorldToCamera(const Vector3Custom<float>& worldPoint, Vector3Custom<float>& cameraPoint);
+    void TransformWorldToCamera(const Vector3Custom<float>& worldPoint, Vector3Custom<float>& cameraPoint);
     
     void UpdateWorldToCameraMatrix();
 
-    void moveCamera(Vector3Custom<float>& translation);
+    void MoveCamera(Vector3Custom<float>& translation);
 
     void RollCamera(const float change);
     
@@ -83,6 +58,6 @@ public:
     
     void YawCamera(const float change);
 
-    void calculateCameraRotation();
+    void CalculateCameraRotation();
 };
 

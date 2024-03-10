@@ -2,6 +2,7 @@
 
 #include "SdlRenderer.h"
 #include "TextRenderer.h"
+#include "WorldConstants.h"
 
 #include <SDL.h>
 
@@ -11,13 +12,13 @@
 
 SdlRenderer::SdlRenderer(
 	std::shared_ptr<SDL_Renderer> renderer,
-	 const int& windowWidth, const int& windowHeight, const int& canvasWidth, const int& canvasHeight, const Matrix44<float>& projectionMatrix) :
+	 const int& windowWidth, const int& windowHeight, const int& canvasWidth, const int& canvasHeight, const Matrix44<float> projectionMatrix) :
 		mpRenderer(renderer),
 		kWindowWidth(windowWidth),
 		kWindowHeight(windowHeight),
 		kCanvasWidth(canvasWidth),
 		kCanvasHeight(canvasHeight),
-		kProjectionMatrix(projectionMatrix),
+		mProjectionMatrix(projectionMatrix),
 		kViewPort{ 100,100,640,480 }
 {
 }
@@ -138,9 +139,9 @@ void SdlRenderer::CalculateTriangle(
 	);
 
 	Vector3Custom<float> clipPoint1, clipPoint2, clipPoint3;
-	kProjectionMatrix.multVecMatrix(cameraPoint1, clipPoint1);
-	kProjectionMatrix.multVecMatrix(cameraPoint2, clipPoint2);
-	kProjectionMatrix.multVecMatrix(cameraPoint3, clipPoint3);
+	mProjectionMatrix.multVecMatrix(cameraPoint1, clipPoint1);
+	mProjectionMatrix.multVecMatrix(cameraPoint2, clipPoint2);
+	mProjectionMatrix.multVecMatrix(cameraPoint3, clipPoint3);
 
 
 	vRaster1.mX = static_cast<int>(std::floor((clipPoint1.mX * 0.5f + 0.5f) * kWindowWidth));
@@ -230,8 +231,8 @@ void SdlRenderer::RenderDrawLine(
 
 	Vector3Custom<float> clipPoint1;
 	Vector3Custom<float> clipPoint2;
-	kProjectionMatrix.multVecMatrix(cameraPoint1, clipPoint1);
-	kProjectionMatrix.multVecMatrix(cameraPoint2, clipPoint2);
+	mProjectionMatrix.multVecMatrix(cameraPoint1, clipPoint1);
+	mProjectionMatrix.multVecMatrix(cameraPoint2, clipPoint2);
 
 	Vector2Custom<int> vRaster1, vRaster2;
 	vRaster1.mX = static_cast<int>(std::floor((clipPoint1.mX * 0.5f + 0.5f) * kWindowWidth));
@@ -275,7 +276,7 @@ void SdlRenderer::RenderDrawRect(const int width, const int height, const int x,
 
 void SdlRenderer::ExtractAllPlanes()
 {
-	const Matrix44<float>& mat = kProjectionMatrix;
+	const Matrix44<float>& mat = mProjectionMatrix;
 
 	mPlanes[0].set(mat[3][0] + mat[0][0], mat[3][1] + mat[0][1], mat[3][2] + mat[0][2], mat[3][3] + mat[0][3]); mPlanes[0].normalize();
 	mPlanes[1].set(mat[3][0] - mat[0][0], mat[3][1] - mat[0][1], mat[3][2] - mat[0][2], mat[3][3] - mat[0][3]); mPlanes[1].normalize();
@@ -287,9 +288,29 @@ void SdlRenderer::ExtractAllPlanes()
 	mPlanes[5].set(mat[3][0] - mat[2][0], mat[3][1] - mat[2][1], mat[3][2] - mat[2][2], mat[3][3] - mat[2][3]); mPlanes[5].normalize();
 }
 
-std::shared_ptr<SdlRenderer> SdlRenderer::initialize(std::shared_ptr<SDL_Renderer> renderer, const int& windowWidth, const int& windowHeight, const int& canvasWidth, const int& canvasHeight, const Matrix44<float>& projectionMatrix)
+static const Matrix44<float> CreateProjectionMatrix()
 {
-	auto sdlRenderer = std::make_shared<SdlRenderer>(renderer, windowWidth, windowHeight, canvasWidth, canvasHeight, projectionMatrix);
+	using namespace WorldConstants;
+
+	Matrix44<float> mat;
+
+	mat[0][0] = (2 * zNear) / (right - left);
+	mat[0][2] = (right + left) / (right - left);
+	mat[1][1] = (2 * zNear) / (top - bottom);
+	mat[1][2] = (top + bottom) / (top - bottom);
+	mat[2][2] = (zFar + zNear) / (zFar - zNear);
+	mat[2][3] = (2 * zFar * zNear) / (zFar - zNear);
+	mat[3][2] = -1.0f;
+	mat[3][3] = 0.0f;
+
+	return mat;
+}
+
+std::shared_ptr<SdlRenderer> SdlRenderer::initialize(std::shared_ptr<SDL_Renderer> renderer, const int& windowWidth, const int& windowHeight, const int& canvasWidth, const int& canvasHeight)
+{
+	auto projMat = CreateProjectionMatrix();
+
+	auto sdlRenderer = std::make_shared<SdlRenderer>(renderer, windowWidth, windowHeight, canvasWidth, canvasHeight, projMat);
 
 	sdlRenderer->ExtractAllPlanes();
 

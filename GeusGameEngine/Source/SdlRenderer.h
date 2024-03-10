@@ -29,7 +29,7 @@ private:
 
     const SDL_Rect kViewPort;
     
-    const Matrix44<float>& kProjectionMatrix;
+    const Matrix44<float> mProjectionMatrix;
 
     void clipToViewFrustum(
         const Vector3Custom<float>& vector1,
@@ -59,7 +59,7 @@ private:
 
 public:
     SdlRenderer(std::shared_ptr<SDL_Renderer> renderer, const int& windowWidth, const int& windowHeight, const int& canvasWidth, const int& canvasHeight,
-        const Matrix44<float>& projectionMatrix);
+       const Matrix44<float> projectionMatrix);
 
     ~SdlRenderer();
 
@@ -88,8 +88,7 @@ public:
 
     void ExtractAllPlanes();
 
-    static std::shared_ptr<SdlRenderer> initialize(std::shared_ptr<SDL_Renderer> renderer, const int& windowWidth, const int& windowHeight, const int& canvasWidth, const int& canvasHeight,
-        const Matrix44<float>& projectionMatrix);
+    static std::shared_ptr<SdlRenderer> initialize(std::shared_ptr<SDL_Renderer> renderer, const int& windowWidth, const int& windowHeight, const int& canvasWidth, const int& canvasHeight);
 
     //void PollEvent(&mpSdlEvent) override;
 

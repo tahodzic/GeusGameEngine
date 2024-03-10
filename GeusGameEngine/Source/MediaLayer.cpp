@@ -14,29 +14,33 @@ MediaLayer& MediaLayer::getInstance()
 void MediaLayer::Initialize(const std::string_view title,
 	const int& windowsPosX, const int& windowsPosY,
 	const int& windowWidth, const int& windowHeight,
-	const int& canvasWidth, const int& canvasHeight,
-	const Matrix44<float>& projectionMatrix)
+	const int& canvasWidth, const int& canvasHeight)
 {
-	mpSdlLibrary = SdlLibrary::CreateAndSetup(title, windowsPosX, windowsPosY, windowWidth, windowHeight, canvasWidth, canvasHeight, projectionMatrix);
+	mSdlLibrary = SdlLibrary::CreateAndSetup(title, windowsPosX, windowsPosY, windowWidth, windowHeight, canvasWidth, canvasHeight);
 }
 
 void MediaLayer::PrepareRenderer() const
 {
-	mpSdlLibrary->mpRendererHandler->SetDrawColor(0, 0, 0, 255/*SDL_ALPHA_OPAQUE*/);
+	mSdlLibrary->mpRendererHandler->SetDrawColor(0, 0, 0, 255/*SDL_ALPHA_OPAQUE*/);
 
-	mpSdlLibrary->mpRendererHandler->RenderClear();
+	mSdlLibrary->mpRendererHandler->RenderClear();
 
-	mpSdlLibrary->mpRendererHandler->SetDrawColor(255, 255, 255, 255/*SDL_ALPHA_OPAQUE*/);
+	mSdlLibrary->mpRendererHandler->SetDrawColor(255, 255, 255, 255/*SDL_ALPHA_OPAQUE*/);
 }
 
 std::shared_ptr<IRenderer> MediaLayer::GetRenderer() const
 {
-	return mpSdlLibrary->mpRendererHandler;
+	return mSdlLibrary->mpRendererHandler;
+}
+
+std::shared_ptr<IFont> MediaLayer::GetFontHandler() const
+{
+	return mSdlLibrary->mpFontHandler;
 }
 
 void MediaLayer::Render() const
 {
-	mpSdlLibrary->mpRendererHandler->RenderPresent();
+	mSdlLibrary->mpRendererHandler->RenderPresent();
 }
 
 void MediaLayer::RenderLine(
@@ -45,7 +49,7 @@ void MediaLayer::RenderLine(
 	const Matrix44<float>& worldToCameraMatrix,
 	const bool inWorld) const
 {
-	mpSdlLibrary->mpRendererHandler->RenderDrawLine(
+	mSdlLibrary->mpRendererHandler->RenderDrawLine(
 		vector1,
 		vector2,
 		worldToCameraMatrix,
@@ -59,7 +63,7 @@ void MediaLayer::RenderPolygon(
 	const Matrix44<float>& localToWorldMatrix,
 	const bool inWorld) const
 {
-	mpSdlLibrary->mpRendererHandler->RenderPolygon(
+	mSdlLibrary->mpRendererHandler->RenderPolygon(
 		vertices,
 		indices,
 		worldToCameraMatrix,
@@ -69,45 +73,45 @@ void MediaLayer::RenderPolygon(
 
 void MediaLayer::RenderRect(const int width, const int height, const int x, const int y, const bool inWorld) const
 {
-	mpSdlLibrary->mpRendererHandler->RenderDrawRect(width, height, x, y, inWorld);
+	mSdlLibrary->mpRendererHandler->RenderDrawRect(width, height, x, y, inWorld);
 }
 
 void MediaLayer::SetRenderViewPort(const bool inWorld) const
 {
-	mpSdlLibrary->mpRendererHandler->SetRenderViewPort(inWorld);
+	mSdlLibrary->mpRendererHandler->SetRenderViewPort(inWorld);
 }
 
 void MediaLayer::SizeUTF8(std::string_view text, int& w, int& h) const
 {
-	mpSdlLibrary->mpFontHandler->SizeUTF8(text.data(), &w, &h);
+	mSdlLibrary->mpFontHandler->SizeUTF8(text.data(), &w, &h);
 }
 
 void MediaLayer::RenderUTF8_Solid(std::string_view text, const uint8_t r, const uint8_t g, const uint8_t b, const uint8_t a) const
 {
-	mpSdlLibrary->mpFontHandler->RenderUTF8_Solid(text.data(), r, g, b, a);
+	mSdlLibrary->mpFontHandler->RenderUTF8_Solid(text.data(), r, g, b, a);
 }
 
 void MediaLayer::CreateTextureFromSurface() const
 {
-	mpSdlLibrary->mpFontHandler->CreateTextureFromSurface();
+	mSdlLibrary->mpFontHandler->CreateTextureFromSurface();
 }
 
 void MediaLayer::SetDestRect(const int x, const int y, const int w, const int h) const
 {
-	mpSdlLibrary->mpFontHandler->SetDestRect(x, y, w, h);
+	mSdlLibrary->mpFontHandler->SetDestRect(x, y, w, h);
 }
 
 void MediaLayer::RenderCopy() const
 {
-	mpSdlLibrary->mpFontHandler->RenderCopy();
+	mSdlLibrary->mpFontHandler->RenderCopy();
 }
 
 void MediaLayer::FreeSurface() const
 {
-	mpSdlLibrary->mpFontHandler->FreeSurface();
+	mSdlLibrary->mpFontHandler->FreeSurface();
 }
 
 void MediaLayer::DestroyTexture() const
 {
-	mpSdlLibrary->mpFontHandler->DestroyTexture();
+	mSdlLibrary->mpFontHandler->DestroyTexture();
 }

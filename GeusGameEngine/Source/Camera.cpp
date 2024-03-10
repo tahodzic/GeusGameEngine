@@ -2,16 +2,8 @@
 
 #include "Camera.h"
 
-Camera::Camera() : kProjectionMatrixRef(mProjectionMatrix), mCamera({ sDefaultX, sDefaultY, sDefaultZ}), mPitch(0.0f), mRoll(0.0f), mYaw(0.0f)
+Camera::Camera() : mPosition({ sDefaultX, sDefaultY, sDefaultZ}), mPitch(0.0f), mRoll(0.0f), mYaw(0.0f)
 {
-    mProjectionMatrix[0][0] = (2 * sZNear) / (sRight - sLeft);
-    mProjectionMatrix[0][2] = (sRight + sLeft) / (sRight - sLeft);
-    mProjectionMatrix[1][1] = (2 * sZNear) / (sTop - sBottom);
-    mProjectionMatrix[1][2] = (sTop + sBottom) / (sTop - sBottom);
-    mProjectionMatrix[2][2] = (sZFar + sZNear) / (sZFar - sZNear);
-    mProjectionMatrix[2][3] = (2 * sZFar * sZNear) / (sZFar - sZNear);
-    mProjectionMatrix[3][2] = -1.0f;
-    mProjectionMatrix[3][3] = 0.0f;
 
 	mRollMatrix =
 	{
@@ -40,18 +32,18 @@ Camera::Camera() : kProjectionMatrixRef(mProjectionMatrix), mCamera({ sDefaultX,
 
 void Camera::Reset()
 {
-    mCamera.mX = sDefaultX;
-    mCamera.mY = sDefaultY;
-    mCamera.mZ = sDefaultZ;
+    mPosition.mX = sDefaultX;
+    mPosition.mY = sDefaultY;
+    mPosition.mZ = sDefaultZ;
     mPitch = 0.0f;
     mYaw = 0.0f;
     mRoll = 0.0f;
-    updatePitchMatrix();
-    updateYawMatrix();
-    updateRollMatrix();
+    UpdatePitchMatrix();
+    UpdateYawMatrix();
+    UpdateRollMatrix();
 }
 
-void Camera::updateRollMatrix()
+void Camera::UpdateRollMatrix()
 {
     mRollMatrix[0][0] = cos(mRoll);
     mRollMatrix[0][1] = -sin(mRoll);
@@ -59,7 +51,7 @@ void Camera::updateRollMatrix()
     mRollMatrix[1][1] = cos(mRoll);
 };
 
-void Camera::updatePitchMatrix()
+void Camera::UpdatePitchMatrix()
 {
     mPitchMatrix[1][1] = cos(mPitch);
     mPitchMatrix[1][2] = -sin(mPitch);
@@ -67,7 +59,7 @@ void Camera::updatePitchMatrix()
     mPitchMatrix[2][2] = cos(mPitch);
 };
 
-void Camera::updateYawMatrix()
+void Camera::UpdateYawMatrix()
 {
     mYawMatrix[0][0] = cos(mYaw);
     mYawMatrix[0][2] = sin(mYaw);
@@ -75,7 +67,7 @@ void Camera::updateYawMatrix()
     mYawMatrix[2][2] = cos(mYaw);
 }
 
-void Camera::transformWorldToCamera(const Vector3Custom<float>& worldPoint,  Vector3Custom<float>& cameraPoint)
+void Camera::TransformWorldToCamera(const Vector3Custom<float>& worldPoint,  Vector3Custom<float>& cameraPoint)
 {
     mWtcMatrix.multVecMatrix(worldPoint,  cameraPoint);
 }
@@ -84,9 +76,9 @@ void Camera::UpdateWorldToCameraMatrix()
 {
     // define camera translation
     Matrix44<float> translationMatrix = {
-    1,  0,  0,  -mCamera.mX, 
-    0,  1,  0,  -mCamera.mY, 
-    0,  0,  1,  -mCamera.mZ, 
+    1,  0,  0,  -mPosition.mX, 
+    0,  1,  0,  -mPosition.mY, 
+    0,  0,  1,  -mPosition.mZ, 
     0,  0,  0,  1
     };
 
@@ -98,7 +90,7 @@ void Camera::UpdateWorldToCameraMatrix()
  }
 
 
-void Camera::moveCamera(Vector3Custom<float>& translation)
+void Camera::MoveCamera(Vector3Custom<float>& translation)
 {
     Vector3Custom<float> xVec(mCombinedRotations[0][0],  mCombinedRotations[0][1],  mCombinedRotations[0][2]);
     Vector3Custom<float> yVec(mCombinedRotations[1][0],  mCombinedRotations[1][1],  mCombinedRotations[1][2]);
@@ -106,37 +98,34 @@ void Camera::moveCamera(Vector3Custom<float>& translation)
     auto xtr = xVec * translation.mX;
     auto ytr = yVec * translation.mY;
     auto ztr = zVec * translation.mZ;
-    mCamera = mCamera + xtr;
-    mCamera = mCamera + ytr;
-    mCamera = mCamera + ztr;
+    mPosition = mPosition + xtr;
+    mPosition = mPosition + ytr;
+    mPosition = mPosition + ztr;
 }
 
 void Camera::RollCamera(const float change)
 {
     mRoll += change;
     mRoll = fmod(mRoll, 2.0f * static_cast<float>(Constants::pi));
-    updateRollMatrix();
+    UpdateRollMatrix();
 }
 
 void Camera::PitchCamera(const float change)
 {
     mPitch += change;
     mPitch = fmod(mPitch, 2.0f * static_cast<float>(Constants::pi));
-    updatePitchMatrix();
+    UpdatePitchMatrix();
 }
 
 void Camera::YawCamera(const float change)
 {
     mYaw += change;
     mYaw = fmod(mYaw, 2.0f * static_cast<float>(Constants::pi));
-    updateYawMatrix();
+    UpdateYawMatrix();
 }
 
-void Camera::calculateCameraRotation()
+void Camera::CalculateCameraRotation()
 {
     // Order is Yaw -> Pitch -> Roll,  but C++
     mCombinedRotations = mRollMatrix * mPitchMatrix * mYawMatrix;
 }
-
-
-

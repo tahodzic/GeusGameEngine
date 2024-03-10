@@ -20,13 +20,12 @@ public:
 
 	static MediaLayer& getInstance();
 
-	std::unique_ptr<SdlLibrary> mpSdlLibrary;
+	std::unique_ptr<SdlLibrary> mSdlLibrary;
 
 	void Initialize(const std::string_view title,
 		const int& windowsPosX, const int& windowsPosY,
 		const int& windowWidth, const int& windowHeight,
-		const int& canvasWidth, const int& canvasHeight,
-		const Matrix44<float>& projectionMatrix);
+		const int& canvasWidth, const int& canvasHeight);
 
 	void RenderLine(
 		const Vector3Custom<float>& vector1,
@@ -50,6 +49,8 @@ public:
 	void PrepareRenderer() const;
 
 	std::shared_ptr<IRenderer> GetRenderer() const;
+
+	std::shared_ptr<IFont> GetFontHandler() const;
 
 	//void renderClear();
 

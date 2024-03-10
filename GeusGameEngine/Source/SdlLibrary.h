@@ -20,16 +20,9 @@ public:
 
 	std::shared_ptr<IRenderer> mpRendererHandler;
 
-	void Initialize(const std::string_view title,
-		const int& windowsPosX, const int& windowsPosY,
-		const int& windowWidth, const int& windowHeight,
-		const int& canvasWidth, const int& canvasHeight,
-		const Matrix44<float>& projectionMatrix);
-
 	static std::unique_ptr<SdlLibrary> CreateAndSetup(const std::string_view title,
 		const int& windowsPosX, const int& windowsPosY,
 		const int& windowWidth, const int& windowHeight,
-		const int& canvasWidth, const int& canvasHeight,
-		const Matrix44<float>& projectionMatrix);
+		const int& canvasWidth, const int& canvasHeight);
 };
 

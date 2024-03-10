@@ -3,24 +3,41 @@
 #include "IRenderer.h"
 #include "TextRenderer.h"
 #include "Constants.h"
+#include "WorldConstants.h"
 
 #include <math.h>
 
-World::World() : 
-	mCoordinateSystemGrid(20.0f), 
+World::World(CoordinateSystemGrid coordinateSystemGrid, Camera camera) :
+	mCoordinateSystemGrid(coordinateSystemGrid),
+	mCamera(camera),
 	mButtonReset(Vector2Custom<int>(70,25), Vector2Custom<int>(10, 20), "Reset"),
-	mButtonCreate(Vector2Custom<int>(70, 25), Vector2Custom<int>(10, 60), "Create")
+	mButtonCreate(Vector2Custom<int>(70, 25), Vector2Custom<int>(10, 60), "Create"),
+	mSdlEvent(),
+	mMousePrevX(0), 
+	mMousePrevY(0),
+	mMouseDiffX(0), 
+	mMouseDiffY(0),
+	mObjectCount(0)
 {
-	mObjectCount = 0;
 }
 
 World::~World()
 {
 }
 
-void World::Initialize()
+World World::CreateAndInitialize()
 {
-	MediaLayer::getInstance().Initialize(sTitle, sWindowPosX, sWindowPosY, sWindowWidth, sWindowHeight, sCanvasWidth, sCanvasHeight, mCamera.kProjectionMatrixRef);
+	using namespace WorldConstants;
+
+	Camera camera;
+
+	MediaLayer::getInstance().Initialize(windowTitle, windowPosX, windowPosY, windowWidth, windowHeight, canvasWidth, canvasHeight);
+	
+	CoordinateSystemGrid csg(20.0f, MediaLayer::getInstance().GetFontHandler(), MediaLayer::getInstance().GetRenderer());
+
+	World world(csg, camera);
+
+	return world;
 }
 
 void World::Render()
@@ -34,7 +51,7 @@ void World::Render()
 
 void World::AddObject(const Cube object)
 {
-	if (mObjectCount < sMaxObjectsInWorld)
+	if (mObjectCount < WorldConstants::maxObjectsInWorld)
 	{
 		mObjects.push_back(object);
 		mObjectCount++;
@@ -60,12 +77,12 @@ Perspective Projection:
 
 bool World::PollKeyEvents()
 {
-	return SDL_PollEvent(&mpSdlEvent) != 0;
+	return SDL_PollEvent(&mSdlEvent) != 0;
 }
 
 void World::HandleAction()
 {
-	mCamera.calculateCameraRotation();
+	mCamera.CalculateCameraRotation();
 
 	while (PollKeyEvents())
 	{
@@ -83,11 +100,11 @@ void World::HandleKeyEvents()
 
 	change *= 0.1f;
 
-	switch (mpSdlEvent.type)
+	switch (mSdlEvent.type)
 	{
 	case SDL_KEYDOWN:
 	{
-		switch (mpSdlEvent.key.keysym.sym)
+		switch (mSdlEvent.key.keysym.sym)
 		{
 		case SDLK_w:
 			mCamera.PitchCamera(-change);
@@ -121,17 +138,17 @@ void World::HandleKeyEvents()
 	}
 	case SDL_MOUSEBUTTONDOWN:
 	{
-		if (mpSdlEvent.button.button == SDL_BUTTON_LEFT)
+		if (mSdlEvent.button.button == SDL_BUTTON_LEFT)
 		{
 			leftMouseButtonDown = true;
-			mMousePrevX = mpSdlEvent.button.x;
-			mMousePrevY = mpSdlEvent.button.y;
-			if (mButtonReset.IsClicked(mpSdlEvent.button.x, mpSdlEvent.button.y))
+			mMousePrevX = mSdlEvent.button.x;
+			mMousePrevY = mSdlEvent.button.y;
+			if (mButtonReset.IsClicked(mSdlEvent.button.x, mSdlEvent.button.y))
 			{
 				ResetScene();
 			}
 
-			if (mButtonCreate.IsClicked(mpSdlEvent.button.x, mpSdlEvent.button.y))
+			if (mButtonCreate.IsClicked(mSdlEvent.button.x, mSdlEvent.button.y))
 			{
 				auto c = CreateCube(0.5f, 2.0f, 0.0f, 0.0f);
 				AddObject(c);
@@ -141,7 +158,7 @@ void World::HandleKeyEvents()
 	}
 	case SDL_MOUSEBUTTONUP:
 	{
-		if (mpSdlEvent.button.button == SDL_BUTTON_LEFT)
+		if (mSdlEvent.button.button == SDL_BUTTON_LEFT)
 		{
 			leftMouseButtonDown = false;
 		}
@@ -151,21 +168,21 @@ void World::HandleKeyEvents()
 	{
 		if (leftMouseButtonDown)
 		{
-			mMouseDiffX = mMousePrevX - mpSdlEvent.button.x;
-			mMouseDiffY = mMousePrevY - mpSdlEvent.button.y;
+			mMouseDiffX = mMousePrevX - mSdlEvent.button.x;
+			mMouseDiffY = mMousePrevY - mSdlEvent.button.y;
 
-			mMousePrevX = mpSdlEvent.button.x;
-			mMousePrevY = mpSdlEvent.button.y;
+			mMousePrevX = mSdlEvent.button.x;
+			mMousePrevY = mSdlEvent.button.y;
 			
 			Vector3Custom<float> translation((static_cast<float>(mMouseDiffX)) / 50.0f, (static_cast<float>(-mMouseDiffY)) / 50.0f, 0.0f);
-			mCamera.moveCamera(translation);
+			mCamera.MoveCamera(translation);
 		}
 		break;
 	}
 	case SDL_MOUSEWHEEL:
 	{
-		Vector3Custom<float> translation(0.0f, 0.0f, static_cast<float>(-mpSdlEvent.wheel.y));
-		mCamera.moveCamera(translation);
+		Vector3Custom<float> translation(0.0f, 0.0f, static_cast<float>(-mSdlEvent.wheel.y));
+		mCamera.MoveCamera(translation);
 		break;
 	}
 	default:
@@ -223,22 +240,9 @@ void World::RenderObjects()
 	}
 }
 
-void World::RenderObject(const Cube& cube)
+void World::RenderCoordinateSystem() const
 {
-	MediaLayer::getInstance().RenderPolygon(cube.mVertices, cube.mIndices, mCamera.mWtcMatrix, cube.mLocalToWorldMatrix, true);
-}
-
-void World::RenderLine(const Vector3Custom<float>& vector1, const Vector3Custom<float>& vector2, const bool inWorld)
-{
-	MediaLayer::getInstance().RenderLine(vector1, vector2, mCamera.mWtcMatrix, inWorld);
-}
-
-void World::RenderCoordinateSystem()
-{
-	const bool inWorld = true;
-	RenderLine(mCoordinateSystemGrid.mXStart, mCoordinateSystemGrid.mXEnd, inWorld);
-	RenderLine(mCoordinateSystemGrid.mYStart, mCoordinateSystemGrid.mYEnd, inWorld);
-	RenderLine(mCoordinateSystemGrid.mZStart, mCoordinateSystemGrid.mZEnd, inWorld);
+	mCoordinateSystemGrid.Render(mCamera.mWtcMatrix);
 }
 
 void World::WorldMain()
@@ -249,7 +253,7 @@ void World::WorldMain()
 
 	const bool inWorld = true;
 
-	TextRenderer::print("X: " + std::to_string(mCamera.mCamera.mX), 100, 420, inWorld);
-	TextRenderer::print("Y: " + std::to_string(mCamera.mCamera.mY), 100, 440, inWorld);
-	TextRenderer::print("Z: " + std::to_string(mCamera.mCamera.mZ), 100, 460, inWorld);
+	TextRenderer::print("X: " + std::to_string(mCamera.mPosition.mX), 100, 420, inWorld);
+	TextRenderer::print("Y: " + std::to_string(mCamera.mPosition.mY), 100, 440, inWorld);
+	TextRenderer::print("Z: " + std::to_string(mCamera.mPosition.mZ), 100, 460, inWorld);
 }

@@ -40,6 +40,7 @@
     <ClInclude Include="Source\Vector2Custom.h" />
     <ClInclude Include="Source\Vector3Custom.h" />
     <ClInclude Include="Source\World.h" />
+    <ClInclude Include="Source\WorldConstants.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Button.cpp" />

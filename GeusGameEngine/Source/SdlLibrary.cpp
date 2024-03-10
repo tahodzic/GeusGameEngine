@@ -38,12 +38,11 @@ static void SetupRenderer(std::shared_ptr<SDL_Renderer> renderer)
 }
 
 static std::shared_ptr<IRenderer> InitializeSdlRenderer(std::shared_ptr<SDL_Renderer> renderer,
-	const int& windowWidth, const int& windowHeight, const int& canvasWidth, const int& canvasHeight,
-	const Matrix44<float>& projectionMatrix)
+	const int& windowWidth, const int& windowHeight, const int& canvasWidth, const int& canvasHeight)
 {
 	SetupRenderer(renderer);
 
-	return SdlRenderer::initialize(renderer, windowWidth, windowHeight, canvasWidth, canvasHeight, projectionMatrix);
+	return SdlRenderer::initialize(renderer, windowWidth, windowHeight, canvasWidth, canvasHeight);
 }
 
 static std::shared_ptr<IFont> InitializeFont(std::shared_ptr<SDL_Renderer> renderer)
@@ -81,28 +80,14 @@ SdlLibrary::~SdlLibrary()
 {
 }
 
-void SdlLibrary::Initialize(const std::string_view title,
-	const int& windowsPosX, const int& windowsPosY,
-	const int& windowWidth, const int& windowHeight,
-	const int& canvasWidth, const int& canvasHeight,
-	const Matrix44<float>& projectionMatrix)
-{
-	auto ren = CreateRenderer(title, windowsPosX, windowsPosY, windowWidth, windowHeight);
-
-	mpRendererHandler = InitializeSdlRenderer(ren, windowWidth, windowHeight, canvasWidth, canvasHeight, projectionMatrix);
-
-	mpFontHandler = InitializeFont(ren);
-}
-
 std::unique_ptr<SdlLibrary> SdlLibrary::CreateAndSetup(const std::string_view title,
 	const int& windowsPosX, const int& windowsPosY,
 	const int& windowWidth, const int& windowHeight,
-	const int& canvasWidth, const int& canvasHeight,
-	const Matrix44<float>& projectionMatrix)
+	const int& canvasWidth, const int& canvasHeight)
 {
 	auto ren = CreateRenderer(title, windowsPosX, windowsPosY, windowWidth, windowHeight);
 
-	auto renderControl = InitializeSdlRenderer(ren, windowWidth, windowHeight, canvasWidth, canvasHeight, projectionMatrix);
+	auto renderControl = InitializeSdlRenderer(ren, windowWidth, windowHeight, canvasWidth, canvasHeight);
 
 	auto fontControl = InitializeFont(ren);
 
