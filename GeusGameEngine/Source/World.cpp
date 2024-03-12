@@ -7,9 +7,9 @@
 
 #include <math.h>
 
-World::World(CoordinateSystemGrid coordinateSystemGrid, Camera camera) :
+World::World(CoordinateSystemGrid coordinateSystemGrid) :
 	mCoordinateSystemGrid(coordinateSystemGrid),
-	mCamera(camera),
+	mCamera(),
 	mButtonReset(Vector2Custom<int>(70,25), Vector2Custom<int>(10, 20), "Reset"),
 	mButtonCreate(Vector2Custom<int>(70, 25), Vector2Custom<int>(10, 60), "Create"),
 	mSdlEvent(),
@@ -29,13 +29,11 @@ World World::CreateAndInitialize()
 {
 	using namespace WorldConstants;
 
-	Camera camera;
-
 	MediaLayer::getInstance().Initialize(windowTitle, windowPosX, windowPosY, windowWidth, windowHeight, canvasWidth, canvasHeight);
-	
+
 	CoordinateSystemGrid csg(20.0f, MediaLayer::getInstance().GetFontHandler(), MediaLayer::getInstance().GetRenderer());
 
-	World world(csg, camera);
+	World world(csg);
 
 	return world;
 }

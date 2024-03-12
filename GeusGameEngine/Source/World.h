@@ -27,7 +27,7 @@ class World
 private:
 
 public:
-    World(CoordinateSystemGrid coordinateSystemGrid, Camera camera);
+    World(CoordinateSystemGrid coordinateSystemGrid);
 
     ~World();
     
