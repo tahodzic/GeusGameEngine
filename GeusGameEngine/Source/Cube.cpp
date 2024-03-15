@@ -1,9 +1,10 @@
 ﻿#include "Cube.h"
 
 #include "Constants.h"
+#include "Transform.h"
 
-Cube::Cube(std::shared_ptr<IRenderer> renderer, const float s, const float x, const float y, const float z) : mRenderer(renderer),
-mPitch(0.0f), mRoll(0.0f), mYaw(0.0f), mPosition(x, y, z)
+Cube::Cube(std::shared_ptr<IRenderer> renderer, const float s, const float x, const float y, const float z) : 
+	mRenderer(renderer), mPosition(x, y, z), mTransform()
 {
 	float half = s / 2.0f;
 
@@ -42,10 +43,6 @@ mPitch(0.0f), mRoll(0.0f), mYaw(0.0f), mPosition(x, y, z)
 
 	mIndices.push_back(4); mIndices.push_back(5); mIndices.push_back(6);
 	mIndices.push_back(4); mIndices.push_back(6); mIndices.push_back(7);
-
-	UpdateRollMatrix();
-	UpdatePitchMatrix();
-	UpdateYawMatrix();
 }
 
 Cube::~Cube()
@@ -54,88 +51,9 @@ Cube::~Cube()
 
 void Cube::Render(const Matrix44<float>& worldToCameraMatrix)
 {
-	CalculateRotations();
-	// UpdateVertices();
-	LocalToWorld();
+	mTransform.CalculateRotations();
+	
+	mTransform.LocalToWorld(mPosition, mLocalToWorldMatrix);
+
 	mRenderer->RenderPolygon(mVertices, mIndices, worldToCameraMatrix, mLocalToWorldMatrix, true);
-}
-
-void Cube::LocalToWorld()
-{
-	// define camera translation
-	Matrix44<float> translationMatrix = {
-	1,  0,  0,  mPosition.mX,
-	0,  1,  0,  mPosition.mY,
-	0,  0,  1,  mPosition.mZ,
-	0,  0,  0,  1
-	};
-
-	// invert pitch,  roll,  yaw
-	auto invRot = mCombinedRotations.inverse();
-
-	// World-To-Camera-Matrix 
-	mLocalToWorldMatrix = translationMatrix * invRot;
-
-	//UpdateVertices();
-}
-
-void Cube::UpdateRollMatrix()
-{
-	mRollMatrix[0][0] = cos(mRoll);
-	mRollMatrix[0][1] = -sin(mRoll);
-	mRollMatrix[1][0] = sin(mRoll);
-	mRollMatrix[1][1] = cos(mRoll);
-}
-
-void Cube::UpdatePitchMatrix()
-{
-	mPitchMatrix[1][1] = cos(mPitch);
-	mPitchMatrix[1][2] = -sin(mPitch);
-	mPitchMatrix[2][1] = sin(mPitch);
-	mPitchMatrix[2][2] = cos(mPitch);
-}
-
-void Cube::UpdateYawMatrix()
-{
-	mYawMatrix[0][0] = cos(mYaw);
-	mYawMatrix[0][2] = sin(mYaw);
-	mYawMatrix[2][0] = -sin(mYaw);
-	mYawMatrix[2][2] = cos(mYaw);
-}
-
-void Cube::Roll(const float change)
-{
-	mRoll += change;
-	mRoll = fmod(mRoll, 2.0f * static_cast<float>(Constants::pi));
-	UpdateRollMatrix();
-}
-
-void Cube::Pitch(const float change)
-{
-	mPitch += change;
-	mPitch = fmod(mPitch, 2.0f * static_cast<float>(Constants::pi));
-	UpdatePitchMatrix();
-}
-
-void Cube::Yaw(const float change)
-{
-	mYaw += change;
-	mYaw = fmod(mYaw, 2.0f * static_cast<float>(Constants::pi));
-	UpdateYawMatrix();
-}
-
-void Cube::CalculateRotations()
-{
-	// Order is Yaw -> Pitch -> Roll,  but C++
-	mCombinedRotations = mRollMatrix * mPitchMatrix * mYawMatrix;
-}
-
-void Cube::UpdateVertices()
-{
-	for (auto& vert : mVertices)
-	{
-		Vector3Custom<float> dst;
-		mLocalToWorldMatrix.multVecMatrix(vert, dst);
-		vert = dst;
-	}
 }

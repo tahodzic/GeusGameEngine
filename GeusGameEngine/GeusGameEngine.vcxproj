@@ -27,6 +27,7 @@
     <ClInclude Include="Source\Cube.h" />
     <ClInclude Include="Source\IFont.h" />
     <ClInclude Include="Source\IRenderer.h" />
+    <ClInclude Include="Source\ITransform.h" />
     <ClInclude Include="Source\Matrix44.h" />
     <ClInclude Include="Source\MediaLayer.h" />
     <ClInclude Include="Source\Plane.h" />
@@ -35,6 +36,7 @@
     <ClInclude Include="Source\SdlRenderer.h" />
     <ClInclude Include="Source\SdlTtf.h" />
     <ClInclude Include="Source\TextRenderer.h" />
+    <ClInclude Include="Source\Transform.h" />
     <ClInclude Include="Source\TtfDeleter.h" />
     <ClInclude Include="Source\UiManager.h" />
     <ClInclude Include="Source\Vector2Custom.h" />
@@ -54,6 +56,7 @@
     <ClCompile Include="Source\SdlRenderer.cpp" />
     <ClCompile Include="Source\SdlTtf.cpp" />
     <ClCompile Include="Source\TextRenderer.cpp" />
+    <ClCompile Include="Source\Transform.cpp" />
     <ClCompile Include="Source\UiManager.cpp" />
     <ClCompile Include="Source\World.cpp" />
   </ItemGroup>
