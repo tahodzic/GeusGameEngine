@@ -19,7 +19,7 @@ SdlRenderer::SdlRenderer(
 		kCanvasWidth(canvasWidth),
 		kCanvasHeight(canvasHeight),
 		mProjectionMatrix(projectionMatrix),
-		kViewPort{ 100,100,640,480 }
+		mViewPort({100,100,640,480})
 {
 }
 
@@ -209,7 +209,6 @@ void SdlRenderer:: RenderPolygon(
 	SDL_RenderGeometry(mpRenderer.get(), NULL, verticesToRender.data(), static_cast<int>(verticesToRender.size()), NULL, 0);
 
 	SetRenderViewPort(false);
-	SDL_RenderDrawRect(mpRenderer.get(), &kViewPort);
 }
 
 void SdlRenderer::RenderDrawLine(
@@ -320,6 +319,6 @@ std::shared_ptr<SdlRenderer> SdlRenderer::initialize(std::shared_ptr<SDL_Rendere
 void SdlRenderer::SetRenderViewPort(const bool inWorld)
 {
 	inWorld ?
-		SDL_RenderSetViewport(mpRenderer.get(), &kViewPort) :
+		SDL_RenderSetViewport(mpRenderer.get(), &mViewPort) :
 		SDL_RenderSetViewport(mpRenderer.get(), NULL);
 }

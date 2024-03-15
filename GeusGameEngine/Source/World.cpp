@@ -7,7 +7,7 @@
 
 #include <math.h>
 
-World::World(CoordinateSystemGrid coordinateSystemGrid) :
+World::World(CoordinateSystemGrid coordinateSystemGrid, ViewPort viewPort) :
 	mCoordinateSystemGrid(coordinateSystemGrid),
 	mCamera(),
 	mButtonReset(Vector2Custom<int>(70,25), Vector2Custom<int>(10, 20), "Reset"),
@@ -17,7 +17,8 @@ World::World(CoordinateSystemGrid coordinateSystemGrid) :
 	mMousePrevY(0),
 	mMouseDiffX(0), 
 	mMouseDiffY(0),
-	mObjectCount(0)
+	mObjectCount(0),
+	mViewPort(viewPort)
 {
 }
 
@@ -33,7 +34,9 @@ World World::CreateAndInitialize()
 
 	CoordinateSystemGrid csg(20.0f, MediaLayer::getInstance().GetFontHandler(), MediaLayer::getInstance().GetRenderer());
 
-	World world(csg);
+	ViewPort vwp(MediaLayer::getInstance().GetRenderer(), 100.0f, 100.0f, 640.0f, 480.0f);
+
+	World world(csg, vwp);
 
 	return world;
 }
@@ -243,11 +246,17 @@ void World::RenderCoordinateSystem() const
 	mCoordinateSystemGrid.Render(mCamera.mWtcMatrix);
 }
 
+void World::RenderViewPort() const
+{
+	mViewPort.Render(mCamera.mWtcMatrix);
+}
+
 void World::WorldMain()
 {
 	RenderCoordinateSystem();
 	RenderObjects();
 	RenderButton();
+	RenderViewPort();
 
 	const bool inWorld = true;
 

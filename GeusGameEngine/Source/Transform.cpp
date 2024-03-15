@@ -4,24 +4,9 @@
 
 #include <cmath>
 
-//void Transform::LocalToWorld()
-//{
-//	// define camera translation
-//	Matrix44<float> translationMatrix = {
-//	1,  0,  0,  mPosition.mX,
-//	0,  1,  0,  mPosition.mY,
-//	0,  0,  1,  mPosition.mZ,
-//	0,  0,  0,  1
-//	};
-//
-//	// invert pitch,  roll,  yaw
-//	auto invRot = mCombinedRotations.inverse();
-//
-//	// World-To-Camera-Matrix 
-//	mLocalToWorldMatrix = translationMatrix * invRot;
-//
-//	//UpdateVertices();
-//}
+Transform::Transform()
+{
+}
 
 void Transform::UpdateRollMatrix()
 {
@@ -47,9 +32,6 @@ void Transform::UpdateYawMatrix()
 	mYawMatrix[2][2] = cos(mYaw);
 }
 
-Transform::Transform() 
-{
-}
 
 void Transform::Roll(const float change)
 {

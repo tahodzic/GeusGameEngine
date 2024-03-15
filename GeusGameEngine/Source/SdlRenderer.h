@@ -27,9 +27,9 @@ private:
 
     const int& kCanvasHeight;
 
-    const SDL_Rect kViewPort;
-    
     const Matrix44<float> mProjectionMatrix;
+
+    const SDL_Rect mViewPort;
 
     void clipToViewFrustum(
         const Vector3Custom<float>& vector1,

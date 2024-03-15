@@ -41,6 +41,7 @@
     <ClInclude Include="Source\UiManager.h" />
     <ClInclude Include="Source\Vector2Custom.h" />
     <ClInclude Include="Source\Vector3Custom.h" />
+    <ClInclude Include="Source\ViewPort.h" />
     <ClInclude Include="Source\World.h" />
     <ClInclude Include="Source\WorldConstants.h" />
   </ItemGroup>
@@ -58,6 +59,7 @@
     <ClCompile Include="Source\TextRenderer.cpp" />
     <ClCompile Include="Source\Transform.cpp" />
     <ClCompile Include="Source\UiManager.cpp" />
+    <ClCompile Include="Source\ViewPort.cpp" />
     <ClCompile Include="Source\World.cpp" />
   </ItemGroup>
   <ItemGroup>

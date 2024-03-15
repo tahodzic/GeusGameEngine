@@ -12,6 +12,7 @@
 #include "Cube.h"
 #include "Camera.h"
 #include "CoordinateSystemGrid.h"
+#include "ViewPort.h"
 
 #include <SDL.h>
 
@@ -27,7 +28,7 @@ class World
 private:
 
 public:
-    World(CoordinateSystemGrid coordinateSystemGrid);
+    World(CoordinateSystemGrid coordinateSystemGrid, ViewPort viewPort);
 
     ~World();
     
@@ -38,6 +39,8 @@ public:
     Camera mCamera;
 
     CoordinateSystemGrid mCoordinateSystemGrid;
+
+    ViewPort mViewPort;
 
     std::vector<Cube> mObjects;
 
@@ -76,6 +79,8 @@ public:
     void RenderObjects();
 
     void RenderCoordinateSystem() const;
+
+    void RenderViewPort() const;
 
     void CalculateWorldToCameraMatrix();
 

@@ -24,8 +24,6 @@ private:
 
 	float mYaw;
 
-	
-
 public:
 	Transform();
 
