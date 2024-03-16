@@ -241,12 +241,12 @@ void World::RenderObjects()
 	}
 }
 
-void World::RenderCoordinateSystem() const
+void World::RenderCoordinateSystem()
 {
 	mCoordinateSystemGrid.Render(mCamera.mWtcMatrix);
 }
 
-void World::RenderViewPort() const
+void World::RenderViewPort()
 {
 	mViewPort.Render(mCamera.mWtcMatrix);
 }

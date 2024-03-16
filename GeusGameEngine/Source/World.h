@@ -78,9 +78,9 @@ public:
 
     void RenderObjects();
 
-    void RenderCoordinateSystem() const;
+    void RenderCoordinateSystem();
 
-    void RenderViewPort() const;
+    void RenderViewPort();
 
     void CalculateWorldToCameraMatrix();
 

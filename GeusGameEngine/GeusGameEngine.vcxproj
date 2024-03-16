@@ -26,6 +26,7 @@
     <ClInclude Include="Source\CoordinateSystemGrid.h" />
     <ClInclude Include="Source\Cube.h" />
     <ClInclude Include="Source\IFont.h" />
+    <ClInclude Include="Source\IRenderable.h" />
     <ClInclude Include="Source\IRenderer.h" />
     <ClInclude Include="Source\ITransform.h" />
     <ClInclude Include="Source\Matrix44.h" />

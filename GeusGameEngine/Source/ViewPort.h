@@ -1,9 +1,10 @@
 #pragma once
 
 #include "IRenderer.h"
+#include "IRenderable.h"
 #include "Vector2Custom.h"
 
-class ViewPort
+class ViewPort : IRenderable
 {
 private:
 	std::shared_ptr<IRenderer> mRenderer;
@@ -15,6 +16,6 @@ public:
 
 	const Vector2Custom<float> mDimensions;
 
-	void Render(const Matrix44<float>& worldToCameraMatrix) const;
+	void Render(const Matrix44<float>& worldToCameraMatrix)  override;
 };
 

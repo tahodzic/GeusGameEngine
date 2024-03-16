@@ -43,7 +43,7 @@ void CoordinateSystemGrid::drawUnitVector(int windowWidth, int windowHeight, con
     out.mY = windowHeight / 2 - vec2D.mY * 100;
 }
 
-void CoordinateSystemGrid::Render(const Matrix44<float>& worldToCameraMatrix) const
+void CoordinateSystemGrid::Render(const Matrix44<float>& worldToCameraMatrix) 
 {
     const bool inWorld = true;
     mRenderer->RenderDrawLine(mXStart, mXEnd, worldToCameraMatrix, inWorld);

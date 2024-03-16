@@ -5,9 +5,10 @@
 #include "Vector2Custom.h"
 
 #include "IFont.h"
+#include "IRenderable.h"
 #include "IRenderer.h"
 
-class CoordinateSystemGrid
+class CoordinateSystemGrid : IRenderable
 {
 private:
 
@@ -43,5 +44,5 @@ public:
 
 	void drawUnitVector(int windowWidth, int windowHeight, const Vector2Custom<int>& vec2D, Vector2Custom<int>& out);
 
-	void Render(const Matrix44<float>& worldToCameraMatrix) const;
+	void Render(const Matrix44<float>& worldToCameraMatrix) override;
 };

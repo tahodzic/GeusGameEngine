@@ -1,5 +1,6 @@
 #pragma once
 
+#include "IRenderable.h"
 #include "IRenderer.h"
 #include "Vector3Custom.h"
 #include "Matrix44.h"
@@ -7,7 +8,7 @@
 
 #include <memory>
 
-class Cube
+class Cube : public IRenderable
 {
 private:
 	std::shared_ptr<IRenderer> mRenderer;
@@ -28,6 +29,6 @@ public:
 
 	Matrix44<float> mLocalToWorldMatrix;
 
-	void Render(const Matrix44<float>& worldToCameraMatrix);
+	void Render(const Matrix44<float>& worldToCameraMatrix)  override;
 
 };
