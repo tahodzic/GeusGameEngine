@@ -9,14 +9,14 @@ Cube::Cube(std::shared_ptr<IRenderer> renderer, const float s, const float x, co
 	float half = s / 2.0f;
 
 	// Define 8 unique vertices
-	mVertices.push_back(Vector3Custom<float>(-half, -half, +half));  // A = 0: 
-	mVertices.push_back(Vector3Custom<float>(+half, -half, +half));  // B = 1: 
-	mVertices.push_back(Vector3Custom<float>(+half, -half, -half));  // C = 2: 
-	mVertices.push_back(Vector3Custom<float>(-half, -half, -half));  // D = 3: 
-	mVertices.push_back(Vector3Custom<float>(-half, +half, +half));  // E = 4: 
-	mVertices.push_back(Vector3Custom<float>(+half, +half, +half));  // F = 5: 
-	mVertices.push_back(Vector3Custom<float>(+half, +half, -half));  // G = 6: 
-	mVertices.push_back(Vector3Custom<float>(-half, +half, -half));  // H = 7: 
+	mVertices.push_back(Vector3<float>(-half, -half, +half));  // A = 0: 
+	mVertices.push_back(Vector3<float>(+half, -half, +half));  // B = 1: 
+	mVertices.push_back(Vector3<float>(+half, -half, -half));  // C = 2: 
+	mVertices.push_back(Vector3<float>(-half, -half, -half));  // D = 3: 
+	mVertices.push_back(Vector3<float>(-half, +half, +half));  // E = 4: 
+	mVertices.push_back(Vector3<float>(+half, +half, +half));  // F = 5: 
+	mVertices.push_back(Vector3<float>(+half, +half, -half));  // G = 6: 
+	mVertices.push_back(Vector3<float>(-half, +half, -half));  // H = 7: 
 
 	// Define triangles using indices
 	// 6 faces, 12 triangles

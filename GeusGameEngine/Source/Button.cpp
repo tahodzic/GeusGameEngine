@@ -2,7 +2,7 @@
 
 #include "Button.h"
 
-Button::Button(Vector2Custom<int> dimensions, Vector2Custom<int> position, std::string label)
+Button::Button(Vector2<int> dimensions, Vector2<int> position, std::string label)
 	: mDimensions(dimensions), mPosition(position), mLabel(label)
 {
 }
@@ -11,12 +11,12 @@ Button::~Button()
 {
 }
 
-Vector2Custom<int> Button::TransformToLocal(int worldX, int worldY)
+Vector2<int> Button::TransformToLocal(int worldX, int worldY)
 {
-	return Vector2Custom<int>(worldX - mPosition.mX, worldY - mPosition.mY);
+	return Vector2<int>(worldX - mPosition.mX, worldY - mPosition.mY);
 }
 
-bool Button::IsInDimensions(Vector2Custom<int> point)
+bool Button::IsInDimensions(Vector2<int> point)
 {
 	if (point.mX < 0 || point.mY < 0)
 	{

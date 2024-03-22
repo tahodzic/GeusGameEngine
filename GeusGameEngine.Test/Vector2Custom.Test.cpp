@@ -1,14 +1,14 @@
-#include "Vector2Custom.h"
+#include "Vector2.h"
 
 #include "pch.h" 
 
-namespace Vector2CustomTests
+namespace Vector2Tests
 { 
 TEST(Addition, TwoFloats)
 {
-	Vector2Custom<float> v1(1.0f, 2.0f);
-	Vector2Custom<float> v2(3.0f, 4.0f);
-	Vector2Custom<float> vExpected(4.0f, 6.0f);
+	Vector2<float> v1(1.0f, 2.0f);
+	Vector2<float> v2(3.0f, 4.0f);
+	Vector2<float> vExpected(4.0f, 6.0f);
 
 	auto vResult = v1 + v2;
 	

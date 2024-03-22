@@ -1,5 +1,5 @@
 #include "Button.h"
-#include "Vector2Custom.h"
+#include "Vector2.h"
 
 
 #include "pch.h" 
@@ -12,7 +12,7 @@ namespace ButtonTests
 		ButtonTest() : mDimensions(1, 2), mPosition(3, 4), mLabel("Button1"), mButton(mDimensions, mPosition, mLabel)
 		{}
 
-		Vector2Custom<int> mDimensions;	Vector2Custom<int> mPosition;
+		Vector2<int> mDimensions;	Vector2<int> mPosition;
 
 		std::string mLabel;
 
@@ -23,9 +23,9 @@ namespace ButtonTests
 	{
 		std::string expectedLabel("Button1");
 
-		Vector2Custom<int> expectedDimensions(1, 2);
+		Vector2<int> expectedDimensions(1, 2);
 
-		Vector2Custom<int> expectedPosition(3, 4);
+		Vector2<int> expectedPosition(3, 4);
 
 		EXPECT_EQ(mDimensions.mX, expectedDimensions.mX);
 

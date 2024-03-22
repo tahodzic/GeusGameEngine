@@ -2,7 +2,7 @@
 #include <sstream>      // std::stringstream
 #include <iomanip>  
 
-#include "Vector3Custom.h"
+#include "Vector3.h"
 
 template<typename T>
 class Matrix44
@@ -206,7 +206,7 @@ public:
     // 1 especially when the matrix is projective matrix (perspective projection matrix).
     //[/comment]
     template<typename S>
-    void multVecMatrix(const Vector3Custom<S>& src, Vector3Custom<S>& dst) const
+    void multVecMatrix(const Vector3<S>& src, Vector3<S>& dst) const
     {
         S a, b, c, w;
 
@@ -234,7 +234,7 @@ public:
     // and we don't compute w.
     //[/comment]
     template<typename S>
-    void multDirMatrix(const Vector3Custom<S>& src, Vector3Custom<S>& dst) const
+    void multDirMatrix(const Vector3<S>& src, Vector3<S>& dst) const
     {
         S a, b, c;
 

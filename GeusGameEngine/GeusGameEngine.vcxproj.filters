@@ -14,7 +14,7 @@
     <ClInclude Include="Source\Plane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Vector3Custom.h">
+    <ClInclude Include="Source\Vector3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\SdlRenderer.h">
@@ -62,7 +62,7 @@
     <ClInclude Include="Source\UiManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Vector2Custom.h">
+    <ClInclude Include="Source\Vector2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\CoordinateSystemGrid.h">

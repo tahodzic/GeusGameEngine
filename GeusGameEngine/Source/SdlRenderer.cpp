@@ -28,11 +28,11 @@ SdlRenderer::~SdlRenderer()
 }
 
 bool SdlRenderer::calculateLinePlaneIntersection(
-	const Vector3Custom<float>& direction,
-	const Vector3Custom<float>& p1,
-	const Vector3Custom<float>& p2,
+	const Vector3<float>& direction,
+	const Vector3<float>& p1,
+	const Vector3<float>& p2,
 	const Plane &plane,
-	Vector3Custom<float>& intersection)
+	Vector3<float>& intersection)
 {
 	auto dividend = plane.mA * p1.mX + plane.mB * p1.mY + plane.mC * p1.mZ + plane.mD;
 
@@ -70,16 +70,16 @@ void SdlRenderer::RenderPresent()
 }
 
 void SdlRenderer::clipToViewFrustum(
-	const Vector3Custom<float>& worldVector1,
-	const Vector3Custom<float>& worldVector2, 
-	Vector3Custom<float>& outCameraVector1,
-	Vector3Custom<float>& outCameraVector2,
+	const Vector3<float>& worldVector1,
+	const Vector3<float>& worldVector2, 
+	Vector3<float>& outCameraVector1,
+	Vector3<float>& outCameraVector2,
 	const Matrix44<float>& worldToCameraMatrix)
 {
-	Vector3Custom<float> cameraV1;
+	Vector3<float> cameraV1;
 	worldToCameraMatrix.multVecMatrix(worldVector1, cameraV1);
 
-	Vector3Custom<float> cameraV2;
+	Vector3<float> cameraV2;
 	worldToCameraMatrix.multVecMatrix(worldVector2, cameraV2);
 
 	auto direction = cameraV2 - cameraV1;
@@ -113,15 +113,15 @@ void SdlRenderer::clipToViewFrustum(
 }
 
 void SdlRenderer::CalculateTriangle(
-	const Vector3Custom<float>& vector1,
-	const Vector3Custom<float>& vector2,
-	const Vector3Custom<float>& vector3,
-	Vector2Custom<int>& vRaster1,
-	Vector2Custom<int>& vRaster2,
-	Vector2Custom<int>& vRaster3,
+	const Vector3<float>& vector1,
+	const Vector3<float>& vector2,
+	const Vector3<float>& vector3,
+	Vector2<int>& vRaster1,
+	Vector2<int>& vRaster2,
+	Vector2<int>& vRaster3,
 	const Matrix44<float>& worldToCameraMatrix)
 {
-	Vector3Custom<float> cameraPoint1, cameraPoint2, cameraPoint3;
+	Vector3<float> cameraPoint1, cameraPoint2, cameraPoint3;
 	clipToViewFrustum(
 		vector1, vector2,
 		cameraPoint1, cameraPoint2,
@@ -138,7 +138,7 @@ void SdlRenderer::CalculateTriangle(
 		worldToCameraMatrix
 	);
 
-	Vector3Custom<float> clipPoint1, clipPoint2, clipPoint3;
+	Vector3<float> clipPoint1, clipPoint2, clipPoint3;
 	mProjectionMatrix.multVecMatrix(cameraPoint1, clipPoint1);
 	mProjectionMatrix.multVecMatrix(cameraPoint2, clipPoint2);
 	mProjectionMatrix.multVecMatrix(cameraPoint3, clipPoint3);
@@ -168,7 +168,7 @@ void SdlRenderer::CalculateTriangle(
 }
 
 void SdlRenderer:: RenderPolygon(
-	const std::vector<Vector3Custom<float>>& vertices,
+	const std::vector<Vector3<float>>& vertices,
 	const std::vector<int>& indices,
 	const Matrix44<float>& worldToCameraMatrix,
 	const Matrix44<float>& localToWorldMatrix,
@@ -180,16 +180,16 @@ void SdlRenderer:: RenderPolygon(
 
 	for (int i = 0; i < indices.size() / 3; i++)
 	{
-		const Vector3Custom<float>& v0Local = vertices[indices[i * 3]];
-		const Vector3Custom<float>& v1Local = vertices[indices[i * 3 + 1]];
-		const Vector3Custom<float>& v2Local = vertices[indices[i * 3 + 2]];
+		const Vector3<float>& v0Local = vertices[indices[i * 3]];
+		const Vector3<float>& v1Local = vertices[indices[i * 3 + 1]];
+		const Vector3<float>& v2Local = vertices[indices[i * 3 + 2]];
 		
-		Vector3Custom<float> v0World, v1World, v2World;
+		Vector3<float> v0World, v1World, v2World;
 		localToWorldMatrix.multVecMatrix(v0Local, v0World);
 		localToWorldMatrix.multVecMatrix(v1Local, v1World);
 		localToWorldMatrix.multVecMatrix(v2Local, v2World);
 
-		Vector2Custom<int> vRaster1, vRaster2, vRaster3;
+		Vector2<int> vRaster1, vRaster2, vRaster3;
 
 		CalculateTriangle(v0World, v1World, v2World, vRaster1, vRaster2, vRaster3, worldToCameraMatrix);
 
@@ -212,14 +212,14 @@ void SdlRenderer:: RenderPolygon(
 }
 
 void SdlRenderer::RenderDrawLine(
-	const Vector3Custom<float>& vector1,
-	const Vector3Custom<float>& vector2,
+	const Vector3<float>& vector1,
+	const Vector3<float>& vector2,
 	const Matrix44<float>& worldToCameraMatrix,
 	const bool inWorld)
 {
 	// TODO: Consistent naming between vector and point
-	Vector3Custom<float> cameraPoint1;
-	Vector3Custom<float> cameraPoint2;
+	Vector3<float> cameraPoint1;
+	Vector3<float> cameraPoint2;
 	clipToViewFrustum(
 		vector1,
 		vector2,
@@ -228,12 +228,12 @@ void SdlRenderer::RenderDrawLine(
 		worldToCameraMatrix
 	);
 
-	Vector3Custom<float> clipPoint1;
-	Vector3Custom<float> clipPoint2;
+	Vector3<float> clipPoint1;
+	Vector3<float> clipPoint2;
 	mProjectionMatrix.multVecMatrix(cameraPoint1, clipPoint1);
 	mProjectionMatrix.multVecMatrix(cameraPoint2, clipPoint2);
 
-	Vector2Custom<int> vRaster1, vRaster2;
+	Vector2<int> vRaster1, vRaster2;
 	vRaster1.mX = static_cast<int>(std::floor((clipPoint1.mX * 0.5f + 0.5f) * kWindowWidth));
 	vRaster1.mY = static_cast<int>(std::floor((1.0f - (clipPoint1.mY * 0.5f + 0.5f)) * kWindowHeight));
 

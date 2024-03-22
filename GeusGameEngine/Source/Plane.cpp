@@ -29,12 +29,12 @@ void Plane::normalize()
 	mD /= length;
 }
 
-float Plane::distanceToPoint(const Vector3Custom<float>& point) const
+float Plane::distanceToPoint(const Vector3<float>& point) const
 {
 	return mA * point.mX + mB * point.mY + mC * point.mZ + mD;
 }
 
-bool Plane::isPointInFront(const Vector3Custom<float>& point) const
+bool Plane::isPointInFront(const Vector3<float>& point) const
 {
 	return distanceToPoint(point) > 0;
 }

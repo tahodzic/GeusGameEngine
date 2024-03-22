@@ -3,7 +3,7 @@
 #include <cmath>
 
 #include "Constants.h"
-#include "Vector3Custom.h"
+#include "Vector3.h"
 #include "Matrix44.h"
 
 
@@ -20,7 +20,7 @@ private:
 public:
     Camera();
 
-    Vector3Custom<float> mPosition;
+    Vector3<float> mPosition;
 
     Matrix44<float> mWtcMatrix;
 
@@ -46,11 +46,11 @@ public:
 
     void UpdateYawMatrix();
     
-    void TransformWorldToCamera(const Vector3Custom<float>& worldPoint, Vector3Custom<float>& cameraPoint);
+    void TransformWorldToCamera(const Vector3<float>& worldPoint, Vector3<float>& cameraPoint);
     
     void UpdateWorldToCameraMatrix();
 
-    void MoveCamera(Vector3Custom<float>& translation);
+    void MoveCamera(Vector3<float>& translation);
 
     void RollCamera(const float change);
     

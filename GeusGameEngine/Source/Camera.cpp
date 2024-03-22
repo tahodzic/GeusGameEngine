@@ -67,7 +67,7 @@ void Camera::UpdateYawMatrix()
     mYawMatrix[2][2] = cos(mYaw);
 }
 
-void Camera::TransformWorldToCamera(const Vector3Custom<float>& worldPoint,  Vector3Custom<float>& cameraPoint)
+void Camera::TransformWorldToCamera(const Vector3<float>& worldPoint,  Vector3<float>& cameraPoint)
 {
     mWtcMatrix.multVecMatrix(worldPoint,  cameraPoint);
 }
@@ -90,11 +90,11 @@ void Camera::UpdateWorldToCameraMatrix()
  }
 
 
-void Camera::MoveCamera(Vector3Custom<float>& translation)
+void Camera::MoveCamera(Vector3<float>& translation)
 {
-    Vector3Custom<float> xVec(mCombinedRotations[0][0],  mCombinedRotations[0][1],  mCombinedRotations[0][2]);
-    Vector3Custom<float> yVec(mCombinedRotations[1][0],  mCombinedRotations[1][1],  mCombinedRotations[1][2]);
-    Vector3Custom<float> zVec(mCombinedRotations[2][0],  mCombinedRotations[2][1],  mCombinedRotations[2][2]);
+    Vector3<float> xVec(mCombinedRotations[0][0],  mCombinedRotations[0][1],  mCombinedRotations[0][2]);
+    Vector3<float> yVec(mCombinedRotations[1][0],  mCombinedRotations[1][1],  mCombinedRotations[1][2]);
+    Vector3<float> zVec(mCombinedRotations[2][0],  mCombinedRotations[2][1],  mCombinedRotations[2][2]);
     auto xtr = xVec * translation.mX;
     auto ytr = yVec * translation.mY;
     auto ztr = zVec * translation.mZ;

@@ -60,7 +60,7 @@ void Transform::CalculateRotations()
 	mCombinedRotations = mRollMatrix * mPitchMatrix * mYawMatrix;
 }
 
-void Transform::LocalToWorld(const Vector3Custom<float>& position, Matrix44<float>& localToWorldMatrix)
+void Transform::LocalToWorld(const Vector3<float>& position, Matrix44<float>& localToWorldMatrix)
 {
 	// define camera translation
 	Matrix44<float> translationMatrix = {

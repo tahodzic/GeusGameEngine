@@ -17,8 +17,8 @@
 #include <SDL.h>
 
 #include "Matrix44.h"
-#include "Vector3Custom.h"
-#include "Vector2Custom.h"
+#include "Vector3.h"
+#include "Vector2.h"
 
 #include "Button.h"
 
@@ -74,7 +74,7 @@ public:
 
     void RenderButton();
 
-    void UiDrawRectangle(Vector2Custom<int> dimensions, Vector2Custom<int> position, const bool inWorld);
+    void UiDrawRectangle(Vector2<int> dimensions, Vector2<int> position, const bool inWorld);
 
     void RenderObjects();
 

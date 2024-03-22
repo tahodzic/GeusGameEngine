@@ -10,8 +10,8 @@
 World::World(CoordinateSystemGrid coordinateSystemGrid, ViewPort viewPort) :
 	mCoordinateSystemGrid(coordinateSystemGrid),
 	mCamera(),
-	mButtonReset(Vector2Custom<int>(70,25), Vector2Custom<int>(10, 20), "Reset"),
-	mButtonCreate(Vector2Custom<int>(70, 25), Vector2Custom<int>(10, 60), "Create"),
+	mButtonReset(Vector2<int>(70,25), Vector2<int>(10, 20), "Reset"),
+	mButtonCreate(Vector2<int>(70, 25), Vector2<int>(10, 60), "Create"),
 	mSdlEvent(),
 	mMousePrevX(0), 
 	mMousePrevY(0),
@@ -175,14 +175,14 @@ void World::HandleKeyEvents()
 			mMousePrevX = mSdlEvent.button.x;
 			mMousePrevY = mSdlEvent.button.y;
 			
-			Vector3Custom<float> translation((static_cast<float>(mMouseDiffX)) / 50.0f, (static_cast<float>(-mMouseDiffY)) / 50.0f, 0.0f);
+			Vector3<float> translation((static_cast<float>(mMouseDiffX)) / 50.0f, (static_cast<float>(-mMouseDiffY)) / 50.0f, 0.0f);
 			mCamera.MoveCamera(translation);
 		}
 		break;
 	}
 	case SDL_MOUSEWHEEL:
 	{
-		Vector3Custom<float> translation(0.0f, 0.0f, static_cast<float>(-mSdlEvent.wheel.y));
+		Vector3<float> translation(0.0f, 0.0f, static_cast<float>(-mSdlEvent.wheel.y));
 		mCamera.MoveCamera(translation);
 		break;
 	}
@@ -228,7 +228,7 @@ void World::RenderButton()
 	UiDrawRectangle(mButtonCreate.mDimensions, mButtonCreate.mPosition, inWorld);
 }
 
-void World::UiDrawRectangle(Vector2Custom<int> dimensions, Vector2Custom<int> position, const bool inWorld)
+void World::UiDrawRectangle(Vector2<int> dimensions, Vector2<int> position, const bool inWorld)
 {
 	MediaLayer::getInstance().RenderRect(dimensions.mX, dimensions.mY, position.mX, position.mY, inWorld);
 }

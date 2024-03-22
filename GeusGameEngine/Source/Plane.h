@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Vector3Custom.h"
+#include "Vector3.h"
 
 class Plane
 {
@@ -17,9 +17,9 @@ public:
 	
 	void normalize();
 
-	float distanceToPoint(const Vector3Custom<float>& point) const;
+	float distanceToPoint(const Vector3<float>& point) const;
 
-	bool isPointInFront(const Vector3Custom<float>& point) const;
+	bool isPointInFront(const Vector3<float>& point) const;
 
 	float& operator [] (uint8_t i);
 };

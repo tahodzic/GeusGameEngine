@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Vector2Custom.h"
-#include "Vector3Custom.h"
+#include "Vector2.h"
+#include "Vector3.h"
 #include "Matrix44.h"
 
 #include <vector>
@@ -21,13 +21,13 @@ public:
     virtual void RenderPresent() = 0;
 
     virtual void RenderDrawLine(
-		const Vector3Custom<float>& vector1,
-		const Vector3Custom<float>& vector2,
+		const Vector3<float>& vector1,
+		const Vector3<float>& vector2,
 		const Matrix44<float>& worldToCameraMatrix,
 		const bool inWorld) = 0;
 	
 	virtual void RenderPolygon(
-		const std::vector<Vector3Custom<float>>& vertices,
+		const std::vector<Vector3<float>>& vertices,
 		const std::vector<int>& indices,
 		const Matrix44<float>& worldToCameraMatrix,
 		const Matrix44<float>& localToWorldMatrix,

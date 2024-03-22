@@ -2,7 +2,7 @@
 
 #include "IRenderable.h"
 #include "IRenderer.h"
-#include "Vector3Custom.h"
+#include "Vector3.h"
 #include "Matrix44.h"
 #include "Transform.h"
 
@@ -19,11 +19,11 @@ public:
 
 	~Cube();
 
-	Vector3Custom<float> mPosition;
+	Vector3<float> mPosition;
 
-	std::vector<Vector3Custom<float>> mVertices;
+	std::vector<Vector3<float>> mVertices;
 
-	std::vector<Vector3Custom<float>> mVerticesWorld;
+	std::vector<Vector3<float>> mVerticesWorld;
 
 	std::vector<int> mIndices;
 

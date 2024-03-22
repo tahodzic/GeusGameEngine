@@ -37,7 +37,7 @@ CoordinateSystemGrid::~CoordinateSystemGrid()
 
 }
 
-void CoordinateSystemGrid::drawUnitVector(int windowWidth, int windowHeight, const Vector2Custom<int>& vec2D, Vector2Custom<int>& out)
+void CoordinateSystemGrid::drawUnitVector(int windowWidth, int windowHeight, const Vector2<int>& vec2D, Vector2<int>& out)
 {
     out.mX = windowWidth / 2 + vec2D.mX * 100;
     out.mY = windowHeight / 2 - vec2D.mY * 100;

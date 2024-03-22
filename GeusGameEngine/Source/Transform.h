@@ -3,7 +3,7 @@
 #include "ITransform.h"
 
 #include "Matrix44.h"
-#include "Vector3Custom.h"
+#include "Vector3.h"
 
 class Transform //: public ITransform
 {
@@ -41,5 +41,5 @@ public:
 
 	void CalculateRotations();
 
-	void LocalToWorld(const Vector3Custom<float>& position, Matrix44<float>& localToWorldMatrix);
+	void LocalToWorld(const Vector3<float>& position, Matrix44<float>& localToWorldMatrix);
 };

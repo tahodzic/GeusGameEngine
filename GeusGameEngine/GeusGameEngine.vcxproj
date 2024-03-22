@@ -40,8 +40,8 @@
     <ClInclude Include="Source\Transform.h" />
     <ClInclude Include="Source\TtfDeleter.h" />
     <ClInclude Include="Source\UiManager.h" />
-    <ClInclude Include="Source\Vector2Custom.h" />
-    <ClInclude Include="Source\Vector3Custom.h" />
+    <ClInclude Include="Source\Vector2.h" />
+    <ClInclude Include="Source\Vector3.h" />
     <ClInclude Include="Source\ViewPort.h" />
     <ClInclude Include="Source\World.h" />
     <ClInclude Include="Source\WorldConstants.h" />

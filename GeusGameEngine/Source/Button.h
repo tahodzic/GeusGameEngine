@@ -2,24 +2,24 @@
 
 #include <string>
 
-#include "Vector2Custom.h"
+#include "Vector2.h"
 
 class Button
 {
 private:
 	
-	Vector2Custom<int> TransformToLocal(int worldX, int worldY);
+	Vector2<int> TransformToLocal(int worldX, int worldY);
 
-	bool IsInDimensions(Vector2Custom<int> point);
+	bool IsInDimensions(Vector2<int> point);
 
 public:
 	std::string mLabel;
 
-	Vector2Custom<int> mDimensions;
+	Vector2<int> mDimensions;
 
-	Vector2Custom<int> mPosition;
+	Vector2<int> mPosition;
 	
-	Button(Vector2Custom<int> dimensions, Vector2Custom<int> position, std::string label);
+	Button(Vector2<int> dimensions, Vector2<int> position, std::string label);
 
 	~Button();
 

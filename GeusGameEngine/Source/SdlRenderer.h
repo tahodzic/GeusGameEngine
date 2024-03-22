@@ -1,8 +1,8 @@
 #pragma once
 
 #include "IRenderer.h"
-#include "Vector2Custom.h"
-#include "Vector3Custom.h"
+#include "Vector2.h"
+#include "Vector3.h"
 #include "Matrix44.h"
 #include "Plane.h"
 
@@ -32,27 +32,27 @@ private:
     const SDL_Rect mViewPort;
 
     void clipToViewFrustum(
-        const Vector3Custom<float>& vector1,
-        const Vector3Custom<float>& vector2,
-        Vector3Custom<float>& newV1,
-        Vector3Custom<float>& newV2,
+        const Vector3<float>& vector1,
+        const Vector3<float>& vector2,
+        Vector3<float>& newV1,
+        Vector3<float>& newV2,
         const Matrix44<float>& worldToCameraMatrix
     );
 
     bool calculateLinePlaneIntersection(
-        const Vector3Custom<float>& direction,
-        const Vector3Custom<float>& p1,
-        const Vector3Custom<float>& p2,
+        const Vector3<float>& direction,
+        const Vector3<float>& p1,
+        const Vector3<float>& p2,
         const Plane& plane,
-        Vector3Custom<float>& intersection);
+        Vector3<float>& intersection);
 
     void CalculateTriangle(
-        const Vector3Custom<float>& vector1,
-        const Vector3Custom<float>& vector2,
-        const Vector3Custom<float>& vector3,
-        Vector2Custom<int>& vRaster1,
-        Vector2Custom<int>& vRaster2,
-        Vector2Custom<int>& vRaster3,
+        const Vector3<float>& vector1,
+        const Vector3<float>& vector2,
+        const Vector3<float>& vector3,
+        Vector2<int>& vRaster1,
+        Vector2<int>& vRaster2,
+        Vector2<int>& vRaster3,
         const Matrix44<float>& worldToCameraMatrix);
 
 
@@ -72,15 +72,15 @@ public:
     void RenderPresent() override;
 
     void RenderPolygon(
-        const std::vector<Vector3Custom<float>>& vertices,
+        const std::vector<Vector3<float>>& vertices,
         const std::vector<int>& indices,
         const Matrix44<float>& worldToCameraMatrix,
         const Matrix44<float>& localToWorldMatrix,
         const bool inWorld) override;
 
     void RenderDrawLine(
-        const Vector3Custom<float>& vector1,
-        const Vector3Custom<float>& vector2,
+        const Vector3<float>& vector1,
+        const Vector3<float>& vector2,
         const Matrix44<float>& worldToCameraMatrix,
         const bool inWorld) override;
     
