@@ -193,9 +193,18 @@ void SdlRenderer:: RenderPolygon(
 
 		CalculateTriangle(v0World, v1World, v2World, vRaster1, vRaster2, vRaster3, worldToCameraMatrix);
 
-		verticesToRender.push_back(SDL_Vertex{ {static_cast<float>(vRaster1.mX), static_cast<float>(vRaster1.mY)}, col, { 0, 0 } });
-		verticesToRender.push_back(SDL_Vertex{ {static_cast<float>(vRaster2.mX), static_cast<float>(vRaster2.mY)}, col, { 0, 0 } });
-		verticesToRender.push_back(SDL_Vertex{ {static_cast<float>(vRaster3.mX), static_cast<float>(vRaster3.mY)}, col, { 0, 0 } });
+		if (inWorld)
+		{
+			verticesToRender.push_back(SDL_Vertex{ {static_cast<float>(vRaster1.mX) / 1.5f + 100, static_cast<float>(vRaster1.mY) / 2.0f + 100}, col, { 0, 0 } });
+			verticesToRender.push_back(SDL_Vertex{ {static_cast<float>(vRaster2.mX) / 1.5f + 100, static_cast<float>(vRaster2.mY) / 2.0f + 100}, col, { 0, 0 } });
+			verticesToRender.push_back(SDL_Vertex{ {static_cast<float>(vRaster3.mX) / 1.5f + 100, static_cast<float>(vRaster3.mY) / 2.0f + 100}, col, { 0, 0 } });
+		}
+		else
+		{
+			verticesToRender.push_back(SDL_Vertex{ {static_cast<float>(vRaster1.mX), static_cast<float>(vRaster1.mY)}, col, { 0, 0 } });
+			verticesToRender.push_back(SDL_Vertex{ {static_cast<float>(vRaster2.mX), static_cast<float>(vRaster2.mY)}, col, { 0, 0 } });
+			verticesToRender.push_back(SDL_Vertex{ {static_cast<float>(vRaster3.mX), static_cast<float>(vRaster3.mY)}, col, { 0, 0 } });
+		}
 	}
 
 	auto vertsSize = verticesToRender.size();
@@ -234,11 +243,22 @@ void SdlRenderer::RenderDrawLine(
 	mProjectionMatrix.multVecMatrix(cameraPoint2, clipPoint2);
 
 	Vector2<int> vRaster1, vRaster2;
-	vRaster1.mX = static_cast<int>(std::floor((clipPoint1.mX * 0.5f + 0.5f) * kWindowWidth));
-	vRaster1.mY = static_cast<int>(std::floor((1.0f - (clipPoint1.mY * 0.5f + 0.5f)) * kWindowHeight));
+	if (inWorld)
+	{
+		vRaster1.mX = static_cast<int>((std::floor((clipPoint1.mX * 0.5f + 0.5f) * kWindowWidth)) / 1.5f + 100);
+		vRaster1.mY = static_cast<int>((std::floor((1.0f - (clipPoint1.mY * 0.5f + 0.5f)) * kWindowHeight)) / 2.0f + 100);
 
-	vRaster2.mX = static_cast<int>(std::floor((clipPoint2.mX * 0.5f + 0.5f) * kWindowWidth));
-	vRaster2.mY = static_cast<int>(std::floor((1.0f - (clipPoint2.mY * 0.5f + 0.5f)) * kWindowHeight));
+		vRaster2.mX = static_cast<int>((std::floor((clipPoint2.mX * 0.5f + 0.5f) * kWindowWidth)) / 1.5f + 100);
+		vRaster2.mY = static_cast<int>((std::floor((1.0f - (clipPoint2.mY * 0.5f + 0.5f)) * kWindowHeight)) / 2.0f + 100);
+	}
+	else
+	{
+		vRaster1.mX = static_cast<int>(std::floor((clipPoint1.mX * 0.5f + 0.5f) * kWindowWidth));
+		vRaster1.mY = static_cast<int>(std::floor((1.0f - (clipPoint1.mY * 0.5f + 0.5f)) * kWindowHeight));
+
+		vRaster2.mX = static_cast<int>(std::floor((clipPoint2.mX * 0.5f + 0.5f) * kWindowWidth));
+		vRaster2.mY = static_cast<int>(std::floor((1.0f - (clipPoint2.mY * 0.5f + 0.5f)) * kWindowHeight));
+	}
 
 	//int imageWidth = 320;
 	//int imageHeight = 240;

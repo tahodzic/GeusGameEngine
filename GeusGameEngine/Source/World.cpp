@@ -7,11 +7,11 @@
 
 #include <math.h>
 
-World::World(CoordinateSystemGrid coordinateSystemGrid, ViewPort viewPort) :
+World::World(CoordinateSystemGrid coordinateSystemGrid, ViewPort viewPort, Button button1, Button button2) :
 	mCoordinateSystemGrid(coordinateSystemGrid),
 	mCamera(),
-	mButtonReset(Vector2<int>(70,25), Vector2<int>(10, 20), "Reset"),
-	mButtonCreate(Vector2<int>(70, 25), Vector2<int>(10, 60), "Create"),
+	mButtonReset(button1),
+	mButtonCreate(button2),
 	mSdlEvent(),
 	mMousePrevX(0), 
 	mMousePrevY(0),
@@ -32,11 +32,19 @@ World World::CreateAndInitialize()
 
 	MediaLayer::getInstance().Initialize(windowTitle, windowPosX, windowPosY, windowWidth, windowHeight, canvasWidth, canvasHeight);
 
+	auto fh = MediaLayer::getInstance().GetFontHandler();
+
+	auto ren = MediaLayer::getInstance().GetRenderer();
+		
+	Button mButtonReset(Vector2<int>(70, 25), Vector2<int>(10, 20), "Reset", fh, ren);
+
+	Button mButtonCreate(Vector2<int>(70, 25), Vector2<int>(10, 60), "Create", fh, ren);
+
 	CoordinateSystemGrid csg(20.0f, MediaLayer::getInstance().GetFontHandler(), MediaLayer::getInstance().GetRenderer());
 
 	ViewPort vwp(MediaLayer::getInstance().GetRenderer(), 100.0f, 100.0f, 640.0f, 480.0f);
 
-	World world(csg, vwp);
+	World world(csg, vwp, mButtonReset, mButtonCreate);
 
 	return world;
 }
@@ -96,6 +104,7 @@ void World::HandleAction()
 void World::HandleKeyEvents()
 {
 	static bool leftMouseButtonDown = false; // TODO: make own input class
+	static bool rightMouseButtonDown = false; // TODO: make own input class
 
 	float change = 2.0f*static_cast<float>(Constants::pi)/8.0f;
 
@@ -107,30 +116,6 @@ void World::HandleKeyEvents()
 	{
 		switch (mSdlEvent.key.keysym.sym)
 		{
-		case SDLK_w:
-			mCamera.PitchCamera(-change);
-			break;
-
-		case SDLK_s:
-			mCamera.PitchCamera(change);
-			break;
-
-		case SDLK_a:
-			mCamera.YawCamera(-change);
-			break;
-
-		case SDLK_d:
-			mCamera.YawCamera(change);
-			break;
-
-		case SDLK_q:
-			mCamera.RollCamera(-change);
-			break;
-
-		case SDLK_e:
-			mCamera.RollCamera(change);
-			break;
-
 		case SDLK_r:
 			ResetScene();
 			break;
@@ -155,6 +140,12 @@ void World::HandleKeyEvents()
 				AddObject(c);
 			}
 		}
+		if (mSdlEvent.button.button == SDL_BUTTON_RIGHT)
+		{
+			rightMouseButtonDown = true;
+			mMousePrevX = mSdlEvent.button.x;
+			mMousePrevY = mSdlEvent.button.y;
+		}
 		break;
 	}
 	case SDL_MOUSEBUTTONUP:
@@ -162,6 +153,10 @@ void World::HandleKeyEvents()
 		if (mSdlEvent.button.button == SDL_BUTTON_LEFT)
 		{
 			leftMouseButtonDown = false;
+		}
+		if (mSdlEvent.button.button == SDL_BUTTON_RIGHT)
+		{
+			rightMouseButtonDown = false;
 		}
 		break;
 	}
@@ -176,7 +171,19 @@ void World::HandleKeyEvents()
 			mMousePrevY = mSdlEvent.button.y;
 			
 			Vector3<float> translation((static_cast<float>(mMouseDiffX)) / 50.0f, (static_cast<float>(-mMouseDiffY)) / 50.0f, 0.0f);
+
 			mCamera.MoveCamera(translation);
+		}
+		if (rightMouseButtonDown)
+		{
+			mMouseDiffX = mMousePrevX - mSdlEvent.button.x;
+			mMouseDiffY = mMousePrevY - mSdlEvent.button.y;
+
+			mMousePrevX = mSdlEvent.button.x;
+			mMousePrevY = mSdlEvent.button.y;
+
+			mCamera.YawCamera(static_cast<float>(mMouseDiffX) * 0.01f);
+			//mCamera.PitchCamera(static_cast<float>(mMouseDiffY) * 0.01f);
 		}
 		break;
 	}
@@ -215,22 +222,9 @@ void World::CalculateWorldToCameraMatrix()
 
 void World::RenderButton()
 {
-	bool inWorld = false;
-	TextRenderer::print(mButtonReset.mLabel,
-		mButtonReset.mDimensions.mX + mButtonReset.mPosition.mX,
-		mButtonReset.mDimensions.mY + mButtonReset.mPosition.mY,
-		inWorld);
-	TextRenderer::print(mButtonCreate.mLabel,
-		mButtonCreate.mDimensions.mX + mButtonCreate.mPosition.mX,
-		mButtonCreate.mDimensions.mY + mButtonCreate.mPosition.mY,
-		inWorld);
-	UiDrawRectangle(mButtonReset.mDimensions, mButtonReset.mPosition, inWorld);
-	UiDrawRectangle(mButtonCreate.mDimensions, mButtonCreate.mPosition, inWorld);
-}
+	mButtonReset.Render(mWtcMatrix);
 
-void World::UiDrawRectangle(Vector2<int> dimensions, Vector2<int> position, const bool inWorld)
-{
-	MediaLayer::getInstance().RenderRect(dimensions.mX, dimensions.mY, position.mX, position.mY, inWorld);
+	mButtonCreate.Render(mWtcMatrix);
 }
 
 void World::RenderObjects()

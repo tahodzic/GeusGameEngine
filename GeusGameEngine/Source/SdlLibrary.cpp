@@ -21,7 +21,7 @@ static std::shared_ptr<SDL_Renderer> CreateRenderer(const std::string_view title
 		throw std::runtime_error("SDL_Init failed.");
 	}
 
-	SDL_Window* win = SDL_CreateWindow(title.data(), windowsPosX, windowsPosY, windowWidth, windowHeight, 0);
+	SDL_Window* win = SDL_CreateWindow(title.data(), windowsPosX, windowsPosY, windowWidth, windowHeight, SDL_WINDOW_RESIZABLE);
 
 	std::shared_ptr<SDL_Renderer> sdlRenderer(SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED), SdlDeleter::Deleter());
 

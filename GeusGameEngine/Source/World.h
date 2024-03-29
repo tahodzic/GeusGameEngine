@@ -28,7 +28,7 @@ class World
 private:
 
 public:
-    World(CoordinateSystemGrid coordinateSystemGrid, ViewPort viewPort);
+    World(CoordinateSystemGrid coordinateSystemGrid, ViewPort viewPort, Button button1, Button button2);
 
     ~World();
     
@@ -73,8 +73,6 @@ public:
     Cube CreateCube(const float s, const float x, const float y, const float z);
 
     void RenderButton();
-
-    void UiDrawRectangle(Vector2<int> dimensions, Vector2<int> position, const bool inWorld);
 
     void RenderObjects();
 

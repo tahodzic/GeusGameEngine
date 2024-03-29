@@ -17,7 +17,9 @@ public:
 	CoordinateSystemGrid(float length, std::shared_ptr<IFont> fontHandler, std::shared_ptr<IRenderer> renderer);
 
 	~CoordinateSystemGrid();
+
 	std::shared_ptr<IFont> mFontHandler;
+
 	std::shared_ptr<IRenderer> mRenderer;
 
 	const Vector3<float> mXStart;

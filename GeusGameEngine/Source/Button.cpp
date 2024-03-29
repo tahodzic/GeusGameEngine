@@ -1,14 +1,24 @@
 #pragma once
 
 #include "Button.h"
+#include "TextRenderer.h"
 
-Button::Button(Vector2<int> dimensions, Vector2<int> position, std::string label)
-	: mDimensions(dimensions), mPosition(position), mLabel(label)
+Button::Button(Vector2<int> dimensions, Vector2<int> position, std::string label, std::shared_ptr<IFont> fontHandler, std::shared_ptr<IRenderer> renderer)
+	: mDimensions(dimensions), mPosition(position), mLabel(label), mFontHandler(fontHandler), mRenderer(renderer)
 {
 }
 
 Button::~Button()
 {
+}
+
+void Button::Render(const Matrix44<float>& worldToCameraMatrix)
+{
+	bool inWorld = false;
+
+	TextRenderer::print(mLabel, mDimensions.mX + mPosition.mX, mDimensions.mY + mPosition.mY, inWorld);
+
+	mRenderer->RenderDrawRect(mDimensions.mX, mDimensions.mY, mPosition.mX, mPosition.mY, inWorld);
 }
 
 Vector2<int> Button::TransformToLocal(int worldX, int worldY)
