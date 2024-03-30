@@ -4,10 +4,10 @@
 #include <string>
 #include <cmath>
 
-#include <sstream>      // std::stringstream
+#include <sstream>
 #include <iomanip>  
 
-#include "MediaLayer.h"
+#include "IMediaLayer.h"
 
 #include "Cube.h"
 #include "Camera.h"
@@ -28,13 +28,15 @@ class World
 private:
 
 public:
-    World(CoordinateSystemGrid coordinateSystemGrid, ViewPort viewPort, Button button1, Button button2);
+    World(std::shared_ptr<IMediaLayer> mediaLayer, CoordinateSystemGrid coordinateSystemGrid, ViewPort viewPort, Button button1, Button button2);
 
     ~World();
     
     static World CreateAndInitialize();
 
     Matrix44<float> mWtcMatrix;
+
+    std::shared_ptr<IMediaLayer> mMediaLayer;
 
     Camera mCamera;
 

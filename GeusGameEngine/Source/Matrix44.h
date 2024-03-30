@@ -1,6 +1,6 @@
 #pragma once
-#include <sstream>      // std::stringstream
-#include <iomanip>  
+#include <sstream>
+#include <iomanip>
 
 #include "Vector3.h"
 

@@ -5,9 +5,12 @@
 #include "Constants.h"
 #include "WorldConstants.h"
 
+#include "MediaLayer.h"
+
 #include <math.h>
 
-World::World(CoordinateSystemGrid coordinateSystemGrid, ViewPort viewPort, Button button1, Button button2) :
+World::World(std::shared_ptr<IMediaLayer> mediaLayer, CoordinateSystemGrid coordinateSystemGrid, ViewPort viewPort, Button button1, Button button2)
+	: mMediaLayer(mediaLayer),
 	mCoordinateSystemGrid(coordinateSystemGrid),
 	mCamera(),
 	mButtonReset(button1),
@@ -30,32 +33,30 @@ World World::CreateAndInitialize()
 {
 	using namespace WorldConstants;
 
-	MediaLayer::getInstance().Initialize(windowTitle, windowPosX, windowPosY, windowWidth, windowHeight, canvasWidth, canvasHeight);
+	auto ml = MediaLayer::CreateAndSetup(windowTitle, windowPosX, windowPosY, windowWidth, windowHeight, canvasWidth, canvasHeight);
 
-	auto fh = MediaLayer::getInstance().GetFontHandler();
+	Button mButtonReset(Vector2<int>(70, 25), Vector2<int>(10, 20), "Reset", ml);
 
-	auto ren = MediaLayer::getInstance().GetRenderer();
-		
-	Button mButtonReset(Vector2<int>(70, 25), Vector2<int>(10, 20), "Reset", fh, ren);
+	Button mButtonCreate(Vector2<int>(70, 25), Vector2<int>(10, 60), "Create", ml);
 
-	Button mButtonCreate(Vector2<int>(70, 25), Vector2<int>(10, 60), "Create", fh, ren);
+	CoordinateSystemGrid csg(20.0f, ml);
 
-	CoordinateSystemGrid csg(20.0f, MediaLayer::getInstance().GetFontHandler(), MediaLayer::getInstance().GetRenderer());
+	ViewPort vwp(ml, 100.0f, 100.0f, 640.0f, 480.0f);
 
-	ViewPort vwp(MediaLayer::getInstance().GetRenderer(), 100.0f, 100.0f, 640.0f, 480.0f);
+	TextRenderer::Initialize(ml);
 
-	World world(csg, vwp, mButtonReset, mButtonCreate);
+	World world(ml, csg, vwp, mButtonReset, mButtonCreate);
 
 	return world;
 }
 
 void World::Render()
 {
-	MediaLayer::getInstance().PrepareRenderer();
+	mMediaLayer->PrepareRenderer();
 	
 	WorldMain();
 	
-	MediaLayer::getInstance().Render();
+	mMediaLayer->Render();
 }
 
 void World::AddObject(const Cube object)
@@ -69,8 +70,7 @@ void World::AddObject(const Cube object)
 
 Cube World::CreateCube(const float s, const float x, const float y, const float z)
 {
-	auto ren = MediaLayer::getInstance().GetRenderer();
-	return Cube(ren, s, x, y, z);
+	return Cube(mMediaLayer, s, x, y, z);
 }
 
 /*

@@ -1,6 +1,7 @@
 #include "Button.h"
 #include "Vector2.h"
-
+#include "IMediaLayer.h"
+#include "MediaLayerMock.h"
 
 #include "pch.h" 
 
@@ -9,10 +10,12 @@ namespace ButtonTests
 	class ButtonTest : public testing::Test
 	{
 	protected:
-		ButtonTest() : mDimensions(1, 2), mPosition(3, 4), mLabel("Button1"), mButton(mDimensions, mPosition, mLabel)
+		ButtonTest() : mDimensions(1, 2), mPosition(3, 4), mLabel("Button1"), mButton(mDimensions, mPosition, mLabel, std::make_shared<MediaLayerMock>())
 		{}
 
-		Vector2<int> mDimensions;	Vector2<int> mPosition;
+		Vector2<int> mDimensions;
+		
+		Vector2<int> mPosition;
 
 		std::string mLabel;
 

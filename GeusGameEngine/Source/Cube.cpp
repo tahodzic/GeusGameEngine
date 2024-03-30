@@ -3,8 +3,8 @@
 #include "Constants.h"
 #include "Transform.h"
 
-Cube::Cube(std::shared_ptr<IRenderer> renderer, const float s, const float x, const float y, const float z) : 
-	mRenderer(renderer), mPosition(x, y, z), mTransform()
+Cube::Cube(std::shared_ptr<IMediaLayer> mediaLayer, const float s, const float x, const float y, const float z) : 
+	mMediaLayer(mediaLayer), mPosition(x, y, z), mTransform()
 {
 	float half = s / 2.0f;
 
@@ -55,5 +55,5 @@ void Cube::Render(const Matrix44<float>& worldToCameraMatrix)
 	
 	mTransform.LocalToWorld(mPosition, mLocalToWorldMatrix);
 
-	mRenderer->RenderPolygon(mVertices, mIndices, worldToCameraMatrix, mLocalToWorldMatrix, true);
+	mMediaLayer->RenderPolygon(mVertices, mIndices, worldToCameraMatrix, mLocalToWorldMatrix, true);
 }

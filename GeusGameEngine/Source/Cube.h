@@ -2,6 +2,7 @@
 
 #include "IRenderable.h"
 #include "IRenderer.h"
+#include "IMediaLayer.h"
 #include "Vector3.h"
 #include "Matrix44.h"
 #include "Transform.h"
@@ -11,11 +12,12 @@
 class Cube : public IRenderable
 {
 private:
-	std::shared_ptr<IRenderer> mRenderer;
+	std::shared_ptr<IMediaLayer> mMediaLayer;
+
 	Transform mTransform;
 
 public:
-	Cube(std::shared_ptr<IRenderer> renderer, const float s, const float x, const float y, const float z);
+	Cube(std::shared_ptr<IMediaLayer> mediaLayer, const float s, const float x, const float y, const float z);
 
 	~Cube();
 
@@ -30,5 +32,4 @@ public:
 	Matrix44<float> mLocalToWorldMatrix;
 
 	void Render(const Matrix44<float>& worldToCameraMatrix)  override;
-
 };

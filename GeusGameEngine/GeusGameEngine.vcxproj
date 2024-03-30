@@ -19,13 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="resource.h" />
     <ClInclude Include="Source\Button.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\Constants.h" />
     <ClInclude Include="Source\CoordinateSystemGrid.h" />
     <ClInclude Include="Source\Cube.h" />
     <ClInclude Include="Source\IFont.h" />
+    <ClInclude Include="Source\IMediaLayer.h" />
     <ClInclude Include="Source\IRenderable.h" />
     <ClInclude Include="Source\IRenderer.h" />
     <ClInclude Include="Source\ITransform.h" />
@@ -33,7 +33,6 @@
     <ClInclude Include="Source\MediaLayer.h" />
     <ClInclude Include="Source\Plane.h" />
     <ClInclude Include="Source\SdlDeleter.h" />
-    <ClInclude Include="Source\SdlLibrary.h" />
     <ClInclude Include="Source\SdlRenderer.h" />
     <ClInclude Include="Source\SdlTtf.h" />
     <ClInclude Include="Source\TextRenderer.h" />
@@ -54,7 +53,6 @@
     <ClCompile Include="Source\GeusGameEngine.cpp" />
     <ClCompile Include="Source\MediaLayer.cpp" />
     <ClCompile Include="Source\Plane.cpp" />
-    <ClCompile Include="Source\SdlLibrary.cpp" />
     <ClCompile Include="Source\SdlRenderer.cpp" />
     <ClCompile Include="Source\SdlTtf.cpp" />
     <ClCompile Include="Source\TextRenderer.cpp" />

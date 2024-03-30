@@ -88,7 +88,7 @@ public:
 
     void ExtractAllPlanes();
 
-    static std::shared_ptr<SdlRenderer> initialize(std::shared_ptr<SDL_Renderer> renderer, const int& windowWidth, const int& windowHeight, const int& canvasWidth, const int& canvasHeight);
+    static std::shared_ptr<SdlRenderer> Initialize(std::shared_ptr<SDL_Renderer> renderer, const int& windowWidth, const int& windowHeight, const int& canvasWidth, const int& canvasHeight);
 
     //void PollEvent(&mpSdlEvent) override;
 

@@ -2,9 +2,8 @@
 
 #include <string>
 
+#include "IMediaLayer.h"
 #include "IRenderable.h"
-#include "IRenderer.h"
-#include "IFont.h"
 #include "Matrix44.h"
 #include "Vector2.h"
 
@@ -17,13 +16,11 @@ private:
 	bool IsInDimensions(Vector2<int> point);
 
 public:
-	Button(Vector2<int> dimensions, Vector2<int> position, std::string label, std::shared_ptr<IFont> fontHandler, std::shared_ptr<IRenderer> renderer);
+	Button(Vector2<int> dimensions, Vector2<int> position, std::string label, std::shared_ptr<IMediaLayer> mediaLayer);
 
 	~Button();
 
-	std::shared_ptr<IFont> mFontHandler;
-
-	std::shared_ptr<IRenderer> mRenderer;
+	std::shared_ptr<IMediaLayer> mMediaLayer;
 
 	std::string mLabel;
 

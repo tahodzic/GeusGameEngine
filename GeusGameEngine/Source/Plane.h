@@ -11,7 +11,7 @@ public:
 	
 	~Plane();
 	
-	float mA, mB, mC, mD; // Plane equation coefficients
+	float mA, mB, mC, mD;
 
 	void set(float a, float b, float c, float d);
 	

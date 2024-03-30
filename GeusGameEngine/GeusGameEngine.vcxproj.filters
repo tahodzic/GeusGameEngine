@@ -26,9 +26,6 @@
     <ClInclude Include="Source\MediaLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\SdlLibrary.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -68,9 +65,6 @@
     <ClInclude Include="Source\CoordinateSystemGrid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -89,6 +83,9 @@
     <ClInclude Include="Source\IRenderable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\IMediaLayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\GeusGameEngine.cpp">
@@ -98,9 +95,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\SdlRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SdlLibrary.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\World.cpp">

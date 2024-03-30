@@ -286,10 +286,10 @@ void SdlRenderer::RenderDrawLine(
 
 void SdlRenderer::RenderDrawRect(const int width, const int height, const int x, const int y, const bool inWorld)
 {
-
 	SDL_Rect rect{x, y, width, height};
 
 	SetRenderViewPort(inWorld);
+
 	SDL_RenderDrawRect(mpRenderer.get(), &rect);
 }
 
@@ -325,7 +325,7 @@ static const Matrix44<float> CreateProjectionMatrix()
 	return mat;
 }
 
-std::shared_ptr<SdlRenderer> SdlRenderer::initialize(std::shared_ptr<SDL_Renderer> renderer, const int& windowWidth, const int& windowHeight, const int& canvasWidth, const int& canvasHeight)
+std::shared_ptr<SdlRenderer> SdlRenderer::Initialize(std::shared_ptr<SDL_Renderer> renderer, const int& windowWidth, const int& windowHeight, const int& canvasWidth, const int& canvasHeight)
 {
 	auto projMat = CreateProjectionMatrix();
 
