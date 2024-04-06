@@ -14,14 +14,14 @@
 #include "CoordinateSystemGrid.h"
 #include "ViewPort.h"
 
-#include <SDL.h>
-
 #include "Matrix44.h"
 #include "Vector3.h"
 #include "Vector2.h"
 
 #include "Button.h"
 
+#include <SDL.h>
+#include "InputManager.h"
 
 class World
 {
@@ -40,6 +40,8 @@ public:
 
     Camera mCamera;
 
+    InputManager mInputManager;
+
     CoordinateSystemGrid mCoordinateSystemGrid;
 
     ViewPort mViewPort;
@@ -50,8 +52,6 @@ public:
 
     int mMousePrevX, mMousePrevY;
 
-    int mMouseDiffX, mMouseDiffY;
-
     SDL_Event mSdlEvent;
 
     Button mButtonReset;
@@ -61,6 +61,14 @@ public:
     static constexpr int sFontSize = 12;
 
     void HandleAction();
+
+    void HandleKeyDown(const InputManager::InputEvent& inputEvent);
+
+    void HandleMouseButtonDown(const InputManager::InputEvent& inputEvent);
+
+    void HandleMouseMotion(const InputManager::InputEvent& inputEvent);
+
+    void HandleMouseWheel(const InputManager::InputEvent& inputEvent);
 
     void HandleKeyEvents();
 

@@ -26,6 +26,7 @@
     <ClInclude Include="Source\Cube.h" />
     <ClInclude Include="Source\IFont.h" />
     <ClInclude Include="Source\IMediaLayer.h" />
+    <ClInclude Include="Source\InputManager.h" />
     <ClInclude Include="Source\IRenderable.h" />
     <ClInclude Include="Source\IRenderer.h" />
     <ClInclude Include="Source\ITransform.h" />
@@ -44,6 +45,7 @@
     <ClInclude Include="Source\ViewPort.h" />
     <ClInclude Include="Source\World.h" />
     <ClInclude Include="Source\WorldConstants.h" />
+    <ClInclude Include="Source\WorldState.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Button.cpp" />
@@ -51,6 +53,7 @@
     <ClCompile Include="Source\CoordinateSystemGrid.cpp" />
     <ClCompile Include="Source\Cube.cpp" />
     <ClCompile Include="Source\GeusGameEngine.cpp" />
+    <ClCompile Include="Source\InputManager.cpp" />
     <ClCompile Include="Source\MediaLayer.cpp" />
     <ClCompile Include="Source\Plane.cpp" />
     <ClCompile Include="Source\SdlRenderer.cpp" />

@@ -2,17 +2,11 @@
 
 #include "CoordinateSystemGrid.h"
 
-CoordinateSystemGrid::CoordinateSystemGrid(float length, std::shared_ptr<IMediaLayer> mediaLayer) :
+CoordinateSystemGrid::CoordinateSystemGrid(const std::vector<Vector3<float>> gridVectors, const std::shared_ptr<IMediaLayer> mediaLayer) :
     mMediaLayer(mediaLayer),
-    mXStart(-length, 0.0f, 0.0f),
-    mXEnd(length, 0.0f, 0.0f),
-    mXText(0.0f, 0.0f, 0.0f),
-    mYStart(0.0f, -length, 0.0f),
-    mYEnd(0.0f, length, 0.0f),
-    mYText(0.0f, 0.0f, 0.0f),
-    mZStart(0.0f, 0.0f, -length),
-    mZEnd(0.0f, 0.0f, length),
-    mZText(0.0f, 0.0f, 0.0f)
+    mGridVectors(gridVectors),
+    mYStart(0.0f, -sGridLineLength, 0.0f),
+    mYEnd(0.0f, sGridLineLength, 0.0f)
 {
 }
 
@@ -20,16 +14,40 @@ CoordinateSystemGrid::~CoordinateSystemGrid()
 {
 }
 
-void CoordinateSystemGrid::drawUnitVector(int windowWidth, int windowHeight, const Vector2<int>& vec2D, Vector2<int>& out)
+CoordinateSystemGrid CoordinateSystemGrid::CreateWithGrid(std::shared_ptr<IMediaLayer> mediaLayer)
 {
-    out.mX = windowWidth / 2 + vec2D.mX * 100;
-    out.mY = windowHeight / 2 - vec2D.mY * 100;
+    std::vector<Vector3<float>> gridVectors;
+
+    CreateGrid(gridVectors);
+
+    return CoordinateSystemGrid(gridVectors, mediaLayer);
+}
+
+void CoordinateSystemGrid::CreateGrid(std::vector<Vector3<float>>& grid)
+{
+    float gridStart = static_cast<float>(sGridSize) * static_cast<float>(sGridFieldSize);
+    float gridEnd = -gridStart;
+    int count = sGridSize / sGridFieldSize;
+
+    for (int i = 0; i <= count; i++)
+    {
+        float step = static_cast<float>(i);
+        grid.emplace_back(gridStart, 0.0f, gridStart - (step * 2.0f));
+        grid.emplace_back(gridEnd, 0.0f, gridStart - (step * 2.0f));
+
+        grid.emplace_back(gridStart - (step * 2.0f), 0.0f, gridStart);
+        grid.emplace_back(gridStart - (step * 2.0f), 0.0f, gridEnd);
+    }
 }
 
 void CoordinateSystemGrid::Render(const Matrix44<float>& worldToCameraMatrix) 
 {
     const bool inWorld = true;
-    mMediaLayer->RenderLine(mXStart, mXEnd, worldToCameraMatrix, inWorld);
+
+    for (size_t i = 0; i < (mGridVectors.size() - 1); i += 2)
+    {
+        mMediaLayer->RenderLine(mGridVectors[i], mGridVectors[i+1], worldToCameraMatrix, inWorld);
+    }
+
     mMediaLayer->RenderLine(mYStart, mYEnd, worldToCameraMatrix, inWorld);
-    mMediaLayer->RenderLine(mZStart, mZEnd, worldToCameraMatrix, inWorld);
 }

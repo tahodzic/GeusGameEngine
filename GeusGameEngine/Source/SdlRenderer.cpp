@@ -268,13 +268,13 @@ void SdlRenderer::RenderDrawLine(
 	//vRaster2.mX = static_cast<int>(std::floor((clipPoint2.mX * 0.5f + 0.5f) * imageWidth));
 	//vRaster2.mY = static_cast<int>(std::floor((1.0f - (clipPoint2.mY * 0.5f + 0.5f)) * imageHeight));
 
-	TextRenderer::print("vRaster1", vRaster1.mX, vRaster1.mY, inWorld);
-	TextRenderer::print("vRaster1.mX: " + std::to_string(vRaster1.mX), 120, 80, inWorld);
-	TextRenderer::print("vRaster1.mY: " + std::to_string(vRaster1.mY), 120, 100, inWorld);
+	//TextRenderer::print("vRaster1", vRaster1.mX, vRaster1.mY, inWorld);
+	//TextRenderer::print("vRaster1.mX: " + std::to_string(vRaster1.mX), 120, 80, inWorld);
+	//TextRenderer::print("vRaster1.mY: " + std::to_string(vRaster1.mY), 120, 100, inWorld);
 
-	TextRenderer::print("vRaster2", vRaster2.mX, vRaster2.mY, inWorld);
-	TextRenderer::print("vRaster2.mX: " + std::to_string(vRaster2.mX), 120, 140, inWorld);
-	TextRenderer::print("vRaster2.mY: " + std::to_string(vRaster2.mY), 120, 160, inWorld);
+	//TextRenderer::print("vRaster2", vRaster2.mX, vRaster2.mY, inWorld);
+	//TextRenderer::print("vRaster2.mX: " + std::to_string(vRaster2.mX), 120, 140, inWorld);
+	//TextRenderer::print("vRaster2.mY: " + std::to_string(vRaster2.mY), 120, 160, inWorld);
 
 	//vRaster1.mX += 100;
 	//vRaster1.mY += 100;

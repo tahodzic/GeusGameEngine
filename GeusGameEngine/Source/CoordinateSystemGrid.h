@@ -9,37 +9,32 @@
 class CoordinateSystemGrid : IRenderable
 {
 private:
+	CoordinateSystemGrid(const std::vector<Vector3<float>> xVectors, const std::shared_ptr<IMediaLayer> mediaLayer);
 
 public:
-	CoordinateSystemGrid(float length, std::shared_ptr<IMediaLayer> mediaLayer);
-
 	~CoordinateSystemGrid();
 
-	std::shared_ptr<IMediaLayer> mMediaLayer;
+	static constexpr int sGridSize = 10;
 
-	const Vector3<float> mXStart;
+	static constexpr int sGridFieldSize = 1;
 
-	const Vector3<float> mXEnd;
+	static constexpr float sGridLineLength = 10.0f;
 
-	const Vector3<float> mXText;
+	const std::shared_ptr<IMediaLayer> mMediaLayer;
 
+	const std::vector<Vector3<float>> mGridVectors;
+	
 	const Vector3<float> mYStart;
 
 	const Vector3<float> mYEnd;
-
-	const Vector3<float> mYText;
-
-	const Vector3<float> mZStart;
-
-	const Vector3<float> mZEnd;
-
-	const Vector3<float> mZText;
 
 	std::vector<Vector3<float>> mVertices;
 
 	std::vector<int> mIndices;
 
-	void drawUnitVector(int windowWidth, int windowHeight, const Vector2<int>& vec2D, Vector2<int>& out);
-
 	void Render(const Matrix44<float>& worldToCameraMatrix) override;
+
+	static CoordinateSystemGrid CreateWithGrid(const std::shared_ptr<IMediaLayer> mediaLayer);
+
+	static void CreateGrid(std::vector<Vector3<float>>& grid);
 };
