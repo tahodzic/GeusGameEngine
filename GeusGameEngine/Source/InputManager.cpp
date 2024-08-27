@@ -1,9 +1,6 @@
 #include "InputManager.h"
 
 #include <SDL.h>
-#include <string>
-
-#include <windows.h> 
 
 static void TranslateKeyCode(const SDL_Event& sdlEvent, InputManager::InputEvent& inputEvent)
 {
@@ -132,9 +129,6 @@ void InputManager::UpdateState(const InputEvent& inputEvent)
             mInputState.leftMouseButtonDown = true;
             mInputState.prevMouseX = inputEvent.mouseX;
             mInputState.prevMouseY = inputEvent.mouseY;
-
-            std::string output = "MousePress: leftMouseButtonDown to true.\n";
-            OutputDebugStringA(output.c_str());
         }
         if (inputEvent.keyCode == KeyCode::MouseRight)
         {

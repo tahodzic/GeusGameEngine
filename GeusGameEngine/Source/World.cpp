@@ -9,16 +9,12 @@
 #include <functional>
 #include <math.h>
 
-World::World(std::shared_ptr<IMediaLayer> mediaLayer, CoordinateSystemGrid coordinateSystemGrid, ViewPort viewPort, Button button1, Button button2)
+World::World(std::shared_ptr<IMediaLayer> mediaLayer, CoordinateSystemGrid coordinateSystemGrid, ViewPort viewPort, UiManager uiManager)
 	: mMediaLayer(mediaLayer),
 	mCoordinateSystemGrid(coordinateSystemGrid),
 	mCamera(),
 	mInputManager(),
-	mButtonReset(button1),
-	mButtonCreate(button2),
-	mSdlEvent(),
-	mMousePrevX(0), 
-	mMousePrevY(0),
+	mUiManager(uiManager),
 	mObjectCount(0),
 	mViewPort(viewPort)
 {
@@ -37,10 +33,13 @@ World World::CreateAndInitialize()
 	using namespace WorldConstants;
 
 	auto ml = MediaLayer::CreateAndSetup(windowTitle, windowPosX, windowPosY, windowWidth, windowHeight, canvasWidth, canvasHeight);
+	
+	auto uiManager = UiManager::CreateWithButtons(ml);
+	/*
 
 	Button mButtonReset(Vector2<int>(70, 25), Vector2<int>(10, 20), "Reset", ml);
 
-	Button mButtonCreate(Vector2<int>(70, 25), Vector2<int>(10, 60), "Create", ml);
+	Button mButtonCreate(Vector2<int>(70, 25), Vector2<int>(10, 60), "Create", ml);*/
 
 	auto csg = CoordinateSystemGrid::CreateWithGrid(ml);
 
@@ -48,7 +47,7 @@ World World::CreateAndInitialize()
 
 	TextRenderer::Initialize(ml);
 
-	World world(ml, csg, vwp, mButtonReset, mButtonCreate);
+	World world(ml, csg, vwp, uiManager);
 
 	return world;
 }
@@ -86,21 +85,11 @@ Perspective Projection:
 	where f = focal point of camera
 */
 
-bool World::PollKeyEvents()
-{
-	return SDL_PollEvent(&mSdlEvent) != 0;
-}
-
 void World::HandleAction()
 {
 	mCamera.CalculateCameraRotation();
 
 	mInputManager.HandleInput();
-	
-	//while (PollKeyEvents())
-	//{
-	//	HandleKeyEvents();
-	//}
 
 	mCamera.UpdateWorldToCameraMatrix();
 }
@@ -138,8 +127,6 @@ void World::HandleMouseButtonDown(const InputManager::InputEvent& inputEvent)
 
 void World::HandleMouseMotion(const InputManager::InputEvent & inputEvent)
 {
-	std::string output = "MouseMotion: leftMousButtonDown is: " + std::to_string(mInputManager.mInputState.leftMouseButtonDown) + "\n";
-	OutputDebugStringA(output.c_str());
 	if (mInputManager.mInputState.leftMouseButtonDown)
 	{
 		int diffX, diffY;
@@ -171,103 +158,6 @@ void World::HandleMouseWheel(const InputManager::InputEvent& inputEvent)
 {
 	Vector3<float> translation(0.0f, 0.0f, static_cast<float>(-inputEvent.mouseWheelY));
 	mCamera.MoveCamera(translation);
-}
-
-void World::HandleKeyEvents()
-{
-	//static bool leftMouseButtonDown = false; // TODO: make own input class
-	//static bool rightMouseButtonDown = false; // TODO: make own input class
-
-	//float change = 2.0f*static_cast<float>(Constants::pi)/8.0f;
-
-	//change *= 0.1f;
-
-	//switch (mSdlEvent.type)
-	//{
-	//case SDL_KEYDOWN:
-	//{
-	//	switch (mSdlEvent.key.keysym.sym)
-	//	{
-	//	case SDLK_r:
-	//		ResetScene();
-	//		break;
-	//	}
-	//	break;
-	//}
-	//case SDL_MOUSEBUTTONDOWN:
-	//{
-	//	if (mSdlEvent.button.button == SDL_BUTTON_LEFT)
-	//	{
-	//		leftMouseButtonDown = true;
-	//		mMousePrevX = mSdlEvent.button.x;
-	//		mMousePrevY = mSdlEvent.button.y;
-	//		if (mButtonReset.IsClicked(mSdlEvent.button.x, mSdlEvent.button.y))
-	//		{
-	//			ResetScene();
-	//		}
-
-	//		if (mButtonCreate.IsClicked(mSdlEvent.button.x, mSdlEvent.button.y))
-	//		{
-	//			auto c = CreateCube(0.5f, 2.0f, 0.0f, 0.0f);
-	//			AddObject(c);
-	//		}
-	//	}
-	//	if (mSdlEvent.button.button == SDL_BUTTON_RIGHT)
-	//	{
-	//		rightMouseButtonDown = true;
-	//		mMousePrevX = mSdlEvent.button.x;
-	//		mMousePrevY = mSdlEvent.button.y;
-	//	}
-	//	break;
-	//}
-	//case SDL_MOUSEBUTTONUP:
-	//{
-	//	if (mSdlEvent.button.button == SDL_BUTTON_LEFT)
-	//	{
-	//		leftMouseButtonDown = false;
-	//	}
-	//	if (mSdlEvent.button.button == SDL_BUTTON_RIGHT)
-	//	{
-	//		rightMouseButtonDown = false;
-	//	}
-	//	break;
-	//}
-	//case SDL_MOUSEMOTION:
-	//{
-	//	if (leftMouseButtonDown)
-	//	{
-	//		mMouseDiffX = mMousePrevX - mSdlEvent.button.x;
-	//		mMouseDiffY = mMousePrevY - mSdlEvent.button.y;
-
-	//		mMousePrevX = mSdlEvent.button.x;
-	//		mMousePrevY = mSdlEvent.button.y;
-	//		
-	//		Vector3<float> translation((static_cast<float>(mMouseDiffX)) / 50.0f, (static_cast<float>(-mMouseDiffY)) / 50.0f, 0.0f);
-
-	//		mCamera.MoveCamera(translation);
-	//	}
-	//	if (rightMouseButtonDown)
-	//	{
-	//		mMouseDiffX = mMousePrevX - mSdlEvent.button.x;
-	//		mMouseDiffY = mMousePrevY - mSdlEvent.button.y;
-
-	//		mMousePrevX = mSdlEvent.button.x;
-	//		mMousePrevY = mSdlEvent.button.y;
-
-	//		mCamera.YawCamera(static_cast<float>(mMouseDiffX) * 0.01f);
-	//		mCamera.PitchCamera(static_cast<float>(mMouseDiffY) * 0.01f);
-	//	}
-	//	break;
-	//}
-	//case SDL_MOUSEWHEEL:
-	//{
-	//	Vector3<float> translation(0.0f, 0.0f, static_cast<float>(-mSdlEvent.wheel.y));
-	//	mCamera.MoveCamera(translation);
-	//	break;
-	//}
-	//default:
-	//	break;
-	//}
 }
 
 void World::ResetScene()

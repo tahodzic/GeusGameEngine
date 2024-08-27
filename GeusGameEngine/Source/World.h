@@ -3,32 +3,26 @@
 #include <Windows.h>
 #include <string>
 #include <cmath>
-
 #include <sstream>
 #include <iomanip>  
 
 #include "IMediaLayer.h"
-
 #include "Cube.h"
 #include "Camera.h"
 #include "CoordinateSystemGrid.h"
 #include "ViewPort.h"
-
 #include "Matrix44.h"
 #include "Vector3.h"
 #include "Vector2.h"
-
-#include "Button.h"
-
-#include <SDL.h>
 #include "InputManager.h"
+#include "UiManager.h"
 
 class World
 {
 private:
 
 public:
-    World(std::shared_ptr<IMediaLayer> mediaLayer, CoordinateSystemGrid coordinateSystemGrid, ViewPort viewPort, Button button1, Button button2);
+    World(std::shared_ptr<IMediaLayer> mediaLayer, CoordinateSystemGrid coordinateSystemGrid, ViewPort viewPort, UiManager uiManager);
 
     ~World();
     
@@ -42,6 +36,8 @@ public:
 
     InputManager mInputManager;
 
+    UiManager mUiManager;
+
     CoordinateSystemGrid mCoordinateSystemGrid;
 
     ViewPort mViewPort;
@@ -49,14 +45,6 @@ public:
     std::vector<Cube> mObjects;
 
     int mObjectCount;
-
-    int mMousePrevX, mMousePrevY;
-
-    SDL_Event mSdlEvent;
-
-    Button mButtonReset;
-
-    Button mButtonCreate;
 
     static constexpr int sFontSize = 12;
 
@@ -72,11 +60,9 @@ public:
 
     void HandleKeyEvents();
 
-    void ResetScene();
-
-    bool PollKeyEvents();
-
     void Render();
+
+    void ResetScene();
 
     void AddObject(const Cube object);
 

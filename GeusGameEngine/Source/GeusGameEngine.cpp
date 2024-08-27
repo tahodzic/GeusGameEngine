@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SDL.h>
 #include "World.h"
 
 int main(int argc, char* argv[])
