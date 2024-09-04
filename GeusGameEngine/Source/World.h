@@ -14,19 +14,21 @@
 #include "Matrix44.h"
 #include "Vector3.h"
 #include "Vector2.h"
-#include "InputManager.h"
-#include "UiManager.h"
+#include "InputTypes.h"
+#include "IInputObserver.h"
 
-class World
+class World : public IInputObserver
 {
 private:
 
 public:
-    World(std::shared_ptr<IMediaLayer> mediaLayer, CoordinateSystemGrid coordinateSystemGrid, ViewPort viewPort, UiManager uiManager);
+    //World(std::shared_ptr<IMediaLayer> mediaLayer, CoordinateSystemGrid coordinateSystemGrid, ViewPort viewPort, UiManager uiManager);
+    World(std::shared_ptr<IMediaLayer> mediaLayer, CoordinateSystemGrid coordinateSystemGrid, ViewPort viewPort);
 
     ~World();
     
-    static World CreateAndInitialize();
+    //static World CreateAndInitialize();
+    static std::shared_ptr<World> CreateAndInitialize2(std::shared_ptr<IMediaLayer> mediaLayer);
 
     Matrix44<float> mWtcMatrix;
 
@@ -34,9 +36,9 @@ public:
 
     Camera mCamera;
 
-    InputManager mInputManager;
+    //InputManager mInputManager;
 
-    UiManager mUiManager;
+    //UiManager mUiManager;
 
     CoordinateSystemGrid mCoordinateSystemGrid;
 
@@ -46,19 +48,21 @@ public:
 
     int mObjectCount;
 
+    InputTypes::InputState mInputState;
+
     static constexpr int sFontSize = 12;
 
     void HandleAction();
 
-    void HandleKeyDown(const InputManager::InputEvent& inputEvent);
+    void HandleKeyDown(const InputTypes::InputEvent& event);
 
-    void HandleMouseButtonDown(const InputManager::InputEvent& inputEvent);
+    void HandleMouseButtonDown(const InputTypes::InputEvent& inputEvent);
 
-    void HandleMouseMotion(const InputManager::InputEvent& inputEvent);
+    void HandleMouseMotion(const InputTypes::InputEvent& inputEvent);
 
-    void HandleMouseWheel(const InputManager::InputEvent& inputEvent);
+    void HandleMouseWheel(const InputTypes::InputEvent& inputEvent);
 
-    void HandleKeyEvents();
+    void HandleEvent(const InputTypes::InputEvent& event);
 
     void Render();
 
@@ -66,9 +70,9 @@ public:
 
     void AddObject(const Cube object);
 
-    Cube CreateCube(const float s, const float x, const float y, const float z);
+    void CreateCube(const float s, const float x, const float y, const float z);
 
-    void RenderButton();
+    //void RenderButton();
 
     void RenderObjects();
 
@@ -79,4 +83,6 @@ public:
     void CalculateWorldToCameraMatrix();
 
     void WorldMain();
+
+    void Update(const InputTypes::InputEvent& event, [[maybe_unused]] const InputTypes::InputState& state) override;
 };

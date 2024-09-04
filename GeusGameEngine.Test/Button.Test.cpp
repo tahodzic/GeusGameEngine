@@ -10,10 +10,13 @@ namespace ButtonTests
 	class ButtonTest : public testing::Test
 	{
 	protected:
-		ButtonTest() : mDimensions(1, 2), mPosition(3, 4), mLabel("Button1"), mButton(mDimensions, mPosition, mLabel, std::make_shared<MediaLayerMock>())
+		ButtonTest() : mDimensions(1, 2), mPosition(3, 4), mLabel("Button1"), mFunction([](){}),
+			mButton(mDimensions, mPosition, mLabel, mFunction, std::make_shared<MediaLayerMock>())
 		{}
 
 		Vector2<int> mDimensions;
+
+		std::function<void()> mFunction;
 		
 		Vector2<int> mPosition;
 

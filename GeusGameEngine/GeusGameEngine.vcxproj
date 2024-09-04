@@ -24,9 +24,13 @@
     <ClInclude Include="Source\Constants.h" />
     <ClInclude Include="Source\CoordinateSystemGrid.h" />
     <ClInclude Include="Source\Cube.h" />
+    <ClInclude Include="Source\Engine.h" />
     <ClInclude Include="Source\IFont.h" />
+    <ClInclude Include="Source\IInputObservable.h" />
+    <ClInclude Include="Source\IInputObserver.h" />
     <ClInclude Include="Source\IMediaLayer.h" />
     <ClInclude Include="Source\InputManager.h" />
+    <ClInclude Include="Source\InputTypes.h" />
     <ClInclude Include="Source\IRenderable.h" />
     <ClInclude Include="Source\IRenderer.h" />
     <ClInclude Include="Source\ITransform.h" />
@@ -39,6 +43,7 @@
     <ClInclude Include="Source\TextRenderer.h" />
     <ClInclude Include="Source\Transform.h" />
     <ClInclude Include="Source\TtfDeleter.h" />
+    <ClInclude Include="Source\UiHud.h" />
     <ClInclude Include="Source\UiManager.h" />
     <ClInclude Include="Source\Vector2.h" />
     <ClInclude Include="Source\Vector3.h" />
@@ -52,6 +57,7 @@
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\CoordinateSystemGrid.cpp" />
     <ClCompile Include="Source\Cube.cpp" />
+    <ClCompile Include="Source\Engine.cpp" />
     <ClCompile Include="Source\GeusGameEngine.cpp" />
     <ClCompile Include="Source\InputManager.cpp" />
     <ClCompile Include="Source\MediaLayer.cpp" />
@@ -60,6 +66,7 @@
     <ClCompile Include="Source\SdlTtf.cpp" />
     <ClCompile Include="Source\TextRenderer.cpp" />
     <ClCompile Include="Source\Transform.cpp" />
+    <ClCompile Include="Source\UiHud.cpp" />
     <ClCompile Include="Source\UiManager.cpp" />
     <ClCompile Include="Source\ViewPort.cpp" />
     <ClCompile Include="Source\World.cpp" />
@@ -167,7 +174,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
     </ClCompile>
     <Link>
@@ -190,7 +197,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

@@ -8,57 +8,84 @@
 
 #include <functional>
 #include <math.h>
+//
+//World::World(std::shared_ptr<IMediaLayer> mediaLayer, CoordinateSystemGrid coordinateSystemGrid, ViewPort viewPort, UiManager uiManager)
+//	: mMediaLayer(mediaLayer),
+//	mCoordinateSystemGrid(coordinateSystemGrid),
+//	mCamera(),
+//	mInputManager(),
+//	mUiManager(uiManager),
+//	mObjectCount(0),
+//	mViewPort(viewPort)
+//{
+//	mInputManager.RegisterHandler(InputManager::EventType::KeyPress, std::bind(&World::HandleKeyDown, this, std::placeholders::_1));
+//	mInputManager.RegisterHandler(InputManager::EventType::MousePress, std::bind(&World::HandleMouseButtonDown, this, std::placeholders::_1));
+//	mInputManager.RegisterHandler(InputManager::EventType::MouseMove, std::bind(&World::HandleMouseMotion, this, std::placeholders::_1));
+//	mInputManager.RegisterHandler(InputManager::EventType::MouseWheel, std::bind(&World::HandleMouseWheel, this, std::placeholders::_1));
+//}
 
-World::World(std::shared_ptr<IMediaLayer> mediaLayer, CoordinateSystemGrid coordinateSystemGrid, ViewPort viewPort, UiManager uiManager)
+World::World(std::shared_ptr<IMediaLayer> mediaLayer, CoordinateSystemGrid coordinateSystemGrid, ViewPort viewPort)
 	: mMediaLayer(mediaLayer),
 	mCoordinateSystemGrid(coordinateSystemGrid),
 	mCamera(),
-	mInputManager(),
-	mUiManager(uiManager),
+	//mInputManager(),
 	mObjectCount(0),
-	mViewPort(viewPort)
+	mViewPort(viewPort),
+	mInputState()
 {
-	mInputManager.RegisterHandler(InputManager::EventType::KeyPress, std::bind(&World::HandleKeyDown, this, std::placeholders::_1));
-	mInputManager.RegisterHandler(InputManager::EventType::MousePress, std::bind(&World::HandleMouseButtonDown, this, std::placeholders::_1));
-	mInputManager.RegisterHandler(InputManager::EventType::MouseMove, std::bind(&World::HandleMouseMotion, this, std::placeholders::_1));
-	mInputManager.RegisterHandler(InputManager::EventType::MouseWheel, std::bind(&World::HandleMouseWheel, this, std::placeholders::_1));
+	//mInputManager.RegisterHandler(InputManager::EventType::KeyPress, std::bind(&World::HandleKeyDown, this, std::placeholders::_1));
+	//mInputManager.RegisterHandler(InputManager::EventType::MousePress, std::bind(&World::HandleMouseButtonDown, this, std::placeholders::_1));
+	//mInputManager.RegisterHandler(InputManager::EventType::MouseMove, std::bind(&World::HandleMouseMotion, this, std::placeholders::_1));
+	//mInputManager.RegisterHandler(InputManager::EventType::MouseWheel, std::bind(&World::HandleMouseWheel, this, std::placeholders::_1));
 }
 
 World::~World()
 {
 }
 
-World World::CreateAndInitialize()
+//World World::CreateAndInitialize()
+//{
+//	using namespace WorldConstants;
+//
+//	auto ml = MediaLayer::CreateAndSetup(windowTitle, windowPosX, windowPosY, windowWidth, windowHeight, canvasWidth, canvasHeight);
+//	
+//	auto uiManager = UiManager::CreateWithButtons(ml);
+//
+//	auto csg = CoordinateSystemGrid::CreateWithGrid(ml);
+//
+//	ViewPort vwp(ml, 100.0f, 100.0f, 640.0f, 480.0f);
+//
+//	TextRenderer::Initialize(ml);
+//
+//	World world(ml, csg, vwp, uiManager);
+//
+//	return world;
+//}
+
+std::shared_ptr<World> World::CreateAndInitialize2(std::shared_ptr<IMediaLayer> mediaLayer)
 {
-	using namespace WorldConstants;
+	//using namespace WorldConstants;
 
-	auto ml = MediaLayer::CreateAndSetup(windowTitle, windowPosX, windowPosY, windowWidth, windowHeight, canvasWidth, canvasHeight);
+	//auto ml = MediaLayer::CreateAndSetup(windowTitle, windowPosX, windowPosY, windowWidth, windowHeight, canvasWidth, canvasHeight);
 	
-	auto uiManager = UiManager::CreateWithButtons(ml);
-	/*
+	//auto uiManager = UiManager::CreateWithButtons(ml);
 
-	Button mButtonReset(Vector2<int>(70, 25), Vector2<int>(10, 20), "Reset", ml);
+	auto csg = CoordinateSystemGrid::CreateWithGrid(mediaLayer);
 
-	Button mButtonCreate(Vector2<int>(70, 25), Vector2<int>(10, 60), "Create", ml);*/
+	ViewPort vwp(mediaLayer, 100.0f, 100.0f, 640.0f, 480.0f);
 
-	auto csg = CoordinateSystemGrid::CreateWithGrid(ml);
+	TextRenderer::Initialize(mediaLayer);
 
-	ViewPort vwp(ml, 100.0f, 100.0f, 640.0f, 480.0f);
-
-	TextRenderer::Initialize(ml);
-
-	World world(ml, csg, vwp, uiManager);
-
-	return world;
+	return std::make_shared<World>(mediaLayer, csg, vwp);
 }
 
 void World::Render()
 {
-	mMediaLayer->PrepareRenderer();
+	//mMediaLayer->PrepareRenderer();
 	
 	WorldMain();
 	
-	mMediaLayer->Render();
+	//mMediaLayer->Render();
 }
 
 void World::AddObject(const Cube object)
@@ -70,9 +97,9 @@ void World::AddObject(const Cube object)
 	}
 }
 
-Cube World::CreateCube(const float s, const float x, const float y, const float z)
+void World::CreateCube(const float s, const float x, const float y, const float z)
 {
-	return Cube(mMediaLayer, s, x, y, z);
+	AddObject({mMediaLayer, s, x, y, z });
 }
 
 /*
@@ -87,76 +114,77 @@ Perspective Projection:
 
 void World::HandleAction()
 {
-	mCamera.CalculateCameraRotation();
+	//mCamera.CalculateCameraRotation();
 
-	mInputManager.HandleInput();
+	//mInputManager.HandleInput();
 
-	mCamera.UpdateWorldToCameraMatrix();
+	//mCamera.UpdateWorldToCameraMatrix();
 }
 
-void World::HandleKeyDown(const InputManager::InputEvent& inputEvent)
+
+void World::HandleKeyDown(const InputTypes::InputEvent& event)
 {
-	switch (inputEvent.keyCode)
+	switch (event.keyCode)
 	{
-	case InputManager::KeyCode::KeyR:
+	case InputTypes::KeyCode::KeyR:
 		ResetScene();
 		break;
 	}
 }
 
-void World::HandleMouseButtonDown(const InputManager::InputEvent& inputEvent)
+void World::HandleMouseButtonDown(const InputTypes::InputEvent& event)
 {
-	switch (inputEvent.keyCode)
+	switch (event.keyCode)
 	{
-	case InputManager::KeyCode::MouseLeft:
-		if (mButtonReset.IsClicked(inputEvent.mouseX, inputEvent.mouseY))
-		{
-			ResetScene();
-		}
+	case InputTypes::KeyCode::MouseLeft:
+		//if (mButtonReset.IsClicked(inputEvent.mouseX, inputEvent.mouseY))
+		//{
+		//	ResetScene();
+		//}
 
-		if (mButtonCreate.IsClicked(inputEvent.mouseX, inputEvent.mouseY))
-		{
-			auto c = CreateCube(0.5f, 2.0f, 0.0f, 0.0f);
-			AddObject(c);
-		}
+		//if (mButtonCreate.IsClicked(inputEvent.mouseX, inputEvent.mouseY))
+		//{
+		//	auto c = CreateCube(0.5f, 2.0f, 0.0f, 0.0f);
+		//	AddObject(c);
+		//}
 		break;
 	default:
 		break;
 	}
 }
 
-void World::HandleMouseMotion(const InputManager::InputEvent & inputEvent)
+void World::HandleMouseMotion(const InputTypes::InputEvent& event)
 {
-	if (mInputManager.mInputState.leftMouseButtonDown)
+	if (mInputState.leftMouseButtonDown)
 	{
 		int diffX, diffY;
-		diffX = mInputManager.mInputState.prevMouseX - inputEvent.mouseX;
-		diffY = mInputManager.mInputState.prevMouseY - inputEvent.mouseY;
+		diffX = mInputState.prevMouseX - event.mouseX;
+		diffY = mInputState.prevMouseY - event.mouseY;
 
-		mInputManager.mInputState.prevMouseX = inputEvent.mouseX;
-		mInputManager.mInputState.prevMouseY = inputEvent.mouseY;
+		mInputState.prevMouseX = event.mouseX;
+		mInputState.prevMouseY = event.mouseY;
 
 		Vector3<float> translation((static_cast<float>(diffX)) / 50.0f, (static_cast<float>(-diffY)) / 50.0f, 0.0f);
 
 		mCamera.MoveCamera(translation);
 	}
-	if (mInputManager.mInputState.rightMouseButtonDown)
+	if (mInputState.rightMouseButtonDown)
 	{
 		int diffX, diffY;
-		diffX = mInputManager.mInputState.prevMouseX - inputEvent.mouseX;
-		diffY = mInputManager.mInputState.prevMouseY - inputEvent.mouseY;
+		diffX = mInputState.prevMouseX - event.mouseX;
+		diffY = mInputState.prevMouseY - event.mouseY;
 
-		mInputManager.mInputState.prevMouseX = inputEvent.mouseX;
-		mInputManager.mInputState.prevMouseY = inputEvent.mouseY;
+		mInputState.prevMouseX = event.mouseX;
+		mInputState.prevMouseY = event.mouseY;
 
 		mCamera.YawCamera(static_cast<float>(diffX) * 0.01f);
 		mCamera.PitchCamera(static_cast<float>(diffY) * 0.01f);
 	}
 }
 
-void World::HandleMouseWheel(const InputManager::InputEvent& inputEvent)
+void World::HandleMouseWheel(const InputTypes::InputEvent& event)
 {
-	Vector3<float> translation(0.0f, 0.0f, static_cast<float>(-inputEvent.mouseWheelY));
+	Vector3<float> translation(0.0f, 0.0f, static_cast<float>(-event.mouseWheelY));
 	mCamera.MoveCamera(translation);
 }
 
@@ -182,36 +210,49 @@ void World::CalculateWorldToCameraMatrix()
 //	myLogger.log(log4cpp::Priority::INFO, ss.str());
 //}
 
-void World::RenderButton()
-{
-	mButtonReset.Render(mWtcMatrix);
+//void World::RenderButton()
+//{
+	//for (auto& button : mUiManager.mButtons)
+	//{
+		//button.Render(mCamera.mWtcMatrix);
+	//}
+	//mButtonReset.Render(mWtcMatrix);
 
-	mButtonCreate.Render(mWtcMatrix);
-}
+	//mButtonCreate.Render(mWtcMatrix);
+//}
 
 void World::RenderObjects()
 {
-	for (int i = 0; i < mObjectCount; i++)
+	for (auto& obj : mObjects)
 	{
-		mObjects[i].Render(mCamera.mWtcMatrix);
+		obj.Render(mCamera.mWtcMatrix);
 	}
 }
 
+// TODO: Questionable if part of the world
 void World::RenderCoordinateSystem()
 {
 	mCoordinateSystemGrid.Render(mCamera.mWtcMatrix);
 }
 
+// TODO: Probably not part of the world
 void World::RenderViewPort()
 {
-	mViewPort.Render(mCamera.mWtcMatrix);
+	mViewPort.Render(Matrix44<float>{});
 }
 
 void World::WorldMain()
 {
+
+	mCamera.CalculateCameraRotation();
+
+	//mInputManager.HandleInput();
+
+	mCamera.UpdateWorldToCameraMatrix();
+
 	RenderCoordinateSystem();
 	RenderObjects();
-	RenderButton();
+	//RenderButton();
 	RenderViewPort();
 
 	const bool inWorld = true;
@@ -219,4 +260,34 @@ void World::WorldMain()
 	TextRenderer::print("X: " + std::to_string(mCamera.mPosition.mX), 100, 420, inWorld);
 	TextRenderer::print("Y: " + std::to_string(mCamera.mPosition.mY), 100, 440, inWorld);
 	TextRenderer::print("Z: " + std::to_string(mCamera.mPosition.mZ), 100, 460, inWorld);
+}
+
+void World::Update(const InputTypes::InputEvent& event, [[maybe_unused]] const InputTypes::InputState& state)
+{
+	mInputState = state;
+
+	switch (event.type)
+	{
+	case InputTypes::EventType::MouseWheel:
+	{
+		HandleMouseWheel(event);
+		break;
+	}
+	case InputTypes::EventType::MouseMove:
+	{
+		HandleMouseMotion(event);
+		break;
+	}
+	case InputTypes::EventType::MousePress:
+	{
+		HandleMouseButtonDown(event);
+		break;
+	}
+	case InputTypes::EventType::KeyPress:
+	{
+		HandleKeyDown(event);
+		break;
+	}
+
+	}
 }

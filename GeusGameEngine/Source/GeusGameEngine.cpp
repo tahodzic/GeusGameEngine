@@ -1,17 +1,14 @@
 #pragma once
 
 #include <SDL.h>
+#include "Engine.h"
 #include "World.h"
 
 int main(int argc, char* argv[])
 {
-	auto myWorld = World::CreateAndInitialize();
+	auto geusGameEngine = Engine::CreateAndInitialize();
 		
-	for(;;)
-	{
-		myWorld.HandleAction();
-		myWorld.Render();
-	}
+	geusGameEngine->KickOff();
 
 	return 0;
 }

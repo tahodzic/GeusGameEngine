@@ -12,9 +12,9 @@ TextRenderer::~TextRenderer()
 {
 }
 
-static std::shared_ptr<MediaLayer> sMediaLayer;
+static std::shared_ptr<IMediaLayer> sMediaLayer;
 
-void TextRenderer::Initialize(std::shared_ptr<MediaLayer> mediaLayer)
+void TextRenderer::Initialize(std::shared_ptr<IMediaLayer> mediaLayer)
 {
 	sMediaLayer = mediaLayer;
 }

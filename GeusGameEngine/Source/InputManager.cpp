@@ -2,42 +2,42 @@
 
 #include <SDL.h>
 
-static void TranslateKeyCode(const SDL_Event& sdlEvent, InputManager::InputEvent& inputEvent)
+static void TranslateKeyCode(const SDL_Event& sdlEvent, InputTypes::InputEvent& inputEvent)
 {
     switch (sdlEvent.key.keysym.sym)
     {
     case SDLK_r:
-        inputEvent.keyCode = InputManager::KeyCode::KeyR;
+        inputEvent.keyCode = InputTypes::KeyCode::KeyR;
         break;
     case SDLK_m:
-        inputEvent.keyCode = InputManager::KeyCode::KeyM;
+        inputEvent.keyCode = InputTypes::KeyCode::KeyM;
         break;
     default:
         break;
     }
 }
 
-static void TranslateKeyCodeDown(const SDL_Event& sdlEvent, InputManager::InputEvent& inputEvent)
+static void TranslateKeyCodeDown(const SDL_Event& sdlEvent, InputTypes::InputEvent& inputEvent)
 {
-    inputEvent.type = InputManager::EventType::KeyPress;
+    inputEvent.type = InputTypes::EventType::KeyPress;
     TranslateKeyCode(sdlEvent, inputEvent);
 }
 
-static void TranslateKeyCodeUp(const SDL_Event& sdlEvent, InputManager::InputEvent& inputEvent)
+static void TranslateKeyCodeUp(const SDL_Event& sdlEvent, InputTypes::InputEvent& inputEvent)
 {
-    inputEvent.type = InputManager::EventType::KeyRelease;
+    inputEvent.type = InputTypes::EventType::KeyRelease;
     TranslateKeyCode(sdlEvent, inputEvent);
 }
 
-static void TranslateMouseEvent(const SDL_Event& sdlEvent, InputManager::InputEvent& inputEvent)
+static void TranslateMouseEvent(const SDL_Event& sdlEvent, InputTypes::InputEvent& inputEvent)
 {
     switch (sdlEvent.button.button)
     {
     case SDL_BUTTON_LEFT:
-        inputEvent.keyCode = InputManager::KeyCode::MouseLeft;
+        inputEvent.keyCode = InputTypes::KeyCode::MouseLeft;
         break;
     case SDL_BUTTON_RIGHT:
-        inputEvent.keyCode = InputManager::KeyCode::MouseRight;
+        inputEvent.keyCode = InputTypes::KeyCode::MouseRight;
         break;
     default:
         break;
@@ -47,34 +47,34 @@ static void TranslateMouseEvent(const SDL_Event& sdlEvent, InputManager::InputEv
     inputEvent.mouseY = sdlEvent.button.y;
 }
 
-static void TranslateMouseEventDown(const SDL_Event& sdlEvent, InputManager::InputEvent& inputEvent)
+static void TranslateMouseEventDown(const SDL_Event& sdlEvent, InputTypes::InputEvent& inputEvent)
 {
-    inputEvent.type = InputManager::EventType::MousePress;
+    inputEvent.type = InputTypes::EventType::MousePress;
     TranslateMouseEvent(sdlEvent, inputEvent);
 }
 
-static void TranslateMouseEventUp(const SDL_Event& sdlEvent, InputManager::InputEvent& inputEvent)
+static void TranslateMouseEventUp(const SDL_Event& sdlEvent, InputTypes::InputEvent& inputEvent)
 {
-    inputEvent.type = InputManager::EventType::MouseRelease;
+    inputEvent.type = InputTypes::EventType::MouseRelease;
     TranslateMouseEvent(sdlEvent, inputEvent);
 }
 
-static void TranslateMouseMotion(const SDL_Event& sdlEvent, InputManager::InputEvent& inputEvent)
+static void TranslateMouseMotion(const SDL_Event& sdlEvent, InputTypes::InputEvent& inputEvent)
 {
-    inputEvent.type = InputManager::EventType::MouseMove;
+    inputEvent.type = InputTypes::EventType::MouseMove;
     inputEvent.mouseX = sdlEvent.motion.x;
     inputEvent.mouseY = sdlEvent.motion.y;
 }
 
-static void TranslateMouseWheel(const SDL_Event& sdlEvent, InputManager::InputEvent& inputEvent)
+static void TranslateMouseWheel(const SDL_Event& sdlEvent, InputTypes::InputEvent& inputEvent)
 {
-    inputEvent.type = InputManager::EventType::MouseWheel;
+    inputEvent.type = InputTypes::EventType::MouseWheel;
     inputEvent.mouseWheelY = sdlEvent.wheel.y;
 }
 
-static InputManager::InputEvent TranslateEvent(const SDL_Event& sdlEvent)
+static InputTypes::InputEvent TranslateEvent(const SDL_Event& sdlEvent)
 {
-    InputManager::InputEvent inputEvent;
+    InputTypes::InputEvent inputEvent;
 
     switch (sdlEvent.type)
     {
@@ -103,7 +103,17 @@ static InputManager::InputEvent TranslateEvent(const SDL_Event& sdlEvent)
     return inputEvent;
 }
 
-void InputManager::HandleEvent(const InputEvent& inputEvent)
+
+InputManager::InputManager()
+{
+}
+
+InputManager::~InputManager()
+{
+}
+
+
+void InputManager::HandleEvent(const InputTypes::InputEvent& inputEvent)
 {
     auto it = mEventHandlers.find(inputEvent.type);
 
@@ -117,20 +127,20 @@ void InputManager::HandleEvent(const InputEvent& inputEvent)
     }
 }
 
-void InputManager::UpdateState(const InputEvent& inputEvent)
+void InputManager::UpdateState(const InputTypes::InputEvent& inputEvent)
 {
     switch (inputEvent.type)
     {
-    case EventType::MousePress:
+    case InputTypes::EventType::MousePress:
     {
-        if (inputEvent.keyCode == KeyCode::MouseLeft)
+        if (inputEvent.keyCode == InputTypes::KeyCode::MouseLeft)
         {
             
             mInputState.leftMouseButtonDown = true;
             mInputState.prevMouseX = inputEvent.mouseX;
             mInputState.prevMouseY = inputEvent.mouseY;
         }
-        if (inputEvent.keyCode == KeyCode::MouseRight)
+        if (inputEvent.keyCode == InputTypes::KeyCode::MouseRight)
         {
             mInputState.rightMouseButtonDown = true;
             mInputState.prevMouseX = inputEvent.mouseX;
@@ -138,13 +148,13 @@ void InputManager::UpdateState(const InputEvent& inputEvent)
         }
         break;
     }
-    case EventType::MouseRelease:
+    case InputTypes::EventType::MouseRelease:
     {
-        if (inputEvent.keyCode == KeyCode::MouseLeft)
+        if (inputEvent.keyCode == InputTypes::KeyCode::MouseLeft)
         {
             mInputState.leftMouseButtonDown = false;
         }
-        if (inputEvent.keyCode == KeyCode::MouseRight)
+        if (inputEvent.keyCode == InputTypes::KeyCode::MouseRight)
         {
             mInputState.rightMouseButtonDown = false;
         }
@@ -208,11 +218,35 @@ void InputManager::HandleInput()
         return;
     }
 
-    InputManager::InputEvent inputEvent = TranslateEvent(sdlEvent);
+    InputTypes::InputEvent inputEvent = TranslateEvent(sdlEvent);
+
+
+    if (inputEvent.type == InputTypes::EventType::None)
+    {
+        return;
+    }
+
+    mInputEvent = inputEvent;
 
     UpdateState(inputEvent);
 
-    HandleEvent(inputEvent);
+    //HandleEvent(inputEvent);
+
+    NotifyObservers();
+}
+
+void InputManager::AddObserver(IInputObserver& observer)
+{
+    mObservers.push_back(observer);
+    //mObservers.push_back(&observer);
+}
+
+void InputManager::NotifyObservers()
+{
+    for (auto observer : mObservers)
+    {
+        observer.get().Update(mInputEvent, mInputState);
+    }
 }
 
 //void InputManager::RegisterEventHandlers(EventHandlers eventHandlers)
@@ -225,7 +259,7 @@ void InputManager::SetCurrentState(WorldState::State state)
     mCurrentState = state;
 }
 
-void InputManager::RegisterHandler(EventType type, EventHandlerType handler)
+void InputManager::RegisterHandler(InputTypes::EventType type, InputTypes::EventHandlerType handler)
 {
     mEventHandlers[type] = handler;
 }

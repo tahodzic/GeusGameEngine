@@ -3,8 +3,8 @@
 #include "Button.h"
 #include "TextRenderer.h"
 
-Button::Button(Vector2<int> dimensions, Vector2<int> position, std::string label, std::shared_ptr<IMediaLayer> mediaLayer)
-	: mDimensions(dimensions), mPosition(position), mLabel(label), mMediaLayer(mediaLayer)
+Button::Button(Vector2<int> dimensions, Vector2<int> position, std::string label, std::function<void()> callback, std::shared_ptr<IMediaLayer> mediaLayer)
+	: mDimensions(dimensions), mPosition(position), mLabel(label), mCallback(callback), mMediaLayer(mediaLayer)
 {
 }
 
@@ -41,4 +41,9 @@ bool Button::IsClicked(int x, int y)
 	auto loc = TransformToLocal(x, y);
 	
 	return IsInDimensions(loc);
+}
+
+void Button::OnClick() 
+{
+	mCallback();
 }
