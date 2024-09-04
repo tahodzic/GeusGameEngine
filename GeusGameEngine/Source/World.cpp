@@ -8,68 +8,23 @@
 
 #include <functional>
 #include <math.h>
-//
-//World::World(std::shared_ptr<IMediaLayer> mediaLayer, CoordinateSystemGrid coordinateSystemGrid, ViewPort viewPort, UiManager uiManager)
-//	: mMediaLayer(mediaLayer),
-//	mCoordinateSystemGrid(coordinateSystemGrid),
-//	mCamera(),
-//	mInputManager(),
-//	mUiManager(uiManager),
-//	mObjectCount(0),
-//	mViewPort(viewPort)
-//{
-//	mInputManager.RegisterHandler(InputManager::EventType::KeyPress, std::bind(&World::HandleKeyDown, this, std::placeholders::_1));
-//	mInputManager.RegisterHandler(InputManager::EventType::MousePress, std::bind(&World::HandleMouseButtonDown, this, std::placeholders::_1));
-//	mInputManager.RegisterHandler(InputManager::EventType::MouseMove, std::bind(&World::HandleMouseMotion, this, std::placeholders::_1));
-//	mInputManager.RegisterHandler(InputManager::EventType::MouseWheel, std::bind(&World::HandleMouseWheel, this, std::placeholders::_1));
-//}
 
 World::World(std::shared_ptr<IMediaLayer> mediaLayer, CoordinateSystemGrid coordinateSystemGrid, ViewPort viewPort)
 	: mMediaLayer(mediaLayer),
 	mCoordinateSystemGrid(coordinateSystemGrid),
 	mCamera(),
-	//mInputManager(),
 	mObjectCount(0),
 	mViewPort(viewPort),
 	mInputState()
 {
-	//mInputManager.RegisterHandler(InputManager::EventType::KeyPress, std::bind(&World::HandleKeyDown, this, std::placeholders::_1));
-	//mInputManager.RegisterHandler(InputManager::EventType::MousePress, std::bind(&World::HandleMouseButtonDown, this, std::placeholders::_1));
-	//mInputManager.RegisterHandler(InputManager::EventType::MouseMove, std::bind(&World::HandleMouseMotion, this, std::placeholders::_1));
-	//mInputManager.RegisterHandler(InputManager::EventType::MouseWheel, std::bind(&World::HandleMouseWheel, this, std::placeholders::_1));
 }
 
 World::~World()
 {
 }
 
-//World World::CreateAndInitialize()
-//{
-//	using namespace WorldConstants;
-//
-//	auto ml = MediaLayer::CreateAndSetup(windowTitle, windowPosX, windowPosY, windowWidth, windowHeight, canvasWidth, canvasHeight);
-//	
-//	auto uiManager = UiManager::CreateWithButtons(ml);
-//
-//	auto csg = CoordinateSystemGrid::CreateWithGrid(ml);
-//
-//	ViewPort vwp(ml, 100.0f, 100.0f, 640.0f, 480.0f);
-//
-//	TextRenderer::Initialize(ml);
-//
-//	World world(ml, csg, vwp, uiManager);
-//
-//	return world;
-//}
-
-std::shared_ptr<World> World::CreateAndInitialize2(std::shared_ptr<IMediaLayer> mediaLayer)
+std::shared_ptr<World> World::CreateAndInitialize(std::shared_ptr<IMediaLayer> mediaLayer)
 {
-	//using namespace WorldConstants;
-
-	//auto ml = MediaLayer::CreateAndSetup(windowTitle, windowPosX, windowPosY, windowWidth, windowHeight, canvasWidth, canvasHeight);
-	
-	//auto uiManager = UiManager::CreateWithButtons(ml);
-
 	auto csg = CoordinateSystemGrid::CreateWithGrid(mediaLayer);
 
 	ViewPort vwp(mediaLayer, 100.0f, 100.0f, 640.0f, 480.0f);
@@ -81,11 +36,19 @@ std::shared_ptr<World> World::CreateAndInitialize2(std::shared_ptr<IMediaLayer> 
 
 void World::Render()
 {
-	//mMediaLayer->PrepareRenderer();
-	
-	WorldMain();
-	
-	//mMediaLayer->Render();
+	mCamera.CalculateCameraRotation();
+
+	mCamera.UpdateWorldToCameraMatrix();
+
+	RenderCoordinateSystem();
+	RenderObjects();
+	RenderViewPort();
+
+	const bool inWorld = true;
+
+	TextRenderer::print("X: " + std::to_string(mCamera.mPosition.mX), 100, 420, inWorld);
+	TextRenderer::print("Y: " + std::to_string(mCamera.mPosition.mY), 100, 440, inWorld);
+	TextRenderer::print("Z: " + std::to_string(mCamera.mPosition.mZ), 100, 460, inWorld);
 }
 
 void World::AddObject(const Cube object)
@@ -111,16 +74,6 @@ Perspective Projection:
 	z' = z
 	where f = focal point of camera
 */
-
-void World::HandleAction()
-{
-	//mCamera.CalculateCameraRotation();
-
-	//mInputManager.HandleInput();
-
-	//mCamera.UpdateWorldToCameraMatrix();
-}
-
 
 void World::HandleKeyDown(const InputTypes::InputEvent& event)
 {
@@ -210,17 +163,6 @@ void World::CalculateWorldToCameraMatrix()
 //	myLogger.log(log4cpp::Priority::INFO, ss.str());
 //}
 
-//void World::RenderButton()
-//{
-	//for (auto& button : mUiManager.mButtons)
-	//{
-		//button.Render(mCamera.mWtcMatrix);
-	//}
-	//mButtonReset.Render(mWtcMatrix);
-
-	//mButtonCreate.Render(mWtcMatrix);
-//}
-
 void World::RenderObjects()
 {
 	for (auto& obj : mObjects)
@@ -239,27 +181,6 @@ void World::RenderCoordinateSystem()
 void World::RenderViewPort()
 {
 	mViewPort.Render(Matrix44<float>{});
-}
-
-void World::WorldMain()
-{
-
-	mCamera.CalculateCameraRotation();
-
-	//mInputManager.HandleInput();
-
-	mCamera.UpdateWorldToCameraMatrix();
-
-	RenderCoordinateSystem();
-	RenderObjects();
-	//RenderButton();
-	RenderViewPort();
-
-	const bool inWorld = true;
-
-	TextRenderer::print("X: " + std::to_string(mCamera.mPosition.mX), 100, 420, inWorld);
-	TextRenderer::print("Y: " + std::to_string(mCamera.mPosition.mY), 100, 440, inWorld);
-	TextRenderer::print("Z: " + std::to_string(mCamera.mPosition.mZ), 100, 460, inWorld);
 }
 
 void World::Update(const InputTypes::InputEvent& event, [[maybe_unused]] const InputTypes::InputState& state)

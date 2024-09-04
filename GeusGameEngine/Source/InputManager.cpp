@@ -165,50 +165,6 @@ void InputManager::UpdateState(const InputTypes::InputEvent& inputEvent)
     }
 }
 
-//void World::UpdateInputState(const InputEvent& event, InputState& inputState)
-//{
-//    switch (event.type)
-//    {
-//    case EventType::MousePress:
-//        if (event.keyCode == KeyCode::MouseLeft) {
-//            inputState.leftMouseButtonDown = true;
-//        }
-//        else if (event.keyCode == KeyCode::MouseRight) {
-//            inputState.rightMouseButtonDown = true;
-//        }
-//        break;
-//
-//    case EventType::MouseRelease:
-//        if (event.keyCode == KeyCode::MouseLeft) {
-//            inputState.leftMouseButtonDown = false;
-//        }
-//        else if (event.keyCode == KeyCode::MouseRight) {
-//            inputState.rightMouseButtonDown = false;
-//        }
-//        break;
-//
-//    case EventType::MouseMove:
-//        inputState.mouseX = event.mouseX;
-//        inputState.mouseY = event.mouseY;
-//
-//        if (inputState.leftMouseButtonDown) {
-//            // Calculate the difference from the last position
-//            int diffX = inputState.mouseX - inputState.prevMouseX;
-//            int diffY = inputState.mouseY - inputState.prevMouseY;
-//
-//            // Use diffX and diffY to rotate the camera, for example
-//            RotateCamera(diffX, diffY);
-//        }
-//
-//        // Update previous mouse position at the end of the move event handling
-//        inputState.updatePrevPosition();
-//        break;
-//
-//        // Handle other event types...
-//    }
-//}
-
-
 void InputManager::HandleInput()
 {
     SDL_Event sdlEvent;
@@ -220,7 +176,6 @@ void InputManager::HandleInput()
 
     InputTypes::InputEvent inputEvent = TranslateEvent(sdlEvent);
 
-
     if (inputEvent.type == InputTypes::EventType::None)
     {
         return;
@@ -229,8 +184,6 @@ void InputManager::HandleInput()
     mInputEvent = inputEvent;
 
     UpdateState(inputEvent);
-
-    //HandleEvent(inputEvent);
 
     NotifyObservers();
 }
@@ -248,11 +201,6 @@ void InputManager::NotifyObservers()
         observer.get().Update(mInputEvent, mInputState);
     }
 }
-
-//void InputManager::RegisterEventHandlers(EventHandlers eventHandlers)
-//{
-//    mEventHandlers = eventHandlers;
-//}
 
 void InputManager::SetCurrentState(WorldState::State state)
 {

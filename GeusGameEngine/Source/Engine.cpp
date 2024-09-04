@@ -12,14 +12,15 @@ Engine::Engine(std::shared_ptr<IMediaLayer> mediaLayer, UiManager uiManager, std
 void Engine::KickOff()
 {
 	mInputManager.AddObserver(mUiManager);
-	mInputManager.AddObserver(*mWorld.get());
+
+	// TODO: Find a better way to store observers
+	mInputManager.AddObserver(*mWorld.get()); 
 
 	for (;;)
 	{
 		mInputManager.HandleInput();
 		mMediaLayer->PrepareRenderer();
 		mUiManager.Render();
-		//mWorld->HandleAction();
 		mWorld->Render();
 		mMediaLayer->Render();
 	}
@@ -31,20 +32,9 @@ std::shared_ptr<Engine> Engine::CreateAndInitialize()
 
 	auto ml = MediaLayer::CreateAndSetup(windowTitle, windowPosX, windowPosY, windowWidth, windowHeight, canvasWidth, canvasHeight);
 
-	auto world = World::CreateAndInitialize2(ml);
+	auto world = World::CreateAndInitialize(ml);
 
-	//auto uiManager = UiManager::CreateWithButtons(ml);
 	auto uiManager = UiManager::CreateWithHuds(ml, world);
-
-	//auto csg = CoordinateSystemGrid::CreateWithGrid(ml);
-
-	//ViewPort vwp(ml, 100.0f, 100.0f, 640.0f, 480.0f);
-
-	//TextRenderer::Initialize(ml);
-
-	//World world(ml, csg, vwp, uiManager);
-
-	//return world;
 
 	return std::make_shared<Engine>(ml, uiManager, world);
 }

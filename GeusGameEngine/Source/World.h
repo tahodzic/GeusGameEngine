@@ -22,23 +22,17 @@ class World : public IInputObserver
 private:
 
 public:
-    //World(std::shared_ptr<IMediaLayer> mediaLayer, CoordinateSystemGrid coordinateSystemGrid, ViewPort viewPort, UiManager uiManager);
     World(std::shared_ptr<IMediaLayer> mediaLayer, CoordinateSystemGrid coordinateSystemGrid, ViewPort viewPort);
 
     ~World();
     
-    //static World CreateAndInitialize();
-    static std::shared_ptr<World> CreateAndInitialize2(std::shared_ptr<IMediaLayer> mediaLayer);
+    static std::shared_ptr<World> CreateAndInitialize(std::shared_ptr<IMediaLayer> mediaLayer);
 
     Matrix44<float> mWtcMatrix;
 
     std::shared_ptr<IMediaLayer> mMediaLayer;
 
     Camera mCamera;
-
-    //InputManager mInputManager;
-
-    //UiManager mUiManager;
 
     CoordinateSystemGrid mCoordinateSystemGrid;
 
@@ -52,8 +46,6 @@ public:
 
     static constexpr int sFontSize = 12;
 
-    void HandleAction();
-
     void HandleKeyDown(const InputTypes::InputEvent& event);
 
     void HandleMouseButtonDown(const InputTypes::InputEvent& inputEvent);
@@ -61,8 +53,6 @@ public:
     void HandleMouseMotion(const InputTypes::InputEvent& inputEvent);
 
     void HandleMouseWheel(const InputTypes::InputEvent& inputEvent);
-
-    void HandleEvent(const InputTypes::InputEvent& event);
 
     void Render();
 
@@ -72,8 +62,6 @@ public:
 
     void CreateCube(const float s, const float x, const float y, const float z);
 
-    //void RenderButton();
-
     void RenderObjects();
 
     void RenderCoordinateSystem();
@@ -81,8 +69,6 @@ public:
     void RenderViewPort();
 
     void CalculateWorldToCameraMatrix();
-
-    void WorldMain();
 
     void Update(const InputTypes::InputEvent& event, [[maybe_unused]] const InputTypes::InputState& state) override;
 };
