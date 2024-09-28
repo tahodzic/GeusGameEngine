@@ -99,6 +99,18 @@ void Camera::MoveCamera(Vector3<float>& translation)
     Vector3<float> newTranslation;
     mCombinedRotations.multDirMatrix(translation, newTranslation);
 
+    //mPosition.mX += (mCombinedRotations[0][0] * newTranslation.mX);
+    //mPosition.mY += (mCombinedRotations[0][1] * newTranslation.mX);
+    //mPosition.mZ += (mCombinedRotations[0][2] * newTranslation.mX);
+
+    //mPosition.mX += (mCombinedRotations[1][0] * newTranslation.mY);
+    //mPosition.mY += (mCombinedRotations[1][1] * newTranslation.mY);
+    //mPosition.mZ += (mCombinedRotations[1][2] * newTranslation.mY);
+
+    //mPosition.mX += (mCombinedRotations[2][0] * newTranslation.mZ);
+    //mPosition.mY += (mCombinedRotations[2][1] * newTranslation.mZ);
+    //mPosition.mZ += (mCombinedRotations[2][2] * newTranslation.mZ);
+
     auto xtr = xVec * newTranslation.mX;
     auto ytr = yVec * newTranslation.mY;
     auto ztr = zVec * newTranslation.mZ;

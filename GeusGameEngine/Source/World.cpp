@@ -85,39 +85,19 @@ void World::HandleKeyDown(const InputTypes::InputEvent& event)
 	}
 }
 
-void World::HandleMouseButtonDown(const InputTypes::InputEvent& event)
-{
-	switch (event.keyCode)
-	{
-	case InputTypes::KeyCode::MouseLeft:
-		//if (mButtonReset.IsClicked(inputEvent.mouseX, inputEvent.mouseY))
-		//{
-		//	ResetScene();
-		//}
-
-		//if (mButtonCreate.IsClicked(inputEvent.mouseX, inputEvent.mouseY))
-		//{
-		//	auto c = CreateCube(0.5f, 2.0f, 0.0f, 0.0f);
-		//	AddObject(c);
-		//}
-		break;
-	default:
-		break;
-	}
-}
-
 void World::HandleMouseMotion(const InputTypes::InputEvent& event)
 {
 	if (mInputState.leftMouseButtonDown)
 	{
-		int diffX, diffY;
-		diffX = mInputState.prevMouseX - event.mouseX;
-		diffY = mInputState.prevMouseY - event.mouseY;
+		const float sensitivity = 1.0f / 50.0f;
+
+		float diffX = static_cast<float>(mInputState.prevMouseX - event.mouseX);
+		float diffY = static_cast<float>(mInputState.prevMouseY - event.mouseY);
 
 		mInputState.prevMouseX = event.mouseX;
 		mInputState.prevMouseY = event.mouseY;
 
-		Vector3<float> translation((static_cast<float>(diffX)) / 50.0f, (static_cast<float>(-diffY)) / 50.0f, 0.0f);
+		Vector3<float> translation(diffX * sensitivity, -diffY * sensitivity, 0.0f);
 
 		mCamera.MoveCamera(translation);
 	}
@@ -185,13 +165,35 @@ void World::RenderViewPort()
 
 void World::Update(const InputTypes::InputEvent& event, [[maybe_unused]] const InputTypes::InputState& state)
 {
-	mInputState = state;
-
 	switch (event.type)
 	{
-	case InputTypes::EventType::MouseWheel:
+	case InputTypes::EventType::MousePress:
 	{
-		HandleMouseWheel(event);
+		if (event.keyCode == InputTypes::KeyCode::MouseLeft)
+		{
+
+			mInputState.leftMouseButtonDown = true;
+			mInputState.prevMouseX = event.mouseX;
+			mInputState.prevMouseY = event.mouseY;
+		}
+		if (event.keyCode == InputTypes::KeyCode::MouseRight)
+		{
+			mInputState.rightMouseButtonDown = true;
+			mInputState.prevMouseX = event.mouseX;
+			mInputState.prevMouseY = event.mouseY;
+		}
+		break;
+	}
+	case InputTypes::EventType::MouseRelease:
+	{
+		if (event.keyCode == InputTypes::KeyCode::MouseLeft)
+		{
+			mInputState.leftMouseButtonDown = false;
+		}
+		if (event.keyCode == InputTypes::KeyCode::MouseRight)
+		{
+			mInputState.rightMouseButtonDown = false;
+		}
 		break;
 	}
 	case InputTypes::EventType::MouseMove:
@@ -199,9 +201,9 @@ void World::Update(const InputTypes::InputEvent& event, [[maybe_unused]] const I
 		HandleMouseMotion(event);
 		break;
 	}
-	case InputTypes::EventType::MousePress:
+	case InputTypes::EventType::MouseWheel:
 	{
-		HandleMouseButtonDown(event);
+		HandleMouseWheel(event);
 		break;
 	}
 	case InputTypes::EventType::KeyPress:
@@ -209,6 +211,7 @@ void World::Update(const InputTypes::InputEvent& event, [[maybe_unused]] const I
 		HandleKeyDown(event);
 		break;
 	}
-
+	default:
+		break;
 	}
 }

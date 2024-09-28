@@ -6,10 +6,6 @@
 #include <algorithm>
 #include <ranges>
 
-//UiManager::UiManager(std::vector<Button> buttons) : mButtons(buttons)
-//{
-//}
-
 UiManager::UiManager(const std::vector<UiHud>& huds) : mUiHuds(huds)
 {
 }
@@ -25,20 +21,6 @@ void UiManager::Render()
 		hud.Render();
 	}
 }
-
-//void UiManager::RegisterButton(Button button)
-//{
-//	mButtons.push_back(button);
-//}
-//
-//UiManager UiManager::CreateWithButtons(std::shared_ptr<IMediaLayer> mediaLayer)
-//{
-//	Button resetButton(Vector2<int>(70, 25), Vector2<int>(10, 20), "Reset", mediaLayer);
-//
-//	Button createButton(Vector2<int>(70, 25), Vector2<int>(10, 60), "Create", mediaLayer);
-//	
-//	return UiManager({ resetButton, createButton });
-//}
 
 static void Reset(std::shared_ptr<World> world)
 {
@@ -80,10 +62,6 @@ UiManager UiManager::CreateWithHuds(std::shared_ptr<IMediaLayer> mediaLayer, std
 	std::vector<UiHud> huds;
 
 	huds.push_back(CreateNavigationHud(mediaLayer, world));
-
-	//Button resetButton(Vector2<int>(70, 25), Vector2<int>(10, 20), "Reset", mediaLayer);
-
-	//Button createButton(Vector2<int>(70, 25), Vector2<int>(10, 60), "Create", mediaLayer);
 
 	return UiManager(huds);
 }

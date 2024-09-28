@@ -48,8 +48,6 @@ public:
 
     void HandleKeyDown(const InputTypes::InputEvent& event);
 
-    void HandleMouseButtonDown(const InputTypes::InputEvent& inputEvent);
-
     void HandleMouseMotion(const InputTypes::InputEvent& inputEvent);
 
     void HandleMouseWheel(const InputTypes::InputEvent& inputEvent);

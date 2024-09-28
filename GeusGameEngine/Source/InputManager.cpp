@@ -160,6 +160,12 @@ void InputManager::UpdateState(const InputTypes::InputEvent& inputEvent)
         }
         break;
     }
+    case InputTypes::EventType::MouseMove:
+    {
+        //mInputState.prevMouseX = inputEvent.mouseX;
+        //mInputState.prevMouseY = inputEvent.mouseY;
+        break;
+    }
     default:
         break;
     }
@@ -183,7 +189,7 @@ void InputManager::HandleInput()
 
     mInputEvent = inputEvent;
 
-    UpdateState(inputEvent);
+    // UpdateState(inputEvent);
 
     NotifyObservers();
 }
