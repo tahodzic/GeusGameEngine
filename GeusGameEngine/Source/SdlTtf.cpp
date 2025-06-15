@@ -1,7 +1,5 @@
-#pragma once
-
-#include "SdlTtf.h"
 #include "IFont.h"
+#include "SdlTtf.h"
 
 #include <SDL_ttf.h>
 

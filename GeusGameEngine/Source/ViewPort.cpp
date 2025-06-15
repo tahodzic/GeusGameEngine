@@ -1,4 +1,3 @@
-#pragma once
 #include "ViewPort.h"
 
 ViewPort::ViewPort(std::shared_ptr<IMediaLayer> mediaLayer, const float x, const float y, const float w, const float h)

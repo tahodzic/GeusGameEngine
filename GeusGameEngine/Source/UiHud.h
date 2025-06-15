@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Vector2.h"
-#include "World.h"
 #include "Button.h"
 #include "IMediaLayer.h"
 #include "InputTypes.h"
+#include "Vector2.h"
+#include "World.h"
 
 #include <functional>
 

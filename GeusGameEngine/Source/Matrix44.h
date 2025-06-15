@@ -1,8 +1,9 @@
 #pragma once
-#include <sstream>
-#include <iomanip>
-
 #include "Vector3.h"
+
+#include <iomanip>
+#include <sstream>
+
 
 template<typename T>
 class Matrix44

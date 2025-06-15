@@ -1,6 +1,5 @@
-﻿#include "Cube.h"
-
-#include "Constants.h"
+﻿#include "Constants.h"
+#include "Cube.h"
 #include "Transform.h"
 
 Cube::Cube(std::shared_ptr<IMediaLayer> mediaLayer, const float s, const float x, const float y, const float z) : 

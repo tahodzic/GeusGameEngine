@@ -1,9 +1,7 @@
-#pragma once
-
 #include "UiManager.h"
 
-#include <functional>
 #include <algorithm>
+#include <functional>
 #include <ranges>
 
 UiManager::UiManager(const std::vector<UiHud>& huds) : mUiHuds(huds)

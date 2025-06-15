@@ -1,12 +1,13 @@
 #pragma once
 
 #include "IRenderer.h"
-#include "Vector2.h"
-#include "Vector3.h"
 #include "Matrix44.h"
 #include "Plane.h"
+#include "Vector2.h"
+#include "Vector3.h"
 
 #include <SDL.h>
+
 #include <memory>
 #include <vector>
 

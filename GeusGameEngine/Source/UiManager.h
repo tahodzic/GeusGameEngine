@@ -1,15 +1,16 @@
 #pragma once
 
-#include <vector>
-#include <memory>
 
 
 #include "Button.h"
-#include "IInputObserver.h"
 #include "IInputObservable.h"
+#include "IInputObserver.h"
 #include "IMediaLayer.h"
-#include "World.h"
 #include "UiHud.h"
+#include "World.h"
+
+#include <memory>
+#include <vector>
 
 
 class UiManager : public IInputObserver

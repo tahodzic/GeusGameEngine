@@ -1,13 +1,11 @@
-#pragma once
-
 #include "SdlRenderer.h"
 #include "TextRenderer.h"
 #include "WorldConstants.h"
 
 #include <SDL.h>
 
-#include <sstream>
 #include <iomanip>
+#include <sstream>
 #include <windows.h>
 
 SdlRenderer::SdlRenderer(

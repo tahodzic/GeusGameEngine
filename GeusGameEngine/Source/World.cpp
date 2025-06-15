@@ -1,10 +1,9 @@
-#pragma once
-#include "World.h"
-#include "IRenderer.h"
-#include "TextRenderer.h"
 #include "Constants.h"
-#include "WorldConstants.h"
+#include "IRenderer.h"
 #include "MediaLayer.h"
+#include "TextRenderer.h"
+#include "World.h"
+#include "WorldConstants.h"
 
 #include <functional>
 #include <math.h>

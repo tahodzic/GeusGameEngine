@@ -1,5 +1,3 @@
-#pragma once
-
 #include "Button.h"
 #include "TextRenderer.h"
 

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "IMediaLayer.h"
-#include "UiManager.h"
 #include "InputManager.h"
+#include "UiManager.h"
 
 #include <memory>
 

@@ -3,8 +3,8 @@
 #include <cmath>
 
 #include "Constants.h"
-#include "Vector3.h"
 #include "Matrix44.h"
+#include "Vector3.h"
 
 class Camera
 {

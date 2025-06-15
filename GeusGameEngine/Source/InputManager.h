@@ -1,8 +1,8 @@
 #pragma once
 
-#include "InputTypes.h"
 #include "IInputObservable.h"
 #include "IInputObserver.h"
+#include "InputTypes.h"
 #include "WorldState.h"
 
 #include <functional>

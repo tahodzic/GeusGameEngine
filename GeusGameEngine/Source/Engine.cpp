@@ -1,8 +1,7 @@
 #include "Engine.h"
-
 #include "MediaLayer.h"
-#include "WorldConstants.h"
 #include "World.h"
+#include "WorldConstants.h"
 
 Engine::Engine(std::shared_ptr<IMediaLayer> mediaLayer, UiManager uiManager, std::shared_ptr<World> world)
 	: mMediaLayer(mediaLayer), mUiManager(uiManager), mWorld(world), mInputManager()

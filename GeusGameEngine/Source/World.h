@@ -1,21 +1,22 @@
 #pragma once
 
-#include <Windows.h>
-#include <string>
-#include <cmath>
-#include <sstream>
-#include <iomanip>  
-
-#include "IMediaLayer.h"
-#include "Cube.h"
 #include "Camera.h"
 #include "CoordinateSystemGrid.h"
-#include "ViewPort.h"
-#include "Matrix44.h"
-#include "Vector3.h"
-#include "Vector2.h"
-#include "InputTypes.h"
+#include "Cube.h"
 #include "IInputObserver.h"
+#include "IMediaLayer.h"
+#include "InputTypes.h"
+#include "Matrix44.h"
+#include "Vector2.h"
+#include "Vector3.h"
+#include "ViewPort.h"
+
+#include <cmath>
+#include <iomanip>  
+#include <sstream>
+#include <string>
+#include <Windows.h>
+
 
 class World : public IInputObserver
 {

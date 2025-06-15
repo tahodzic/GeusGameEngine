@@ -1,5 +1,3 @@
-#pragma once
-
 #include "CoordinateSystemGrid.h"
 
 CoordinateSystemGrid::CoordinateSystemGrid(const std::vector<Vector3<float>> gridVectors, const std::shared_ptr<IMediaLayer> mediaLayer) :

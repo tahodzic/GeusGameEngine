@@ -1,10 +1,11 @@
 #pragma once
-#include <vector>
 
-#include "Vector3.h"
-#include "Vector2.h"
 #include "IMediaLayer.h"
 #include "IRenderable.h"
+#include "Vector2.h"
+#include "Vector3.h"
+
+#include <vector>
 
 class CoordinateSystemGrid : IRenderable
 {

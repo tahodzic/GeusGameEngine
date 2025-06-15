@@ -5,9 +5,9 @@
 
 #include <SDL.h>
 #include <SDL_ttf.h>
-#include <stdint.h>
 
 #include <memory>
+#include <stdint.h>
 
 class SdlTtf : public IFont
 {

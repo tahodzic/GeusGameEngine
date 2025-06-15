@@ -1,10 +1,8 @@
-#pragma once
-
 #include "MediaLayer.h"
 
-#include "SdlTtf.h"
-#include "SdlRenderer.h"
 #include "SdlDeleter.h"
+#include "SdlRenderer.h"
+#include "SdlTtf.h"
 #include "TtfDeleter.h"
 
 #include <SDL.h>

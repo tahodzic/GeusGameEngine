@@ -1,5 +1,3 @@
-#pragma once
-
 #include "Camera.h"
 
 Camera::Camera() : mPosition({ sDefaultX, sDefaultY, sDefaultZ}), mPitch(0.0f), mRoll(0.0f), mYaw(0.0f)

@@ -6,8 +6,8 @@
 #include "Matrix44.h"
 #include "Vector2.h"
 
-#include <string>
 #include <functional>
+#include <string>
 
 class Button : IRenderable
 {
