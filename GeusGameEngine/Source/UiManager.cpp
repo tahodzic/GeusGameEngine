@@ -47,14 +47,6 @@ void UiManager::Update(const InputTypes::InputEvent& event, [[maybe_unused]] con
 	}
 }
 
-// TODO: Investigate why below ranges doesnt work as exptected
-//void UiManager::Update(const InputTypes::InputEvent& event, [[maybe_unused]] const InputTypes::InputState& state)
-//{
-//	std::ranges::for_each(std::next(mUiHuds.begin()), mUiHuds.end(), [event](UiHud& uiHud) {
-//		uiHud.HandleEvent(event);
-//	});
-//}
-
 UiManager UiManager::CreateWithHuds(std::shared_ptr<IMediaLayer> mediaLayer, std::shared_ptr<World> world)
 {
 	std::vector<UiHud> huds;

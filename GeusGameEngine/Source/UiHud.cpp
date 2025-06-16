@@ -37,17 +37,6 @@ void UiHud::HandleEvent(const InputTypes::InputEvent& event)
 	}
 }
 
-// TODO: Investigate why the EFF this doesnt work as expected
-//void UiHud::HandleEvent(const InputTypes::InputEvent& event)
-//{
-//	std::ranges::for_each(std::next(mButtons.begin()), mButtons.end(), [x = event.mouseX, y = event.mouseY](Button& button) {
-//		if (button.IsClicked(x, y))
-//		{
-//			button.OnClick();
-//		}
-//	});
-//}
-
 UiHud& UiHud::WithButton(std::string name, Vector2<int> dimensions, Vector2<int> position, std::function<void()> callback)
 {
 	mButtons.push_back(Button{ dimensions, position, name, callback, mMediaLayer });
